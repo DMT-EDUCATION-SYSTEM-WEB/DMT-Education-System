@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
-import { FadeIn, SlideUp, SlideInLeft, SlideInRight, Pulse, Bounce, HoverScale, HoverElevate, ScaleIn } from './animations';
-import AOS from 'aos';
-import 'aos/dist/aos.css';
+import { useOptimizedAnimation, useOptimizedHover } from './hooks/useOptimizedAnimation';
+import { OptimizedCard, AnimatedSection } from './components/common/OptimizedCard';
+import './styles/optimized-animations.css';
 
 // SVG Icons cho thay thế emoji - Phiên bản đầy màu sắc và sinh động hơn
 const Icons = {
@@ -428,13 +428,13 @@ const Icons = {
 };
 
 const SimpleApp = () => {
-  // Initialize AOS
+  const heroRef = useOptimizedAnimation({ animationClass: 'fade-in-up', delay: 100 });
+  const aboutRef = useOptimizedAnimation({ animationClass: 'fade-in-up', delay: 200 });
+  const coursesRef = useOptimizedAnimation({ animationClass: 'fade-in-up', delay: 300 });
+
+  // Remove AOS initialization for better performance
   useEffect(() => {
-    AOS.init({
-      duration: 1000,
-      easing: 'ease-out-cubic',
-      once: false
-    });
+    // Removed AOS.init() for performance optimization
   }, []);
 
   return (
@@ -462,175 +462,145 @@ const SimpleApp = () => {
           height: '70px'
         }}>
           <div style={{ display: 'flex', alignItems: 'center' }}>
-            <Pulse>
-              <div style={{
-                width: '50px',
+            <img 
+              src="/logo-dmt.png" 
+              alt="DMT Education Logo" 
+              className="hover-scale"
+              style={{
                 height: '50px',
-                background: 'linear-gradient(135deg, #dc2626, #f43f5e, #f97316)',
-                borderRadius: '12px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                color: 'white',
+                width: 'auto',
+                borderRadius: '8px',
+                boxShadow: '0 4px 15px rgba(0, 0, 0, 0.1)'
+              }}
+            />
+            <div style={{ marginLeft: '12px' }}>
+              <div style={{
+                fontSize: '24px',
                 fontWeight: 'bold',
-                fontSize: '18px',
-                boxShadow: '0 8px 20px rgba(220, 38, 38, 0.3)'
+                color: '#111827',
+                lineHeight: '1.2'
               }}>
-                DMT
+                DMT Education
               </div>
-            </Pulse>
-            <SlideInRight delay={0.2}>
-              <div style={{ marginLeft: '12px' }}>
-                <div style={{
-                  fontSize: '24px',
-                  fontWeight: 'bold',
-                  color: '#111827',
-                  lineHeight: '1.2'
-                }}>
-                  DMT Education
-                </div>
-                <div style={{
-                  fontSize: '12px',
-                  color: '#6b7280',
-                  fontWeight: '500'
-                }}>
-                  Vững nguồn tri thức, tiếp bước tương lai
-                </div>
+              <div style={{
+                fontSize: '12px',
+                color: '#6b7280',
+                fontWeight: '500'
+              }}>
+                Vững nguồn tri thức, tiếp bước tương lai
               </div>
-            </SlideInRight>
+            </div>
           </div>
           
           <nav style={{ display: 'flex', gap: '30px' }}>
-            <SlideUp delay={0.1}>
-              <a href="#home" style={{
-                color: '#dc2626',
-                textDecoration: 'none',
-                fontWeight: '600',
-                fontSize: '15px',
-                padding: '8px 0',
-                borderBottom: '2px solid #dc2626'
-              }}>
-                Trang chủ
-              </a>
-            </SlideUp>
-            <SlideUp delay={0.2}>
-              <a href="#about" style={{
-                color: '#374151',
-                textDecoration: 'none',
-                fontWeight: '500',
-                fontSize: '15px',
-                padding: '8px 0',
-                transition: 'color 0.3s'
-              }}>
-                Giới thiệu
-              </a>
-            </SlideUp>
-            <SlideUp delay={0.3}>
-              <a href="#courses" style={{
-                color: '#374151',
-                textDecoration: 'none',
-                fontWeight: '500',
-                fontSize: '15px',
-                padding: '8px 0',
-                transition: 'color 0.3s'
-              }}>
-                Khóa học
-              </a>
-            </SlideUp>
-            <SlideUp delay={0.4}>
-              <a href="#teachers" style={{
-                color: '#374151',
-                textDecoration: 'none',
-                fontWeight: '500',
-                fontSize: '15px',
-                padding: '8px 0',
-                transition: 'color 0.3s'
-              }}>
-                Giảng viên
-              </a>
-            </SlideUp>
+            <a href="#home" className="fade-in-up stagger-1" style={{
+              color: '#dc2626',
+              textDecoration: 'none',
+              fontWeight: '600',
+              fontSize: '15px',
+              padding: '8px 0',
+              borderBottom: '2px solid #dc2626'
+            }}>
+              Trang chủ
+            </a>
+            <a href="#about" className="fade-in-up stagger-2" style={{
+              color: '#374151',
+              textDecoration: 'none',
+              fontWeight: '500',
+              fontSize: '15px',
+              padding: '8px 0',
+              transition: 'color 0.3s'
+            }}>
+              Giới thiệu
+            </a>
+            <a href="#courses" className="fade-in-up stagger-3" style={{
+              color: '#374151',
+              textDecoration: 'none',
+              fontWeight: '500',
+              fontSize: '15px',
+              padding: '8px 0',
+              transition: 'color 0.3s'
+            }}>
+              Khóa học
+            </a>
+            <a href="#teachers" className="fade-in-up stagger-4" style={{
+              color: '#374151',
+              textDecoration: 'none',
+              fontWeight: '500',
+              fontSize: '15px',
+              padding: '8px 0',
+              transition: 'color 0.3s'
+            }}>
+              Giảng viên
+            </a>
           </nav>
           
           <div style={{ display: 'flex', gap: '12px' }}>
-            <SlideInLeft delay={0.2}>
-              <HoverScale>
-                <button style={{
-                  background: 'linear-gradient(135deg, #dc2626, #f43f5e)',
-                  color: 'white',
-                  padding: '10px 20px',
-                  borderRadius: '25px',
-                  border: 'none',
-                  fontSize: '14px',
-                  fontWeight: '600',
-                  cursor: 'pointer',
-                  boxShadow: '0 4px 15px rgba(220, 38, 38, 0.3)'
-                }}>
-                  Đăng ký học
-                </button>
-              </HoverScale>
-            </SlideInLeft>
-            <SlideInLeft delay={0.3}>
-              <HoverScale>
-                <button style={{
-                  border: '2px solid #dc2626',
-                  color: '#dc2626',
-                  padding: '8px 18px',
-                  borderRadius: '25px',
-                  background: 'white',
-                  fontSize: '14px',
-                  fontWeight: '600',
-                  cursor: 'pointer'
-                }}>
-                  Tư vấn
-                </button>
-              </HoverScale>
-            </SlideInLeft>
+            <button className="hover-scale" style={{
+              background: 'linear-gradient(135deg, #dc2626, #f43f5e)',
+              color: 'white',
+              padding: '10px 20px',
+              borderRadius: '25px',
+              border: 'none',
+              fontSize: '14px',
+              fontWeight: '600',
+              cursor: 'pointer',
+              boxShadow: '0 4px 15px rgba(220, 38, 38, 0.3)'
+            }}>
+              Đăng ký học
+            </button>
+            <button className="hover-scale" style={{
+              border: '2px solid #dc2626',
+              color: '#dc2626',
+              padding: '8px 18px',
+              borderRadius: '25px',
+              background: 'white',
+              fontSize: '14px',
+              fontWeight: '600',
+              cursor: 'pointer'
+            }}>
+              Tư vấn
+            </button>
           </div>
         </div>
       </header>
 
       {/* Announcement Banner */}
-      <ScaleIn duration={0.7}>
+      <div className="fade-in-up" style={{
+        background: 'linear-gradient(90deg, #fecaca, #fde68a)',
+        padding: '12px 0',
+        textAlign: 'center',
+        fontSize: '14px',
+        fontWeight: '500',
+        color: '#92400e'
+      }}>
         <div style={{
-          background: 'linear-gradient(90deg, #fecaca, #fde68a)',
-          padding: '12px 0',
-          textAlign: 'center',
-          fontSize: '14px',
-          fontWeight: '500',
-          color: '#92400e'
+          maxWidth: '1200px',
+          margin: '0 auto',
+          padding: '0 1rem',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          gap: '15px'
         }}>
-          <div style={{
-            maxWidth: '1200px',
-            margin: '0 auto',
-            padding: '0 1rem',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            gap: '15px'
+          <span style={{ fontSize: '18px' }}><Icons.Celebration /></span>
+          <span>
+            <strong>KHUYẾN MÃI ĐẶC BIỆT:</strong> Giảm 30% học phí cho 50 học sinh đầu tiên đăng ký khóa học mới!
+          </span>
+          <button className="hover-scale" style={{
+            background: '#dc2626',
+            color: 'white',
+            padding: '6px 16px',
+            borderRadius: '15px',
+            border: 'none',
+            fontSize: '12px',
+            fontWeight: '600',
+            cursor: 'pointer'
           }}>
-            <Bounce>
-              <span style={{ fontSize: '18px' }}><Icons.Celebration /></span>
-            </Bounce>
-            <span>
-              <strong>KHUYẾN MÃI ĐẶC BIỆT:</strong> Giảm 30% học phí cho 50 học sinh đầu tiên đăng ký khóa học mới!
-            </span>
-            <HoverScale scale={1.1}>
-              <button style={{
-                background: '#dc2626',
-                color: 'white',
-                padding: '6px 16px',
-                borderRadius: '15px',
-                border: 'none',
-                fontSize: '12px',
-                fontWeight: '600',
-                cursor: 'pointer'
-              }}>
-                Đăng ký ngay
-              </button>
-            </HoverScale>
-          </div>
+            Đăng ký ngay
+          </button>
         </div>
-      </ScaleIn>
+      </div>
 
       {/* Hero Section */}
       <section id="home" style={{
@@ -645,38 +615,34 @@ const SimpleApp = () => {
           alignItems: 'center'
         }}>
           <div>
-            <SlideUp delay={0.3}>
-              <h1 style={{
-                fontSize: '52px',
-                fontWeight: '800',
-                color: '#111827',
-                lineHeight: '1.1',
-                marginBottom: '25px'
+            <h1 className="fade-in-up" style={{
+              fontSize: '52px',
+              fontWeight: '800',
+              color: '#111827',
+              lineHeight: '1.1',
+              marginBottom: '25px'
+            }}>
+              Phát triển{' '}
+              <span style={{
+                background: 'linear-gradient(135deg, #dc2626, #f43f5e)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text'
               }}>
-                Phát triển{' '}
-                <span style={{
-                  background: 'linear-gradient(135deg, #dc2626, #f43f5e)',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                  backgroundClip: 'text'
-                }}>
-                  Tư duy Logic
-                </span>
-                {' '}& Sáng tạo
-              </h1>
-            </SlideUp>
+                Tư duy Logic
+              </span>
+              {' '}& Sáng tạo
+            </h1>
             
-            <FadeIn delay={0.6}>
-              <p style={{
-                fontSize: '18px',
-                color: '#6b7280',
-                marginBottom: '35px',
-                lineHeight: '1.7'
-              }}>
-                Phương pháp giáo dục tiên tiến, giúp học sinh phát triển tư duy logic, 
-                sáng tạo và kỹ năng giải quyết vấn đề một cách hiệu quả với công nghệ hiện đại.
-              </p>
-            </FadeIn>
+            <p className="fade-in-up stagger-2" style={{
+              fontSize: '18px',
+              color: '#6b7280',
+              marginBottom: '35px',
+              lineHeight: '1.7'
+            }}>
+              Phương pháp giáo dục tiên tiến, giúp học sinh phát triển tư duy logic, 
+              sáng tạo và kỹ năng giải quyết vấn đề một cách hiệu quả với công nghệ hiện đại.
+            </p>
             
             <div style={{
               display: 'grid',
@@ -684,181 +650,174 @@ const SimpleApp = () => {
               gap: '15px',
               marginBottom: '35px'
             }}>
-              <SlideInLeft delay={0.4}>
-                <HoverElevate>
-                  <div style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    padding: '12px',
-                    backgroundColor: 'rgba(255, 255, 255, 0.8)',
-                    borderRadius: '12px',
-                    border: '1px solid rgba(220, 38, 38, 0.1)'
-                  }}>
-                    <div style={{
-                      width: '40px',
-                      height: '40px',
-                      backgroundColor: '#dc2626',
-                      borderRadius: '10px',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      marginRight: '12px',
-                      fontSize: '18px'
-                    }}>
-                      <Icons.Target />
-                    </div>
-                    <div>
-                      <div style={{ fontWeight: '600', fontSize: '14px', color: '#111827' }}>
-                        Phương pháp cá nhân hóa
-                      </div>
-                      <div style={{ fontSize: '12px', color: '#6b7280' }}>
-                        Học theo tốc độ riêng
-                      </div>
-                    </div>
+              <OptimizedCard hoverEffect="lift" className="fade-in-left stagger-1" style={{
+                display: 'flex',
+                alignItems: 'center',
+                padding: '12px',
+                backgroundColor: 'rgba(255, 255, 255, 0.8)',
+                borderRadius: '12px',
+                border: '1px solid rgba(220, 38, 38, 0.1)'
+              }}>
+                <div style={{
+                  width: '40px',
+                  height: '40px',
+                  background: 'linear-gradient(135deg, #dc2626, #f43f5e)',
+                  borderRadius: '10px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginRight: '12px',
+                  boxShadow: '0 4px 12px rgba(220, 38, 38, 0.3)'
+                }}>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
+                    <circle cx="12" cy="12" r="10"/>
+                    <circle cx="12" cy="12" r="6"/>
+                    <circle cx="12" cy="12" r="2"/>
+                  </svg>
+                </div>
+                <div>
+                  <div style={{ fontWeight: '600', fontSize: '14px', color: '#111827' }}>
+                    Phương pháp cá nhân hóa
                   </div>
-                </HoverElevate>
-              </SlideInLeft>
+                  <div style={{ fontSize: '12px', color: '#6b7280' }}>
+                    Học theo tốc độ riêng
+                  </div>
+                </div>
+              </OptimizedCard>
               
-              <SlideInRight delay={0.5}>
-                <HoverElevate>
-                  <div style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    padding: '12px',
-                    backgroundColor: 'rgba(255, 255, 255, 0.8)',
-                    borderRadius: '12px',
-                    border: '1px solid rgba(220, 38, 38, 0.1)'
-                  }}>
-                    <div style={{
-                      width: '40px',
-                      height: '40px',
-                      backgroundColor: '#f43f5e',
-                      borderRadius: '10px',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      marginRight: '12px',
-                      fontSize: '18px'
-                    }}>
-                      <Icons.Bulb />
-                    </div>
-                    <div>
-                      <div style={{ fontWeight: '600', fontSize: '14px', color: '#111827' }}>
-                        Công nghệ AI hỗ trợ
-                      </div>
-                      <div style={{ fontSize: '12px', color: '#6b7280' }}>
-                        Học thông minh hiệu quả
-                      </div>
-                    </div>
+              <OptimizedCard hoverEffect="lift" className="fade-in-right stagger-2" style={{
+                display: 'flex',
+                alignItems: 'center',
+                padding: '12px',
+                backgroundColor: 'rgba(255, 255, 255, 0.8)',
+                borderRadius: '12px',
+                border: '1px solid rgba(220, 38, 38, 0.1)'
+              }}>
+                <div style={{
+                  width: '40px',
+                  height: '40px',
+                  background: 'linear-gradient(135deg, #f43f5e, #ec4899)',
+                  borderRadius: '10px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginRight: '12px',
+                  boxShadow: '0 4px 12px rgba(244, 63, 94, 0.3)'
+                }}>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="white" stroke="white" strokeWidth="2">
+                    <path d="M9 12l2 2 4-4"/>
+                    <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/>
+                    <path d="M3 5c0-1.66 4-3 9-3s9 1.34 9 3"/>
+                    <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/>
+                  </svg>
+                </div>
+                <div>
+                  <div style={{ fontWeight: '600', fontSize: '14px', color: '#111827' }}>
+                    Công nghệ AI hỗ trợ
                   </div>
-                </HoverElevate>
-              </SlideInRight>
+                  <div style={{ fontSize: '12px', color: '#6b7280' }}>
+                    Học thông minh hiệu quả
+                  </div>
+                </div>
+              </OptimizedCard>
               
-              <SlideInLeft delay={0.6}>
-                <HoverElevate>
-                  <div style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    padding: '12px',
-                    backgroundColor: 'rgba(255, 255, 255, 0.8)',
-                    borderRadius: '12px',
-                    border: '1px solid rgba(220, 38, 38, 0.1)'
-                  }}>
-                    <div style={{
-                      width: '40px',
-                      height: '40px',
-                      backgroundColor: '#f97316',
-                      borderRadius: '10px',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      marginRight: '12px',
-                      fontSize: '18px'
-                    }}>
-                      <Icons.Rocket />
-                    </div>
-                    <div>
-                      <div style={{ fontWeight: '600', fontSize: '14px', color: '#111827' }}>
-                        Lớp học nhỏ
-                      </div>
-                      <div style={{ fontSize: '12px', color: '#6b7280' }}>
-                        Tối đa 12 học sinh/lớp
-                      </div>
-                    </div>
+              <OptimizedCard hoverEffect="lift" className="fade-in-left stagger-3" style={{
+                display: 'flex',
+                alignItems: 'center',
+                padding: '12px',
+                backgroundColor: 'rgba(255, 255, 255, 0.8)',
+                borderRadius: '12px',
+                border: '1px solid rgba(220, 38, 38, 0.1)'
+              }}>
+                <div style={{
+                  width: '40px',
+                  height: '40px',
+                  background: 'linear-gradient(135deg, #f97316, #fb923c)',
+                  borderRadius: '10px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginRight: '12px',
+                  boxShadow: '0 4px 12px rgba(249, 115, 22, 0.3)'
+                }}>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                    <circle cx="9" cy="7" r="4"/>
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                  </svg>
+                </div>
+                <div>
+                  <div style={{ fontWeight: '600', fontSize: '14px', color: '#111827' }}>
+                    Lớp học nhỏ
                   </div>
-                </HoverElevate>
-              </SlideInLeft>
+                  <div style={{ fontSize: '12px', color: '#6b7280' }}>
+                    Tối đa 12 học sinh/lớp
+                  </div>
+                </div>
+              </OptimizedCard>
               
-              <SlideInRight delay={0.7}>
-                <HoverElevate>
-                  <div style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    padding: '12px',
-                    backgroundColor: 'rgba(255, 255, 255, 0.8)',
-                    borderRadius: '12px',
-                    border: '1px solid rgba(220, 38, 38, 0.1)'
-                  }}>
-                    <div style={{
-                      width: '40px',
-                      height: '40px',
-                      backgroundColor: '#10b981',
-                      borderRadius: '10px',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      marginRight: '12px',
-                      fontSize: '18px'
-                    }}>
-                      <Icons.CheckCircle />
-                    </div>
-                    <div>
-                      <div style={{ fontWeight: '600', fontSize: '14px', color: '#111827' }}>
-                        Cam kết kết quả
-                      </div>
-                      <div style={{ fontSize: '12px', color: '#6b7280' }}>
-                        Hoàn tiền nếu không đạt
-                      </div>
-                    </div>
+              <OptimizedCard hoverEffect="lift" className="fade-in-right stagger-4" style={{
+                display: 'flex',
+                alignItems: 'center',
+                padding: '12px',
+                backgroundColor: 'rgba(255, 255, 255, 0.8)',
+                borderRadius: '12px',
+                border: '1px solid rgba(220, 38, 38, 0.1)'
+              }}>
+                <div style={{
+                  width: '40px',
+                  height: '40px',
+                  background: 'linear-gradient(135deg, #10b981, #34d399)',
+                  borderRadius: '10px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginRight: '12px',
+                  boxShadow: '0 4px 12px rgba(16, 185, 129, 0.3)'
+                }}>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
+                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                    <polyline points="22,4 12,14.01 9,11.01"/>
+                  </svg>
+                </div>
+                <div>
+                  <div style={{ fontWeight: '600', fontSize: '14px', color: '#111827' }}>
+                    Cam kết kết quả
                   </div>
-                </HoverElevate>
-              </SlideInRight>
+                  <div style={{ fontSize: '12px', color: '#6b7280' }}>
+                    Hoàn tiền nếu không đạt
+                  </div>
+                </div>
+              </OptimizedCard>
             </div>
             
             <div style={{ display: 'flex', gap: '15px' }}>
-              <SlideUp delay={0.8}>
-                <HoverScale>
-                  <button style={{
-                    background: 'linear-gradient(135deg, #dc2626, #f43f5e)',
-                    color: 'white',
-                    padding: '15px 30px',
-                    borderRadius: '30px',
-                    border: 'none',
-                    fontSize: '16px',
-                    fontWeight: '600',
-                    cursor: 'pointer',
-                    boxShadow: '0 8px 25px rgba(220, 38, 38, 0.3)'
-                  }}>
-                    Bắt đầu học ngay
-                  </button>
-                </HoverScale>
-              </SlideUp>
-              <SlideUp delay={0.9}>
-                <HoverScale>
-                  <button style={{
-                    border: '2px solid #dc2626',
-                    color: '#dc2626',
-                    padding: '13px 28px',
-                    borderRadius: '30px',
-                    background: 'white',
-                    fontSize: '16px',
-                    fontWeight: '600',
-                    cursor: 'pointer'
-                  }}>
-                    Tư vấn miễn phí
-                  </button>
-                </HoverScale>
-              </SlideUp>
+              <button className="hover-scale fade-in-up" style={{
+                background: 'linear-gradient(135deg, #dc2626, #f43f5e)',
+                color: 'white',
+                padding: '15px 30px',
+                borderRadius: '30px',
+                border: 'none',
+                fontSize: '16px',
+                fontWeight: '600',
+                cursor: 'pointer',
+                boxShadow: '0 8px 25px rgba(220, 38, 38, 0.3)'
+              }}>
+                Bắt đầu học ngay
+              </button>
+              <button className="hover-scale fade-in-up stagger-1" style={{
+                border: '2px solid #dc2626',
+                color: '#dc2626',
+                padding: '13px 28px',
+                borderRadius: '30px',
+                background: 'white',
+                fontSize: '16px',
+                fontWeight: '600',
+                cursor: 'pointer'
+              }}>
+                Tư vấn miễn phí
+              </button>
             </div>
           </div>
           
@@ -1099,15 +1058,19 @@ const SimpleApp = () => {
               <div style={{
                 width: '60px',
                 height: '60px',
-                backgroundColor: '#dc2626',
+                background: 'linear-gradient(135deg, #dc2626, #f43f5e)',
                 borderRadius: '15px',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 margin: '0 auto 20px',
-                fontSize: '24px'
+                boxShadow: '0 8px 20px rgba(220, 38, 38, 0.3)'
               }}>
-                <Icons.Target />
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
+                  <circle cx="12" cy="12" r="10"/>
+                  <circle cx="12" cy="12" r="6"/>
+                  <circle cx="12" cy="12" r="2"/>
+                </svg>
               </div>
               <h3 style={{
                 fontSize: '16px',
@@ -1142,15 +1105,20 @@ const SimpleApp = () => {
               <div style={{
                 width: '60px',
                 height: '60px',
-                backgroundColor: '#f43f5e',
+                background: 'linear-gradient(135deg, #f43f5e, #ec4899)',
                 borderRadius: '15px',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 margin: '0 auto 20px',
-                fontSize: '24px'
+                boxShadow: '0 8px 20px rgba(244, 63, 94, 0.3)'
               }}>
-                <Icons.Bulb />
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="white" stroke="white" strokeWidth="2">
+                  <path d="M9 12l2 2 4-4"/>
+                  <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/>
+                  <path d="M3 5c0-1.66 4-3 9-3s9 1.34 9 3"/>
+                  <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/>
+                </svg>
               </div>
               <h3 style={{
                 fontSize: '16px',
@@ -1185,15 +1153,17 @@ const SimpleApp = () => {
               <div style={{
                 width: '60px',
                 height: '60px',
-                backgroundColor: '#f97316',
+                background: 'linear-gradient(135deg, #f97316, #fb923c)',
                 borderRadius: '15px',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 margin: '0 auto 20px',
-                fontSize: '24px'
+                boxShadow: '0 8px 20px rgba(249, 115, 22, 0.3)'
               }}>
-                <Icons.Star />
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="white" stroke="white" strokeWidth="2">
+                  <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/>
+                </svg>
               </div>
               <h3 style={{
                 fontSize: '16px',
@@ -1228,15 +1198,22 @@ const SimpleApp = () => {
               <div style={{
                 width: '60px',
                 height: '60px',
-                backgroundColor: '#10b981',
+                background: 'linear-gradient(135deg, #10b981, #34d399)',
                 borderRadius: '15px',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 margin: '0 auto 20px',
-                fontSize: '24px'
+                boxShadow: '0 8px 20px rgba(16, 185, 129, 0.3)'
               }}>
-                <Icons.Trophy />
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
+                  <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/>
+                  <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/>
+                  <path d="M4 22h16"/>
+                  <path d="M10 14.66V17c0 .55.47.98.97 1.21C12.98 18.78 15.05 20 17 20v-5.34"/>
+                  <path d="M14 14.66V17c0 .55-.47.98-.97 1.21C11.02 18.78 8.95 20 7 20v-5.34"/>
+                  <path d="M18 2H6v7a6 6 0 0 0 12 0V2z"/>
+                </svg>
               </div>
               <h3 style={{
                 fontSize: '16px',
@@ -2320,17 +2297,16 @@ const SimpleApp = () => {
         overflow: 'hidden'
       }}>
         {/* Background decorations */}
-        <div style={{
+        <div className="float-animation" style={{
           position: 'absolute',
           top: '10%',
           left: '5%',
           width: '100px',
           height: '100px',
           background: 'linear-gradient(45deg, rgba(220, 38, 38, 0.1), rgba(244, 63, 94, 0.1))',
-          borderRadius: '50%',
-          animation: 'float 6s ease-in-out infinite'
+          borderRadius: '50%'
         }}></div>
-        <div style={{
+        <div className="float-animation" style={{
           position: 'absolute',
           bottom: '15%',
           right: '8%',
@@ -2338,7 +2314,8 @@ const SimpleApp = () => {
           height: '80px',
           background: 'linear-gradient(45deg, rgba(16, 185, 129, 0.1), rgba(34, 197, 94, 0.1))',
           borderRadius: '50%',
-          animation: 'float 4s ease-in-out infinite reverse'
+          animationDelay: '2s',
+          animationDirection: 'reverse'
         }}></div>
 
         <div style={{
@@ -2408,10 +2385,25 @@ const SimpleApp = () => {
                 background: 'linear-gradient(90deg, #dc2626, #f43f5e)'
               }}></div>
               <div style={{
-                fontSize: '40px',
                 marginBottom: '15px'
               }}>
-                🎯
+                <div style={{
+                  width: '60px',
+                  height: '60px',
+                  background: 'linear-gradient(135deg, #dc2626, #f43f5e)',
+                  borderRadius: '15px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  margin: '0 auto',
+                  boxShadow: '0 8px 20px rgba(220, 38, 38, 0.3)'
+                }}>
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
+                    <circle cx="12" cy="12" r="10"/>
+                    <circle cx="12" cy="12" r="6"/>
+                    <circle cx="12" cy="12" r="2"/>
+                  </svg>
+                </div>
               </div>
               <h3 style={{
                 fontSize: '16px',
@@ -2470,10 +2462,24 @@ const SimpleApp = () => {
                 background: 'linear-gradient(90deg, #f97316, #fb923c)'
               }}></div>
               <div style={{
-                fontSize: '40px',
                 marginBottom: '15px'
               }}>
-                <Icons.Book />
+                <div style={{
+                  width: '60px',
+                  height: '60px',
+                  background: 'linear-gradient(135deg, #f97316, #fb923c)',
+                  borderRadius: '15px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  margin: '0 auto',
+                  boxShadow: '0 8px 20px rgba(249, 115, 22, 0.3)'
+                }}>
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
+                    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                    <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+                  </svg>
+                </div>
               </div>
               <h3 style={{
                 fontSize: '16px',
@@ -2532,10 +2538,24 @@ const SimpleApp = () => {
                 background: 'linear-gradient(90deg, #3b82f6, #60a5fa)'
               }}></div>
               <div style={{
-                fontSize: '40px',
                 marginBottom: '15px'
               }}>
-                <Icons.Graduation />
+                <div style={{
+                  width: '60px',
+                  height: '60px',
+                  background: 'linear-gradient(135deg, #3b82f6, #60a5fa)',
+                  borderRadius: '15px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  margin: '0 auto',
+                  boxShadow: '0 8px 20px rgba(59, 130, 246, 0.3)'
+                }}>
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
+                    <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+                    <path d="M6 12v5c3 3 9 3 12 0v-5"/>
+                  </svg>
+                </div>
               </div>
               <h3 style={{
                 fontSize: '16px',
@@ -2594,10 +2614,23 @@ const SimpleApp = () => {
                 background: 'linear-gradient(90deg, #22c55e, #4ade80)'
               }}></div>
               <div style={{
-                fontSize: '40px',
                 marginBottom: '15px'
               }}>
-                <Icons.Star />
+                <div style={{
+                  width: '60px',
+                  height: '60px',
+                  background: 'linear-gradient(135deg, #22c55e, #4ade80)',
+                  borderRadius: '15px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  margin: '0 auto',
+                  boxShadow: '0 8px 20px rgba(34, 197, 94, 0.3)'
+                }}>
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="white" stroke="white" strokeWidth="2">
+                    <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/>
+                  </svg>
+                </div>
               </div>
               <h3 style={{
                 fontSize: '16px',

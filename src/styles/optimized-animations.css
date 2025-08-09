@@ -1,0 +1,169 @@
+/* Optimized CSS Animations for Better Performance */
+
+/* CSS Variables for consistent timing */
+:root {
+  --transition-fast: 0.15s;
+  --transition-normal: 0.3s;
+  --transition-slow: 0.5s;
+  --easing: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Global optimization */
+* {
+  box-sizing: border-box;
+}
+
+/* Enable hardware acceleration for animations */
+.optimized-card {
+  will-change: transform, opacity;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* Hover effects using only transform and opacity */
+.hover-lift {
+  transition: transform var(--transition-normal) var(--easing), 
+              box-shadow var(--transition-normal) var(--easing);
+  will-change: transform;
+}
+
+.hover-lift:hover {
+  transform: translateY(-8px) translateZ(0);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+.hover-scale {
+  transition: transform var(--transition-fast) var(--easing);
+  will-change: transform;
+}
+
+.hover-scale:hover {
+  transform: scale(1.05) translateZ(0);
+}
+
+/* Floating animation with reduced complexity */
+@keyframes float-optimized {
+  0%, 100% { 
+    transform: translateY(0px) translateZ(0); 
+  }
+  50% { 
+    transform: translateY(-10px) translateZ(0); 
+  }
+}
+
+.float-animation {
+  animation: float-optimized 6s ease-in-out infinite;
+  will-change: transform;
+}
+
+/* Fade in animation using opacity only */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px) translateZ(0);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) translateZ(0);
+  }
+}
+
+.fade-in-up {
+  animation: fadeInUp 0.6s var(--easing) forwards;
+  will-change: transform, opacity;
+}
+
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px) translateZ(0);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) translateZ(0);
+  }
+}
+
+.fade-in-left {
+  animation: fadeInLeft 0.6s var(--easing) forwards;
+  will-change: transform, opacity;
+}
+
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px) translateZ(0);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) translateZ(0);
+  }
+}
+
+.fade-in-right {
+  animation: fadeInRight 0.6s var(--easing) forwards;
+  will-change: transform, opacity;
+}
+
+/* Stagger animation delays */
+.stagger-1 { animation-delay: 0.1s; }
+.stagger-2 { animation-delay: 0.2s; }
+.stagger-3 { animation-delay: 0.3s; }
+.stagger-4 { animation-delay: 0.4s; }
+
+/* Disable animations on low-end devices */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  
+  .float-animation {
+    animation: none !important;
+  }
+}
+
+/* Performance optimizations */
+@media (max-width: 768px) {
+  .float-animation {
+    animation-duration: 8s; /* Slower on mobile */
+  }
+  
+  .hover-lift:hover,
+  .hover-scale:hover {
+    transform: none; /* Disable hover on touch devices */
+  }
+}
+
+/* Optimized gradient backgrounds */
+.gradient-bg {
+  background-attachment: fixed;
+  background-size: 400% 400%;
+}
+
+/* Smooth scrolling optimization */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Reduce repaints for text */
+.optimized-text {
+  text-rendering: optimizeSpeed;
+  font-smooth: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Remove float keyframes from global scope to avoid conflicts */
+@keyframes float {
+  0%, 100% { 
+    transform: translateY(0px) translateZ(0); 
+  }
+  50% { 
+    transform: translateY(-10px) translateZ(0); 
+  }
+}

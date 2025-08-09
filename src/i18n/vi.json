@@ -1,0 +1,143 @@
+{
+  "app": {
+    "title": "Hệ thống giáo dục DMT",
+    "description": "Nền tảng quản lý học tập trực tuyến cho học sinh, giáo viên và quản trị viên."
+  },
+  "auth": {
+    "login": {
+      "title": "Đăng Nhập",
+      "username": "Tên đăng nhập",
+      "password": "Mật khẩu",
+      "submit": "Đăng Nhập",
+      "forgotPassword": "Quên mật khẩu?"
+    },
+    "twoFactor": {
+      "title": "Xác thực hai yếu tố",
+      "code": "Nhập mã xác thực",
+      "submit": "Xác thực"
+    }
+  },
+  "students": {
+    "dashboard": {
+      "title": "Bảng điều khiển",
+      "progress": "Tiến độ học tập",
+      "statistics": "Thống kê"
+    },
+    "schedule": {
+      "title": "Thời khóa biểu",
+      "noClasses": "Không có lớp học nào trong ngày hôm nay."
+    },
+    "videos": {
+      "title": "Video học tập",
+      "noVideos": "Chưa có video nào được tải lên."
+    },
+    "materials": {
+      "title": "Tài liệu khóa học",
+      "noMaterials": "Chưa có tài liệu nào được cung cấp."
+    },
+    "transcript": {
+      "title": "Bảng điểm",
+      "noRecords": "Chưa có bảng điểm nào."
+    }
+  },
+  "teachers": {
+    "assignments": {
+      "title": "Quản lý bài tập",
+      "noAssignments": "Chưa có bài tập nào được giao."
+    },
+    "grading": {
+      "title": "Chấm điểm",
+      "noGrades": "Chưa có điểm nào được chấm."
+    },
+    "surveys": {
+      "title": "Khảo sát",
+      "noSurveys": "Chưa có khảo sát nào."
+    },
+    "timesheet": {
+      "title": "Bảng chấm công",
+      "noEntries": "Chưa có ghi chép nào."
+    }
+  },
+  "admin": {
+    "dashboard": {
+      "title": "Bảng điều khiển quản trị",
+      "overview": "Tổng quan hệ thống"
+    },
+    "users": {
+      "title": "Quản lý người dùng",
+      "noUsers": "Chưa có người dùng nào."
+    },
+    "roles": {
+      "title": "Quản lý vai trò",
+      "noRoles": "Chưa có vai trò nào được định nghĩa."
+    },
+    "analytics": {
+      "title": "Phân tích",
+      "noData": "Chưa có dữ liệu nào để phân tích."
+    },
+    "notifications": {
+      "title": "Thông báo",
+      "noNotifications": "Chưa có thông báo nào."
+    },
+    "settings": {
+      "title": "Cài đặt",
+      "save": "Lưu cài đặt"
+    }
+  },
+  "staff": {
+    "tasks": {
+      "title": "Quản lý nhiệm vụ",
+      "noTasks": "Chưa có nhiệm vụ nào."
+    },
+    "support": {
+      "title": "Hỗ trợ",
+      "noTickets": "Chưa có vé hỗ trợ nào."
+    }
+  },
+  "courses": {
+    "catalog": {
+      "title": "Danh sách khóa học",
+      "noCourses": "Chưa có khóa học nào."
+    },
+    "detail": {
+      "title": "Chi tiết khóa học"
+    }
+  },
+  "schedule": {
+    "calendar": {
+      "title": "Lịch học"
+    }
+  },
+  "surveys": {
+    "list": {
+      "title": "Danh sách khảo sát",
+      "noSurveys": "Chưa có khảo sát nào."
+    }
+  },
+  "payments": {
+    "title": "Thanh toán",
+    "success": "Thanh toán thành công!",
+    "failure": "Thanh toán không thành công."
+  },
+  "notifications": {
+    "title": "Thông báo"
+  },
+  "analytics": {
+    "reports": {
+      "title": "Báo cáo phân tích"
+    }
+  },
+  "support": {
+    "tickets": {
+      "title": "Quản lý vé hỗ trợ",
+      "noTickets": "Chưa có vé hỗ trợ nào."
+    }
+  },
+  "common": {
+    "loading": "Đang tải...",
+    "error": "Đã xảy ra lỗi. Vui lòng thử lại.",
+    "success": "Thao tác thành công!",
+    "cancel": "Hủy",
+    "confirm": "Xác nhận"
+  }
+}

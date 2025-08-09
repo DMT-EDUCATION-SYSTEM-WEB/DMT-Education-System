@@ -1,0 +1,146 @@
+{
+  "app": {
+    "title": "DMT Education System",
+    "description": "A comprehensive platform for managing educational activities."
+  },
+  "auth": {
+    "login": {
+      "title": "Login",
+      "username": "Username",
+      "password": "Password",
+      "submit": "Log In",
+      "forgotPassword": "Forgot Password?",
+      "twoFactor": "Two-Factor Authentication"
+    },
+    "logout": "Log Out",
+    "register": {
+      "title": "Register",
+      "submit": "Sign Up"
+    }
+  },
+  "dashboard": {
+    "welcome": "Welcome to your Dashboard",
+    "statistics": "Statistics Overview",
+    "progress": "Your Progress"
+  },
+  "students": {
+    "schedule": {
+      "title": "Your Schedule",
+      "noClasses": "No classes scheduled."
+    },
+    "videos": {
+      "title": "Recorded Lessons",
+      "noVideos": "No videos available."
+    },
+    "materials": {
+      "title": "Course Materials",
+      "noMaterials": "No materials available."
+    },
+    "transcript": {
+      "title": "Your Transcript",
+      "noRecords": "No academic records found."
+    }
+  },
+  "teachers": {
+    "assignments": {
+      "title": "Manage Assignments",
+      "noAssignments": "No assignments available."
+    },
+    "grading": {
+      "title": "Grading",
+      "noGrades": "No grades available."
+    },
+    "surveys": {
+      "title": "Surveys",
+      "noSurveys": "No surveys available."
+    },
+    "timesheet": {
+      "title": "Timesheet",
+      "noEntries": "No entries found."
+    }
+  },
+  "admin": {
+    "dashboard": {
+      "title": "Admin Dashboard",
+      "overview": "System Overview"
+    },
+    "users": {
+      "title": "Manage Users",
+      "noUsers": "No users found."
+    },
+    "roles": {
+      "title": "Manage Roles",
+      "noRoles": "No roles found."
+    },
+    "analytics": {
+      "title": "Analytics",
+      "noData": "No analytics data available."
+    },
+    "notifications": {
+      "title": "Notifications",
+      "noNotifications": "No notifications."
+    },
+    "settings": {
+      "title": "Settings",
+      "save": "Save Changes"
+    }
+  },
+  "staff": {
+    "tasks": {
+      "title": "Manage Tasks",
+      "noTasks": "No tasks available."
+    },
+    "support": {
+      "title": "Support Tickets",
+      "noTickets": "No support tickets."
+    }
+  },
+  "courses": {
+    "catalog": {
+      "title": "Course Catalog",
+      "noCourses": "No courses available."
+    },
+    "detail": {
+      "title": "Course Details"
+    }
+  },
+  "schedule": {
+    "calendar": {
+      "title": "Class Calendar",
+      "noEvents": "No events scheduled."
+    }
+  },
+  "surveys": {
+    "list": {
+      "title": "Survey List",
+      "noSurveys": "No surveys available."
+    }
+  },
+  "payments": {
+    "title": "Payments",
+    "noPayments": "No payment records."
+  },
+  "notifications": {
+    "title": "Notifications",
+    "noNotifications": "No notifications."
+  },
+  "analytics": {
+    "reports": {
+      "title": "Reports",
+      "noReports": "No reports available."
+    }
+  },
+  "support": {
+    "tickets": {
+      "title": "Support Tickets",
+      "noTickets": "No tickets available."
+    }
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "An error occurred. Please try again.",
+    "success": "Operation successful.",
+    "cancel": "Cancel",
+    "confirm": "Confirm"
+  }
+}

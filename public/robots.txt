@@ -1,0 +1,16 @@
+User's request for the contents of the file /dmt-edu-ui/dmt-edu-ui/public/robots.txt has been noted. Here are the contents for the robots.txt file:
+
+User-agent: *
+Disallow: /api/
+Disallow: /admin/
+Disallow: /auth/
+Disallow: /support/
+Disallow: /uploads/
+Allow: /public/
+Allow: /index.html
+Allow: /manifest.json
+Allow: /robots.txt
+
+Sitemap: https://yourdomain.com/sitemap.xml
+
+This configuration allows web crawlers to access the public resources while disallowing access to sensitive areas of the application. Make sure to replace "yourdomain.com" with the actual domain of your project.

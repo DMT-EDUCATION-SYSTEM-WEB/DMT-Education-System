@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { useOptimizedHover } from '../hooks/useOptimizedAnimation';
+import { useOptimizedAnimation, useOptimizedHover } from '../../hooks/useOptimizedAnimation';
 
 interface OptimizedCardProps {
   children: ReactNode;

@@ -424,10 +424,83 @@ const Icons = {
       <circle cx="12" cy="6" r="0.8" fill="#E3F2FD" />
       <rect x="11.5" y="3" width="1" height="2" fill="#E3F2FD" />
     </svg>
+  ),
+  Facebook: () => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+      <defs>
+        <linearGradient id="facebookGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#1877f2" />
+          <stop offset="100%" stopColor="#42a5f5" />
+        </linearGradient>
+      </defs>
+      <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" 
+        fill="url(#facebookGradient)" />
+    </svg>
+  ),
+  YouTube: () => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+      <defs>
+        <linearGradient id="youtubeGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#ff0000" />
+          <stop offset="100%" stopColor="#ff6b35" />
+        </linearGradient>
+      </defs>
+      <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" 
+        fill="url(#youtubeGradient)" />
+    </svg>
+  ),
+  TikTok: () => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+      <defs>
+        <linearGradient id="tiktokGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#ff0050" />
+          <stop offset="50%" stopColor="#00f2ea" />
+          <stop offset="100%" stopColor="#000000" />
+        </linearGradient>
+      </defs>
+      <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z" 
+        fill="url(#tiktokGradient)" />
+    </svg>
+  ),
+  MapPin: () => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24">
+      <defs>
+        <linearGradient id="mapPinGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#dc2626" />
+          <stop offset="100%" stopColor="#f43f5e" />
+        </linearGradient>
+      </defs>
+      <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" 
+        fill="url(#mapPinGradient)" />
+    </svg>
+  ),
+  ContactPhone: () => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24">
+      <defs>
+        <linearGradient id="contactPhoneGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#10b981" />
+          <stop offset="100%" stopColor="#34d399" />
+        </linearGradient>
+      </defs>
+      <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z" 
+        fill="url(#contactPhoneGradient)" />
+    </svg>
+  ),
+  ContactEmail: () => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24">
+      <defs>
+        <linearGradient id="contactEmailGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#3b82f6" />
+          <stop offset="100%" stopColor="#60a5fa" />
+        </linearGradient>
+      </defs>
+      <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" 
+        fill="url(#contactEmailGradient)" />
+    </svg>
   )
 };
 
-const SimpleApp = () => {
+const App = () => {
   const heroRef = useOptimizedAnimation({ animationClass: 'fade-in-up', delay: 100 });
   const aboutRef = useOptimizedAnimation({ animationClass: 'fade-in-up', delay: 200 });
   const coursesRef = useOptimizedAnimation({ animationClass: 'fade-in-up', delay: 300 });
@@ -499,7 +572,23 @@ const SimpleApp = () => {
               fontWeight: '600',
               fontSize: '15px',
               padding: '8px 0',
-              borderBottom: '2px solid #dc2626'
+              borderBottom: '2px solid #dc2626',
+              transition: 'all 0.3s ease',
+              cursor: 'pointer'
+            }}
+            onClick={(e) => {
+              e.currentTarget.style.color = '#dc2626';
+              e.currentTarget.style.borderBottom = '2px solid #dc2626';
+              // Reset other nav items
+              const navLinks = e.currentTarget.parentElement?.querySelectorAll('a');
+              navLinks?.forEach(link => {
+                if (link !== e.currentTarget) {
+                  link.style.color = '#374151';
+                  link.style.borderBottom = 'none';
+                  link.style.fontWeight = '500';
+                }
+              });
+              e.currentTarget.style.fontWeight = '600';
             }}>
               Trang chủ
             </a>
@@ -509,7 +598,24 @@ const SimpleApp = () => {
               fontWeight: '500',
               fontSize: '15px',
               padding: '8px 0',
-              transition: 'color 0.3s'
+              transition: 'all 0.3s ease',
+              cursor: 'pointer'
+            }}
+            onMouseEnter={(e) => e.currentTarget.style.color = '#dc2626'}
+            onMouseLeave={(e) => e.currentTarget.style.color = '#374151'}
+            onClick={(e) => {
+              e.currentTarget.style.color = '#dc2626';
+              e.currentTarget.style.borderBottom = '2px solid #dc2626';
+              // Reset other nav items
+              const navLinks = e.currentTarget.parentElement?.querySelectorAll('a');
+              navLinks?.forEach(link => {
+                if (link !== e.currentTarget) {
+                  link.style.color = '#374151';
+                  link.style.borderBottom = 'none';
+                  link.style.fontWeight = '500';
+                }
+              });
+              e.currentTarget.style.fontWeight = '600';
             }}>
               Giới thiệu
             </a>
@@ -519,7 +625,24 @@ const SimpleApp = () => {
               fontWeight: '500',
               fontSize: '15px',
               padding: '8px 0',
-              transition: 'color 0.3s'
+              transition: 'all 0.3s ease',
+              cursor: 'pointer'
+            }}
+            onMouseEnter={(e) => e.currentTarget.style.color = '#dc2626'}
+            onMouseLeave={(e) => e.currentTarget.style.color = '#374151'}
+            onClick={(e) => {
+              e.currentTarget.style.color = '#dc2626';
+              e.currentTarget.style.borderBottom = '2px solid #dc2626';
+              // Reset other nav items
+              const navLinks = e.currentTarget.parentElement?.querySelectorAll('a');
+              navLinks?.forEach(link => {
+                if (link !== e.currentTarget) {
+                  link.style.color = '#374151';
+                  link.style.borderBottom = 'none';
+                  link.style.fontWeight = '500';
+                }
+              });
+              e.currentTarget.style.fontWeight = '600';
             }}>
               Khóa học
             </a>
@@ -529,9 +652,80 @@ const SimpleApp = () => {
               fontWeight: '500',
               fontSize: '15px',
               padding: '8px 0',
-              transition: 'color 0.3s'
+              transition: 'all 0.3s ease',
+              cursor: 'pointer'
+            }}
+            onMouseEnter={(e) => e.currentTarget.style.color = '#dc2626'}
+            onMouseLeave={(e) => e.currentTarget.style.color = '#374151'}
+            onClick={(e) => {
+              e.currentTarget.style.color = '#dc2626';
+              e.currentTarget.style.borderBottom = '2px solid #dc2626';
+              // Reset other nav items
+              const navLinks = e.currentTarget.parentElement?.querySelectorAll('a');
+              navLinks?.forEach(link => {
+                if (link !== e.currentTarget) {
+                  link.style.color = '#374151';
+                  link.style.borderBottom = 'none';
+                  link.style.fontWeight = '500';
+                }
+              });
+              e.currentTarget.style.fontWeight = '600';
             }}>
               Giảng viên
+            </a>
+            <a href="#schedule" className="fade-in-up stagger-5" style={{
+              color: '#374151',
+              textDecoration: 'none',
+              fontWeight: '500',
+              fontSize: '15px',
+              padding: '8px 0',
+              transition: 'all 0.3s ease',
+              cursor: 'pointer'
+            }}
+            onMouseEnter={(e) => e.currentTarget.style.color = '#dc2626'}
+            onMouseLeave={(e) => e.currentTarget.style.color = '#374151'}
+            onClick={(e) => {
+              e.currentTarget.style.color = '#dc2626';
+              e.currentTarget.style.borderBottom = '2px solid #dc2626';
+              // Reset other nav items
+              const navLinks = e.currentTarget.parentElement?.querySelectorAll('a');
+              navLinks?.forEach(link => {
+                if (link !== e.currentTarget) {
+                  link.style.color = '#374151';
+                  link.style.borderBottom = 'none';
+                  link.style.fontWeight = '500';
+                }
+              });
+              e.currentTarget.style.fontWeight = '600';
+            }}>
+              Lịch khai giảng
+            </a>
+            <a href="#news" className="fade-in-up stagger-6" style={{
+              color: '#374151',
+              textDecoration: 'none',
+              fontWeight: '500',
+              fontSize: '15px',
+              padding: '8px 0',
+              transition: 'all 0.3s ease',
+              cursor: 'pointer'
+            }}
+            onMouseEnter={(e) => e.currentTarget.style.color = '#dc2626'}
+            onMouseLeave={(e) => e.currentTarget.style.color = '#374151'}
+            onClick={(e) => {
+              e.currentTarget.style.color = '#dc2626';
+              e.currentTarget.style.borderBottom = '2px solid #dc2626';
+              // Reset other nav items
+              const navLinks = e.currentTarget.parentElement?.querySelectorAll('a');
+              navLinks?.forEach(link => {
+                if (link !== e.currentTarget) {
+                  link.style.color = '#374151';
+                  link.style.borderBottom = 'none';
+                  link.style.fontWeight = '500';
+                }
+              });
+              e.currentTarget.style.fontWeight = '600';
+            }}>
+              Thông báo
             </a>
           </nav>
           
@@ -1819,7 +2013,7 @@ const SimpleApp = () => {
               margin: '0 auto 10px',
               lineHeight: '1.6'
             }}>
-              DOL bao gồm 78 giáo viên
+              DMT bao gồm 30 giáo viên
             </p>
             <p style={{
               fontSize: '16px',
@@ -1828,8 +2022,7 @@ const SimpleApp = () => {
               margin: '0 auto',
               lineHeight: '1.6'
             }}>
-              Là những giáo viên giỏi kiến thức và giỏi truyền đạt. Rất tận tâm với học viên, dí
-              dỏm và luôn khát khao cải tiến việc học Tiếng Anh ở Việt Nam.
+              Là những giáo viên giỏi kiến thức và giỏi truyền đạt. Rất tận tâm với học viên và luôn khát khao trở nên cố gắng trên con đường giảng dạy.
             </p>
           </div>
           
@@ -3324,7 +3517,7 @@ const SimpleApp = () => {
       </section>
 
       {/* Schedule & Sponsors Section */}
-      <section style={{
+      <section id="schedule" style={{
         padding: '80px 1rem',
         background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.7))',
         backdropFilter: 'blur(10px)'
@@ -3357,10 +3550,10 @@ const SimpleApp = () => {
 
             <div style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(2, 1fr)',
-              gap: '40px'
+              gridTemplateColumns: 'repeat(3, 1fr)',
+              gap: '30px'
             }}>
-              {/* TP.HCM */}
+              {/* Cơ sở Gò Vấp */}
               <div style={{
                 background: 'white',
                 borderRadius: '20px',
@@ -3394,13 +3587,13 @@ const SimpleApp = () => {
                       color: '#111827',
                       marginBottom: '4px'
                     }}>
-                      TP. Hồ Chí Minh
+                      Cơ sở Gò Vấp
                     </h3>
                     <p style={{
                       fontSize: '13px',
                       color: '#6b7280'
                     }}>
-                      Cơ sở chính - 123 Đường ABC, Q.1
+                      Cơ sở chính - Chung cư K26, Dương Quảng Hàm, Q. Gò Vấp
                     </p>
                   </div>
                 </div>
@@ -3425,7 +3618,7 @@ const SimpleApp = () => {
                       padding: '10px 12px',
                       fontSize: '12px'
                     }}>
-                      <strong>Toán tư duy lớp 6-7:</strong> Khai giảng 05/02/2024
+                      <strong>Toán tư duy lớp 6-7:</strong> Khai giảng 15/09/2025
                     </div>
                     <div style={{
                       background: '#fef2f2',
@@ -3433,7 +3626,7 @@ const SimpleApp = () => {
                       padding: '10px 12px',
                       fontSize: '12px'
                     }}>
-                      <strong>IELTS Foundation:</strong> Khai giảng 12/02/2024
+                      <strong>IELTS Foundation:</strong> Khai giảng 22/09/2025
                     </div>
                     <div style={{
                       background: '#fef2f2',
@@ -3441,13 +3634,13 @@ const SimpleApp = () => {
                       padding: '10px 12px',
                       fontSize: '12px'
                     }}>
-                      <strong>Lập trình AI cho trẻ em:</strong> Khai giảng 19/02/2024
+                      <strong>Lập trình AI cho trẻ em:</strong> Khai giảng 29/09/2025
                     </div>
                   </div>
                 </div>
               </div>
 
-              {/* Cần Thơ */}
+              {/* Cơ sở Quận 12 */}
               <div style={{
                 background: 'white',
                 borderRadius: '20px',
@@ -3481,13 +3674,13 @@ const SimpleApp = () => {
                       color: '#111827',
                       marginBottom: '4px'
                     }}>
-                      Cần Thơ
+                      Cơ sở Quận 12
                     </h3>
                     <p style={{
                       fontSize: '13px',
                       color: '#6b7280'
                     }}>
-                      Chi nhánh - 456 Đường XYZ, Q. Ninh Kiều
+                      Chi nhánh - 71/31 Song Hành, P. Tân Hưng Thuận, Q. 12
                     </p>
                   </div>
                 </div>
@@ -3512,7 +3705,7 @@ const SimpleApp = () => {
                       padding: '10px 12px',
                       fontSize: '12px'
                     }}>
-                      <strong>Tiếng Anh giao tiếp:</strong> Khai giảng 08/02/2024
+                      <strong>Tiếng Anh giao tiếp:</strong> Khai giảng 18/09/2025
                     </div>
                     <div style={{
                       background: '#fce7f3',
@@ -3520,7 +3713,7 @@ const SimpleApp = () => {
                       padding: '10px 12px',
                       fontSize: '12px'
                     }}>
-                      <strong>Toán nâng cao lớp 8-9:</strong> Khai giảng 15/02/2024
+                      <strong>Toán nâng cao lớp 8-9:</strong> Khai giảng 25/09/2025
                     </div>
                     <div style={{
                       background: '#fce7f3',
@@ -3528,7 +3721,94 @@ const SimpleApp = () => {
                       padding: '10px 12px',
                       fontSize: '12px'
                     }}>
-                      <strong>Luyện thi THPT QG:</strong> Khai giảng 22/02/2024
+                      <strong>Luyện thi THPT QG:</strong> Khai giảng 02/10/2025
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Cơ sở Quận 3 */}
+              <div style={{
+                background: 'white',
+                borderRadius: '20px',
+                padding: '30px',
+                boxShadow: '0 10px 30px rgba(0, 0, 0, 0.1)',
+                border: '1px solid rgba(0, 0, 0, 0.05)'
+              }}>
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  marginBottom: '25px'
+                }}>
+                  <div style={{
+                    width: '50px',
+                    height: '50px',
+                    backgroundColor: '#3b82f6',
+                    borderRadius: '12px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    marginRight: '15px',
+                    fontSize: '20px',
+                    color: 'white'
+                  }}>
+                    <Icons.Location />
+                  </div>
+                  <div>
+                    <h3 style={{
+                      fontSize: '20px',
+                      fontWeight: '700',
+                      color: '#111827',
+                      marginBottom: '4px'
+                    }}>
+                      Cơ sở Quận 3
+                    </h3>
+                    <p style={{
+                      fontSize: '13px',
+                      color: '#6b7280'
+                    }}>
+                      Chi nhánh - 384/26 Nam Kỳ Khởi Nghĩa, P. 8, Q. 3
+                    </p>
+                  </div>
+                </div>
+                
+                <div style={{ marginBottom: '20px' }}>
+                  <h4 style={{
+                    fontSize: '14px',
+                    fontWeight: '600',
+                    color: '#3b82f6',
+                    marginBottom: '10px'
+                  }}>
+                    Khóa học sắp khai giảng:
+                  </h4>
+                  <div style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '8px'
+                  }}>
+                    <div style={{
+                      background: '#eff6ff',
+                      borderRadius: '8px',
+                      padding: '10px 12px',
+                      fontSize: '12px'
+                    }}>
+                      <strong>Tiếng Anh IELTS:</strong> Khai giảng 20/09/2025
+                    </div>
+                    <div style={{
+                      background: '#eff6ff',
+                      borderRadius: '8px',
+                      padding: '10px 12px',
+                      fontSize: '12px'
+                    }}>
+                      <strong>Luyện thi đại học:</strong> Khai giảng 27/09/2025
+                    </div>
+                    <div style={{
+                      background: '#eff6ff',
+                      borderRadius: '8px',
+                      padding: '10px 12px',
+                      fontSize: '12px'
+                    }}>
+                      <strong>Toán Olympic:</strong> Khai giảng 04/10/2025
                     </div>
                   </div>
                 </div>
@@ -3619,7 +3899,7 @@ const SimpleApp = () => {
                 marginBottom: '15px',
                 textShadow: '0 4px 8px rgba(0, 0, 0, 0.2)'
               }}>
-                GIẢM 40% HỌC PHÍ
+                GIẢM 30% HỌC PHÍ
               </h3>
               <p style={{
                 fontSize: '18px',
@@ -3627,7 +3907,7 @@ const SimpleApp = () => {
                 opacity: 0.9,
                 lineHeight: '1.6'
               }}>
-                Chương trình ưu đãi đặc biệt cho 100 học sinh đầu tiên đăng ký khóa học trong tháng 2/2024
+                Chương trình ưu đãi đặc biệt cho 100 học sinh đầu tiên đăng ký khóa học trong tháng 9/2025
               </p>
               
               <div style={{
@@ -3771,7 +4051,7 @@ const SimpleApp = () => {
                 marginTop: '15px',
                 opacity: 0.8
               }}>
-                <Icons.Calendar /> Chương trình có hiệu lực đến hết ngày 29/02/2024
+                Chương trình có hiệu lực đến hết ngày 30/09/2025
               </p>
             </div>
           </div>
@@ -3788,7 +4068,7 @@ const SimpleApp = () => {
                 backgroundClip: 'text',
                 marginBottom: '15px'
               }}>
-                <Icons.Bank /> Đối tác và nhà tài trợ
+                Đối tác và nhà tài trợ
               </h2>
               <p style={{
                 fontSize: '16px',
@@ -3998,7 +4278,7 @@ const SimpleApp = () => {
       <footer style={{
         backgroundColor: '#111827',
         color: 'white',
-        padding: '48px 1rem'
+        padding: '60px 1rem 40px'
       }}>
         <div style={{
           maxWidth: '1200px',
@@ -4006,80 +4286,268 @@ const SimpleApp = () => {
         }}>
           <div style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(2, 1fr)',
-            gap: '32px'
+            gridTemplateColumns: 'repeat(4, 1fr)',
+            gap: '40px',
+            marginBottom: '40px'
           }}>
+            {/* Logo và thông tin chung */}
             <div>
-              <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                marginBottom: '16px'
-              }}>
-                <div style={{
-                  width: '32px',
-                  height: '32px',
-                  background: 'linear-gradient(to right, #f87171, #fb7185)',
-                  borderRadius: '8px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  color: 'white',
-                  fontWeight: 'bold',
-                  fontSize: '14px'
-                }}>
-                  DMT
+              <div style={{ display: 'flex', alignItems: 'center', marginBottom: '20px' }}>
+                <img 
+                  src="/logo-dmt.png" 
+                  alt="DMT Education Logo" 
+                  className="hover-scale"
+                  style={{
+                    height: '50px',
+                    width: 'auto',
+                    backgroundColor: 'rgba(255, 255, 255, 2)',
+                    borderRadius: '8px',
+                    padding: '8px',
+                    boxShadow: '0 4px 15px rgba(0, 0, 0, 0.1)'
+                  }}
+                />
+                <div style={{ marginLeft: '12px' }}>
+                  <div style={{
+                    fontSize: '20px',
+                    fontWeight: 'bold',
+                    color: '#FFFFFF',
+                    lineHeight: '1.2'
+                  }}>
+                    DMT Education
+                  </div>
+                  <div style={{
+                    fontSize: '12px',
+                    color: '#9ca3af',
+                    fontWeight: '500'
+                  }}>
+                    Vững nguồn tri thức, tiếp bước tương lai
+                  </div>
                 </div>
-                <span style={{
-                  marginLeft: '8px',
-                  fontSize: '18px',
-                  fontWeight: 'bold'
-                }}>
-                  DMT Education
-                </span>
               </div>
+              
               <p style={{
-                color: '#9ca3af',
                 fontSize: '14px',
-                marginBottom: '16px'
+                color: '#9ca3af',
+                lineHeight: '1.6',
+                marginBottom: '20px'
               }}>
-                Học viện Đào tạo Tư duy & Sáng tạo hàng đầu Việt Nam.
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <Icons.ContactPhone />
+                  <span>077 230 5566</span>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <Icons.ContactEmail />
+                  <span>example@dmteducation.vn</span>
+                </div>
               </p>
+              
+              {/* Mạng xã hội */}
+              <div>
+                <h4 style={{
+                  fontSize: '14px',
+                  fontWeight: '600',
+                  marginBottom: '12px',
+                  color: '#ffffff'
+                }}>
+                  Theo dõi chúng tôi
+                </h4>
+                <div style={{
+                  display: 'flex',
+                  gap: '12px'
+                }}>
+                  <a 
+                    href="https://facebook.com/dmteducation" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      width: '40px',
+                      height: '40px',
+                      backgroundColor: 'rgba(24, 119, 242, 0.1)',
+                      borderRadius: '8px',
+                      transition: 'all 0.3s ease',
+                      textDecoration: 'none'
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.backgroundColor = '#1877f2';
+                      e.currentTarget.style.transform = 'translateY(-2px)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.backgroundColor = 'rgba(24, 119, 242, 0.1)';
+                      e.currentTarget.style.transform = 'translateY(0)';
+                    }}
+                  >
+                    <Icons.Facebook />
+                  </a>
+                  <a 
+                    href="https://youtube.com/@dmteducation" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      width: '40px',
+                      height: '40px',
+                      backgroundColor: 'rgba(255, 0, 0, 0.1)',
+                      borderRadius: '8px',
+                      transition: 'all 0.3s ease',
+                      textDecoration: 'none'
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.backgroundColor = '#ff0000';
+                      e.currentTarget.style.transform = 'translateY(-2px)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.backgroundColor = 'rgba(255, 0, 0, 0.1)';
+                      e.currentTarget.style.transform = 'translateY(0)';
+                    }}
+                  >
+                    <Icons.YouTube />
+                  </a>
+                  <a 
+                    href="https://tiktok.com/@dmteducation" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      width: '40px',
+                      height: '40px',
+                      backgroundColor: 'rgba(255, 0, 80, 0.1)',
+                      borderRadius: '8px',
+                      transition: 'all 0.3s ease',
+                      textDecoration: 'none'
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.backgroundColor = '#ff0050';
+                      e.currentTarget.style.transform = 'translateY(-2px)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.backgroundColor = 'rgba(255, 0, 80, 0.1)';
+                      e.currentTarget.style.transform = 'translateY(0)';
+                    }}
+                  >
+                    <Icons.TikTok />
+                  </a>
+                </div>
+              </div>
             </div>
-            
+
+            {/* Cơ sở 1 */}
             <div>
               <h3 style={{
-                fontSize: '14px',
+                fontSize: '16px',
                 fontWeight: '600',
-                marginBottom: '16px'
+                marginBottom: '20px',
+                color: '#ffffff',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px'
               }}>
-                Liên kết nhanh
+                <Icons.MapPin />
+                Cơ sở Gò Vấp
               </h3>
               <div style={{
                 display: 'flex',
                 flexDirection: 'column',
+                gap: '12px',
+                fontSize: '14px',
+                color: '#9ca3af'
+              }}>
+                <div style={{ lineHeight: '1.5' }}>
+                  <strong style={{ color: '#ffffff' }}>Địa chỉ:</strong><br />
+                  Chung cư K26, Dương Quảng Hàm, Phường 7, Quận Gò Vấp<br />
+                  TP. Hồ Chí Minh
+                </div>
+                <div style={{
+                  fontSize: '12px',
+                  color: '#6b7280',
+                  marginTop: '8px'
+                }}>
+                  <strong>Giờ làm việc:</strong><br />
+                  T2-T6: 7:00 - 21:00<br />
+                  T7-CN: 8:00 - 20:00
+                </div>
+              </div>
+            </div>
+
+            {/* Cơ sở 2*/}
+            <div>
+              <h3 style={{
+                fontSize: '16px',
+                fontWeight: '600',
+                marginBottom: '20px',
+                color: '#ffffff',
+                display: 'flex',
+                alignItems: 'center',
                 gap: '8px'
               }}>
-                <a href="#" style={{
-                  color: '#9ca3af',
-                  textDecoration: 'none',
-                  fontSize: '14px'
+                <Icons.MapPin />
+                Cơ sở Quận 12
+              </h3>
+              <div style={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '12px',
+                fontSize: '14px',
+                color: '#9ca3af'
+              }}>
+                <div style={{ lineHeight: '1.5' }}>
+                  <strong style={{ color: '#ffffff' }}>Địa chỉ:</strong><br />
+                  71/31 Song Hành, Phường Tân Hưng Thuận, Quận 12<br />
+                  TP. Hồ Chí Minh
+                </div>
+                <div style={{
+                  fontSize: '12px',
+                  color: '#6b7280',
+                  marginTop: '8px'
                 }}>
-                  Khóa học
-                </a>
-                <a href="#" style={{
-                  color: '#9ca3af',
-                  textDecoration: 'none',
-                  fontSize: '14px'
+                  <strong>Giờ làm việc:</strong><br />
+                  T2-T6: 7:00 - 21:00<br />
+                  T7-CN: 8:00 - 20:00
+                </div>
+              </div>
+            </div>
+
+            {/* Cơ sở 3 */}
+            <div>
+              <h3 style={{
+                fontSize: '16px',
+                fontWeight: '600',
+                marginBottom: '20px',
+                color: '#ffffff',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px'
+              }}>
+                <Icons.MapPin />
+                Cơ sở Quận 3
+              </h3>
+              <div style={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '12px',
+                fontSize: '14px',
+                color: '#9ca3af'
+              }}>
+                <div style={{ lineHeight: '1.5' }}>
+                  <strong style={{ color: '#ffffff' }}>Địa chỉ:</strong><br />
+                  384/26 Nam Kỳ Khởi Nghĩa, Phường 8, Quận 3<br />
+                  TP. Hồ Chí Minh
+                </div>
+                <div style={{
+                  fontSize: '12px',
+                  color: '#6b7280',
+                  marginTop: '8px'
                 }}>
-                  Giảng viên
-                </a>
-                <a href="#" style={{
-                  color: '#9ca3af',
-                  textDecoration: 'none',
-                  fontSize: '14px'
-                }}>
-                  Thành tựu
-                </a>
+                  <strong>Giờ làm việc:</strong><br />
+                  T2-T6: 7:00 - 21:00<br />
+                  T7-CN: 8:00 - 20:00
+                </div>
               </div>
             </div>
           </div>
@@ -4087,15 +4555,55 @@ const SimpleApp = () => {
           <div style={{
             borderTop: '1px solid #374151',
             paddingTop: '32px',
-            marginTop: '32px',
-            textAlign: 'center'
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            flexWrap: 'wrap',
+            gap: '20px'
           }}>
             <p style={{
               color: '#9ca3af',
+              fontSize: '14px',
+              margin: 0
+            }}>
+              © 2025 DMT Education. Bảo lưu mọi quyền.
+            </p>
+            <div style={{
+              display: 'flex',
+              gap: '20px',
               fontSize: '14px'
             }}>
-              © 2024 DMT Education. Bảo lưu mọi quyền.
-            </p>
+              <a href="#" style={{
+                color: '#9ca3af',
+                textDecoration: 'none',
+                transition: 'color 0.3s ease'
+              }}
+              onMouseEnter={(e) => e.currentTarget.style.color = '#ffffff'}
+              onMouseLeave={(e) => e.currentTarget.style.color = '#9ca3af'}
+              >
+                Chính sách bảo mật
+              </a>
+              <a href="#" style={{
+                color: '#9ca3af',
+                textDecoration: 'none',
+                transition: 'color 0.3s ease'
+              }}
+              onMouseEnter={(e) => e.currentTarget.style.color = '#ffffff'}
+              onMouseLeave={(e) => e.currentTarget.style.color = '#9ca3af'}
+              >
+                Điều khoản sử dụng
+              </a>
+              <a href="#" style={{
+                color: '#9ca3af',
+                textDecoration: 'none',
+                transition: 'color 0.3s ease'
+              }}
+              onMouseEnter={(e) => e.currentTarget.style.color = '#ffffff'}
+              onMouseLeave={(e) => e.currentTarget.style.color = '#9ca3af'}
+              >
+                Liên hệ
+              </a>
+            </div>
           </div>
         </div>
       </footer>
@@ -4103,4 +4611,4 @@ const SimpleApp = () => {
   );
 };
 
-export default SimpleApp;
+export default App;

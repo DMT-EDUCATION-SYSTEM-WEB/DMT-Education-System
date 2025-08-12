@@ -1,5 +1,5 @@
 import React from 'react';
-import { Switch, Route, Redirect } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import Login from '../features/auth/pages/Login';
 import TwoFactor from '../features/auth/pages/TwoFactor';
 import StudentDashboard from '../features/students/pages/Dashboard';
@@ -29,86 +29,84 @@ import RequireRole from '../guards/RequireRole';
 import { Role } from '../types';
 import Unauthorized from '../features/auth/pages/Unauthorized';
 
-const Routes = () => {
+const AppRoutes = () => {
   return (
-    <Switch>
-      <Route exact path="/">
-        <Redirect to="/login" />
-      </Route>
+    <Routes>
+      <Route path="/" element={<Navigate to="/login" replace />} />
 
       {/* Auth */}
-      <Route exact path="/login" component={Login} />
-      <Route exact path="/two-factor" component={TwoFactor} />
-      <Route exact path="/unauthorized" component={Unauthorized} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/two-factor" element={<TwoFactor />} />
+      <Route path="/unauthorized" element={<Unauthorized />} />
 
       {/* Students */}
-      <Route exact path="/students/dashboard" component={StudentDashboard} />
-      <Route exact path="/students/schedule" component={StudentSchedule} />
-      <Route exact path="/students/videos" component={StudentVideos} />
-      <Route exact path="/students/materials" component={StudentMaterials} />
-      <Route exact path="/students/transcript" component={StudentTranscript} />
+      <Route path="/students/dashboard" element={<StudentDashboard />} />
+      <Route path="/students/schedule" element={<StudentSchedule />} />
+      <Route path="/students/videos" element={<StudentVideos />} />
+      <Route path="/students/materials" element={<StudentMaterials />} />
+      <Route path="/students/transcript" element={<StudentTranscript />} />
 
       {/* Teachers */}
-      <Route exact path="/teachers/assignments" component={TeacherAssignments} />
-      <Route exact path="/teachers/grading" component={TeacherGrading} />
-      <Route exact path="/teachers/surveys" component={TeacherSurveys} />
-      <Route exact path="/teachers/timesheet" component={TeacherTimesheet} />
+      <Route path="/teachers/assignments" element={<TeacherAssignments />} />
+      <Route path="/teachers/grading" element={<TeacherGrading />} />
+      <Route path="/teachers/surveys" element={<TeacherSurveys />} />
+      <Route path="/teachers/timesheet" element={<TeacherTimesheet />} />
 
       {/* Admin */}
-      <Route exact path="/admin/dashboard" render={() => (
+      <Route path="/admin/dashboard" element={
         <RequireRole allowed={[Role.ADMIN]}>
           <AdminDashboard />
         </RequireRole>
-      )} />
-      <Route exact path="/admin/users" render={() => (
+      } />
+      <Route path="/admin/users" element={
         <RequireRole allowed={[Role.ADMIN]}>
           <AdminUsers />
         </RequireRole>
-      )} />
-      <Route exact path="/admin/roles" render={() => (
+      } />
+      <Route path="/admin/roles" element={
         <RequireRole allowed={[Role.ADMIN]}>
           <AdminRoles />
         </RequireRole>
-      )} />
-      <Route exact path="/admin/analytics" render={() => (
+      } />
+      <Route path="/admin/analytics" element={
         <RequireRole allowed={[Role.ADMIN]}>
           <AdminAnalytics />
         </RequireRole>
-      )} />
-      <Route exact path="/admin/notifications" render={() => (
+      } />
+      <Route path="/admin/notifications" element={
         <RequireRole allowed={[Role.ADMIN]}>
           <AdminNotifications />
         </RequireRole>
-      )} />
-      <Route exact path="/admin/settings" render={() => (
+      } />
+      <Route path="/admin/settings" element={
         <RequireRole allowed={[Role.ADMIN]}>
           <AdminSettings />
         </RequireRole>
-      )} />
+      } />
 
       {/* Staff */}
-      <Route exact path="/staff/tasks" component={StaffTasks} />
-      <Route exact path="/staff/support" component={StaffSupport} />
+      <Route path="/staff/tasks" element={<StaffTasks />} />
+      <Route path="/staff/support" element={<StaffSupport />} />
 
       {/* Courses & Schedule */}
-      <Route exact path="/courses/catalog" component={CourseCatalog} />
-      <Route exact path="/courses/detail" component={CourseDetail} />
-      <Route exact path="/schedule/calendar" component={Calendar} />
+      <Route path="/courses/catalog" element={<CourseCatalog />} />
+      <Route path="/courses/detail" element={<CourseDetail />} />
+      <Route path="/schedule/calendar" element={<Calendar />} />
 
       {/* Surveys & Analytics & Support */}
-      <Route exact path="/surveys/list" component={SurveyList} />
-      <Route exact path="/analytics/reports" component={Reports} />
-      <Route exact path="/support/tickets" component={Tickets} />
+      <Route path="/surveys/list" element={<SurveyList />} />
+      <Route path="/analytics/reports" element={<Reports />} />
+      <Route path="/support/tickets" element={<Tickets />} />
 
       {/* 404 fallback */}
-      <Route>
+      <Route path="*" element={
         <div className="p-6">
           <h2 className="text-xl font-semibold text-gray-900">Không tìm thấy trang</h2>
           <p className="text-gray-600">Liên kết bạn truy cập không tồn tại.</p>
         </div>
-      </Route>
-    </Switch>
+      } />
+    </Routes>
   );
 };
 
-export default Routes;
+export default AppRoutes;

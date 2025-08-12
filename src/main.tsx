@@ -1,10 +1,27 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import SimpleApp from './SimpleApp_New';
+import { BrowserRouter } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import App from './App';
+import store from './store';
+import './styles/global.css';
 
-ReactDOM.render(
-  <React.StrictMode>
-    <SimpleApp />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+console.log('🚀 Loading DMT Education App...');
+
+const rootElement = document.getElementById('root');
+if (rootElement) {
+  console.log('Root element found, rendering App...');
+  ReactDOM.render(
+    <React.StrictMode>
+      <Provider store={store}>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </Provider>
+    </React.StrictMode>,
+    rootElement
+  );
+  console.log('App rendered successfully!');
+} else {
+  console.error('Root element not found!');
+}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Redirect } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { RootState } from '../store';
 import { Role } from '../types';
@@ -14,12 +14,12 @@ const RequireRole: React.FC<RequireRoleProps> = ({ children, allowed, fallbackPa
   const user = useSelector((state: RootState) => state.user);
 
   if (!user || !user.isAuthenticated) {
-    return <Redirect to={fallbackPath} />;
+    return <Navigate to={fallbackPath} replace />;
   }
   if (user.role && allowed.includes(user.role)) {
     return <>{children}</>;
   }
-  return <Redirect to="/unauthorized" />;
+  return <Navigate to="/unauthorized" replace />;
 };
 
 export default RequireRole;

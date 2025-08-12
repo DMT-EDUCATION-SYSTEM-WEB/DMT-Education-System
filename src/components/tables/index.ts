@@ -1,8 +1,11 @@
 import React from 'react';
 
-export { default as DataTable } from './DataTable';
-export { default as UserTable } from './UserTable';
-export { default as CourseTable } from './CourseTable';
-export { default as SurveyTable } from './SurveyTable';
-export { default as AnalyticsTable } from './AnalyticsTable';
+// Only export components that actually exist and are used
 export { default as ReportTable } from './ReportTable';
+
+// Removed exports for non-existent files:
+// - DataTable
+// - UserTable  
+// - CourseTable
+// - SurveyTable
+// - AnalyticsTable

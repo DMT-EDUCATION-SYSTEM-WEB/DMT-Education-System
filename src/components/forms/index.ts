@@ -1,10 +1,17 @@
 // This file exports form components for user input. 
+// Currently no form components exist as separate files.
+// Form logic is implemented directly in feature pages.
 
-export { default as LoginForm } from './LoginForm';
-export { default as RegistrationForm } from './RegistrationForm';
-export { default as FeedbackForm } from './FeedbackForm';
-export { default as SurveyForm } from './SurveyForm';
-export { default as AssignmentForm } from './AssignmentForm';
-export { default as ProfileUpdateForm } from './ProfileUpdateForm';
-export { default as PasswordResetForm } from './PasswordResetForm';
-export { default as TwoFactorAuthForm } from './TwoFactorAuthForm';
+// TODO: Create actual form components when needed:
+// - LoginForm
+// - RegistrationForm  
+// - FeedbackForm
+// - SurveyForm
+// - AssignmentForm
+// - ProfileUpdateForm
+// - PasswordResetForm
+// - TwoFactorAuthForm
+
+// Note: Form functionality currently exists in:
+// - features/teachers/pages/Surveys.tsx (SurveyForm component)
+// - features/teachers/pages/Assignments.tsx (AssignmentForm component)

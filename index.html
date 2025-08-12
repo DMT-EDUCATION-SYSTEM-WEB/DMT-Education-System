@@ -1,13 +1,101 @@
 <!DOCTYPE html>
 <html lang="vi">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>DMT Education System</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DMT Education - Vững nguồn tri thức, tiếp bước tương lai</title>
+  
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="DMT Education - Học viện đào tạo tư duy và sáng tạo hàng đầu Việt Nam với phương pháp giáo dục tiên tiến, giúp học sinh phát triển toàn diện." />
+  <meta name="keywords" content="DMT Education, học viện, giáo dục, IELTS, SAT, TOEIC, tư duy sáng tạo, học online" />
+  <meta name="author" content="DMT Education" />
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://dmteducation.vn/" />
+  <meta property="og:title" content="DMT Education - Vững nguồn tri thức, tiếp bước tương lai" />
+  <meta property="og:description" content="Học viện đào tạo tư duy và sáng tạo hàng đầu Việt Nam với phương pháp giáo dục tiên tiến" />
+  <meta property="og:image" content="/logo-dmt.png" />
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image" />
+  <meta property="twitter:url" content="https://dmteducation.vn/" />
+  <meta property="twitter:title" content="DMT Education - Vững nguồn tri thức, tiếp bước tương lai" />
+  <meta property="twitter:description" content="Học viện đào tạo tư duy và sáng tạo hàng đầu Việt Nam với phương pháp giáo dục tiên tiến" />
+  <meta property="twitter:image" content="/logo-dmt.png" />
+
+  <!-- Preload critical resources -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <style>
+    /* Critical CSS for faster loading */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    html {
+      scroll-behavior: smooth;
+    }
+    
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background: linear-gradient(135deg, #fef2f2 0%, #fce7f3 50%, #f3e8ff 100%);
+      min-height: 100vh;
+    }
+    
+    #root {
+      min-height: 100vh;
+      width: 100%;
+    }
+    
+    /* Loading animation */
+    .loading-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #fef2f2 0%, #fce7f3 50%, #f3e8ff 100%);
+    }
+    
+    .loading-spinner {
+      width: 50px;
+      height: 50px;
+      border: 4px solid #f3f4f6;
+      border-top: 4px solid #dc2626;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    .loading-text {
+      margin-top: 20px;
+      color: #6b7280;
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+  <div id="root">
+    <!-- Fallback loading UI -->
+    <div class="loading-container">
+      <div>
+        <div class="loading-spinner"></div>
+        <div class="loading-text">Đang tải DMT Education...</div>
+      </div>
+    </div>
+  </div>
+  
+  <script type="module" src="/src/main.tsx"></script>
+</body>
 </html>

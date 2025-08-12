@@ -3,18 +3,83 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="DMT Education - Học viện Đào tạo Tư duy & Sáng tạo hàng đầu Việt Nam. Chuyên đào tạo IELTS, THPT QG, TS 10, VSAT với tỷ lệ đậu cao.">
-    <meta name="keywords" content="DMT Education, IELTS, THPT Quốc Gia, Tuyển sinh 10, VSAT, học tiếng Anh, đào tạo">
-    <meta name="author" content="DMT Education">
-    <title>DMT Education - Vững nguồn tri thức, tiếp bước tương lai</title>
-    <!-- Styles are imported via Vite in src/main.tsx -->
-    <link rel="manifest" href="/manifest.json">
-    <link rel="icon" href="/favicon.ico" type="image/x-icon">
-    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
-    <link rel="apple-touch-icon" href="/logo-dmt.png">
+    <title>DMT Education - Debug</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .container {
+            text-align: center;
+            padding: 2rem;
+            max-width: 600px;
+        }
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+        .status {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+            border-radius: 15px;
+            margin-top: 2rem;
+        }
+        .status-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin: 10px 0;
+            font-size: 1.1rem;
+        }
+        #root {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
 </head>
 <body>
+    <div class="container">
+        <h1>🎓 DMT Education System</h1>
+        <p>Hệ thống giáo dục hàng đầu Việt Nam</p>
+        <div class="status">
+            <div class="status-item">✅ HTML: Hoạt động</div>
+            <div class="status-item">✅ CSS: Hoạt động</div>
+            <div class="status-item">✅ Server: Hoạt động</div>
+            <div class="status-item" id="js-status">⏳ JavaScript: Đang tải...</div>
+            <div class="status-item" id="react-status">⏳ React: Đang tải...</div>
+        </div>
+    </div>
+    
     <div id="root"></div>
+    
+    <script>
+        console.log('✅ HTML & CSS loaded successfully!');
+        document.getElementById('js-status').innerHTML = '✅ JavaScript: Hoạt động';
+        
+        // Test if React will load
+        setTimeout(() => {
+            const rootElement = document.getElementById('root');
+            if (rootElement && rootElement.innerHTML) {
+                document.getElementById('react-status').innerHTML = '✅ React: Hoạt động';
+            } else {
+                document.getElementById('react-status').innerHTML = '❌ React: Chưa tải';
+            }
+        }, 2000);
+    </script>
     <script type="module" src="/src/main.tsx"></script>
 </body>
 </html>

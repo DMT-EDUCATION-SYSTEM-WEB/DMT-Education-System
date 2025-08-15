@@ -1,16 +1,13 @@
 import React from 'react';
-import { BackgroundSection, SECTION_BACKGROUNDS } from '../common';
 
 const AboutSection: React.FC = () => {
   return (
-    <BackgroundSection
+    <section
       id="about"
-      backgroundImage={SECTION_BACKGROUNDS.about.image}
-      overlay={SECTION_BACKGROUNDS.about.overlay}
-      overlayColor={SECTION_BACKGROUNDS.about.overlayColor}
-      parallax={SECTION_BACKGROUNDS.about.parallax}
       style={{
-        padding: '80px 1rem'
+        padding: '80px 1rem',
+        backgroundColor: '#f8fafc', // Light gray background instead of image
+        minHeight: '600px'
       }}
     >
       <div style={{
@@ -21,19 +18,17 @@ const AboutSection: React.FC = () => {
         <h2 style={{
           fontSize: '2.5rem',
           fontWeight: 'bold',
-          color: 'white', // Changed to white for better contrast
-          marginBottom: '1rem',
-          textShadow: '2px 2px 4px rgba(0,0,0,0.5)'
+          color: '#1f2937', // Dark gray text for light background
+          marginBottom: '1rem'
         }}>
           Về DMT Education
         </h2>
         <p style={{
           fontSize: '1.125rem',
-          color: 'rgba(255, 255, 255, 0.9)', // Changed to white with transparency
+          color: '#6b7280', // Gray text for light background
           marginBottom: '3rem',
           maxWidth: '600px',
-          margin: '0 auto 3rem',
-          textShadow: '1px 1px 2px rgba(0,0,0,0.3)'
+          margin: '0 auto 3rem'
         }}>
           Trung tâm giáo dục DMT cam kết mang đến chương trình học chất lượng cao, 
           phát triển toàn diện các kỹ năng cần thiết cho trẻ em.
@@ -244,7 +239,7 @@ const AboutSection: React.FC = () => {
           </div>
         </div>
       </div>
-    </BackgroundSection>
+    </section>
   );
 };
 

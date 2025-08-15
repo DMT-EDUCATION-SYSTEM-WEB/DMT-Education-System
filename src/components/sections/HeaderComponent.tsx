@@ -1,8 +1,13 @@
 import React from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { Icons } from '../common/Icons';
 import { COLORS, TYPOGRAPHY, SPACING, BORDERS, SHADOWS, EFFECTS, CONTENT } from '../../constants';
 
 const HeaderComponent: React.FC = () => {
+  const location = useLocation();
+  
+  const isActive = (path: string) => location.pathname === path;
+
   return (
     <header style={{
       backgroundColor: COLORS.backgrounds.header,
@@ -55,73 +60,78 @@ const HeaderComponent: React.FC = () => {
         
         {/* Menu điều hướng */}
         <nav style={{ display: 'flex', gap: SPACING['3xl'] }}>
-          <a href="#home" className="fade-in-up stagger-1" style={{
-            color: COLORS.primary.main,
+          <Link to="/home" className="fade-in-up stagger-1" style={{
+            color: isActive('/home') || isActive('/') ? COLORS.primary.main : COLORS.neutral.gray700,
             textDecoration: 'none',
             fontWeight: TYPOGRAPHY.fontWeight.semibold,
             fontSize: TYPOGRAPHY.fontSize.md,
             padding: SPACING.sm + ' 0',
-            borderBottom: `${BORDERS.width.normal} solid ${COLORS.primary.main}`,
+            borderBottom: isActive('/home') || isActive('/') ? `${BORDERS.width.normal} solid ${COLORS.primary.main}` : 'none',
             transition: EFFECTS.transition.normal,
             cursor: 'pointer'
           }}>
             Trang chủ
-          </a>
-          <a href="#about" className="fade-in-up stagger-2" style={{
-            color: COLORS.neutral.gray700,
+          </Link>
+          <Link to="/about" className="fade-in-up stagger-2" style={{
+            color: isActive('/about') ? COLORS.primary.main : COLORS.neutral.gray700,
             textDecoration: 'none',
             fontWeight: TYPOGRAPHY.fontWeight.medium,
             fontSize: TYPOGRAPHY.fontSize.md,
             padding: SPACING.sm + ' 0',
+            borderBottom: isActive('/about') ? `${BORDERS.width.normal} solid ${COLORS.primary.main}` : 'none',
             transition: EFFECTS.transition.normal,
             cursor: 'pointer'
           }}>
             Giới thiệu
-          </a>
-          <a href="#courses" className="fade-in-up stagger-3" style={{
-            color: COLORS.neutral.gray700,
+          </Link>
+          <Link to="/courses" className="fade-in-up stagger-3" style={{
+            color: isActive('/courses') ? COLORS.primary.main : COLORS.neutral.gray700,
             textDecoration: 'none',
             fontWeight: TYPOGRAPHY.fontWeight.medium,
             fontSize: TYPOGRAPHY.fontSize.md,
             padding: SPACING.sm + ' 0',
+            borderBottom: isActive('/courses') ? `${BORDERS.width.normal} solid ${COLORS.primary.main}` : 'none',
             transition: EFFECTS.transition.normal,
             cursor: 'pointer'
           }}>
             Khóa học
-          </a>
-          <a href="#teachers" className="fade-in-up stagger-4" style={{
-            color: COLORS.neutral.gray700,
+          </Link>
+          <Link to="/teachers" className="fade-in-up stagger-4" style={{
+            color: isActive('/teachers') ? COLORS.primary.main : COLORS.neutral.gray700,
             textDecoration: 'none',
             fontWeight: TYPOGRAPHY.fontWeight.medium,
             fontSize: TYPOGRAPHY.fontSize.md,
             padding: SPACING.sm + ' 0',
+            borderBottom: isActive('/teachers') ? `${BORDERS.width.normal} solid ${COLORS.primary.main}` : 'none',
             transition: EFFECTS.transition.normal,
             cursor: 'pointer'
           }}>
             Giảng viên
-          </a>
-          <a href="#schedule" className="fade-in-up stagger-5" style={{
-            color: COLORS.neutral.gray700,
+          </Link>
+          <Link to="/schedule" className="fade-in-up stagger-5" style={{
+            color: isActive('/schedule') ? COLORS.primary.main : COLORS.neutral.gray700,
             textDecoration: 'none',
             fontWeight: TYPOGRAPHY.fontWeight.medium,
             fontSize: TYPOGRAPHY.fontSize.md,
             padding: SPACING.sm + ' 0',
+            borderBottom: isActive('/schedule') ? `${BORDERS.width.normal} solid ${COLORS.primary.main}` : 'none',
             transition: EFFECTS.transition.normal,
             cursor: 'pointer'
           }}>
             Lịch khai giảng
-          </a>
-          <a href="#news" className="fade-in-up stagger-6" style={{
-            color: COLORS.neutral.gray700,
+          </Link>
+          <Link to="/announcement" className="fade-in-up stagger-6" style={{
+            color: isActive('/announcement') ? COLORS.primary.main : COLORS.neutral.gray700,
             textDecoration: 'none',
             fontWeight: TYPOGRAPHY.fontWeight.medium,
             fontSize: TYPOGRAPHY.fontSize.md,
             padding: SPACING.sm + ' 0',
+            borderBottom: isActive('/announcement') ? `${BORDERS.width.normal} solid ${COLORS.primary.main}` : 'none',
             transition: EFFECTS.transition.normal,
             cursor: 'pointer'
           }}>
             Thông báo
-          </a>
+          </Link>
         </nav>
         
         {/* Các nút hành động */}

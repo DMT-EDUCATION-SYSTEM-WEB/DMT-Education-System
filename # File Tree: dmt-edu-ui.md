@@ -1,6 +1,6 @@
 # File Tree: dmt-edu-ui
 
-Generated on: 8/12/2025, 8:29:10 AM
+Generated on: 8/14/2025, 9:33:44 AM
 Root path: `/Users/nguyenhuuthang/Documents/RepoGitHub/DMT-System-Web/dmt-edu-ui`
 
 ```
@@ -36,29 +36,34 @@ Root path: `/Users/nguyenhuuthang/Documents/RepoGitHub/DMT-System-Web/dmt-edu-ui
 │   │   │   ├── BackgroundSection.tsx
 │   │   │   ├── Button.tsx
 │   │   │   ├── Card.tsx
+│   │   │   ├── DemoAccounts.tsx
 │   │   │   ├── ErrorBoundary.tsx
+│   │   │   ├── ErrorMessage.tsx
 │   │   │   ├── GlobalPerformanceMonitor.tsx
 │   │   │   ├── Icons.tsx
 │   │   │   ├── Icons_new.tsx
 │   │   │   ├── Input.tsx
 │   │   │   ├── LazyImage.tsx
+│   │   │   ├── Loader.tsx
 │   │   │   ├── LoadingSpinner.tsx
+│   │   │   ├── LoginSuccessNotification.tsx
 │   │   │   ├── Modal.tsx
 │   │   │   ├── Notification.tsx
 │   │   │   ├── OptimizedCard.tsx
 │   │   │   ├── OptimizedComponents.tsx
+│   │   │   ├── ProtectedRoute.tsx
 │   │   │   ├── ResponsiveComponents.tsx
 │   │   │   ├── SEOHead.tsx
 │   │   │   ├── ScrollComponents.tsx
 │   │   │   ├── SkeletonLoaders.tsx
 │   │   │   ├── Spinner.tsx
 │   │   │   ├── SuspenseWrapper.tsx
+│   │   │   ├── TaskCard.tsx
 │   │   │   └── index.ts
 │   │   ├── forms/
 │   │   │   └── index.ts
 │   │   ├── layout/
 │   │   │   ├── Footer.tsx
-│   │   │   ├── Header.tsx
 │   │   │   ├── MobileNav.tsx
 │   │   │   └── Sidebar.tsx
 │   │   ├── lazy/
@@ -100,11 +105,15 @@ Root path: `/Users/nguyenhuuthang/Documents/RepoGitHub/DMT-System-Web/dmt-edu-ui
 │   │   │       └── Reports.tsx
 │   │   ├── auth/
 │   │   │   ├── pages/
+│   │   │   │   ├── Login.backup.tsx
+│   │   │   │   ├── Login.css
 │   │   │   │   ├── Login.tsx
 │   │   │   │   ├── TwoFactor.tsx
 │   │   │   │   └── Unauthorized.tsx
 │   │   │   └── api.ts
 │   │   ├── courses/
+│   │   │   ├── components/
+│   │   │   │   └── CourseCard.tsx
 │   │   │   ├── pages/
 │   │   │   │   ├── Catalog.tsx
 │   │   │   │   └── Detail.tsx
@@ -131,6 +140,8 @@ Root path: `/Users/nguyenhuuthang/Documents/RepoGitHub/DMT-System-Web/dmt-edu-ui
 │   │   │   │   └── Videos.tsx
 │   │   │   └── api.ts
 │   │   ├── support/
+│   │   │   ├── components/
+│   │   │   │   └── TicketItem.tsx
 │   │   │   └── pages/
 │   │   │       └── Tickets.tsx
 │   │   ├── surveys/
@@ -149,6 +160,7 @@ Root path: `/Users/nguyenhuuthang/Documents/RepoGitHub/DMT-System-Web/dmt-edu-ui
 │   ├── hooks/
 │   │   ├── useAdvancedAnimation.ts
 │   │   ├── useAuth.ts
+│   │   ├── useAuthRedirect.ts
 │   │   ├── useOptimizedAnimation.ts
 │   │   ├── usePagination.ts
 │   │   ├── usePerformance.ts
@@ -157,12 +169,15 @@ Root path: `/Users/nguyenhuuthang/Documents/RepoGitHub/DMT-System-Web/dmt-edu-ui
 │   ├── i18n/
 │   │   ├── en.json
 │   │   └── vi.json
+│   ├── pages/
+│   │   └── Homepage.tsx
 │   ├── routes/
 │   │   └── index.tsx
 │   ├── services/
 │   │   ├── admin.ts
 │   │   ├── auth.ts
-│   │   └── http.ts
+│   │   ├── http.ts
+│   │   └── ticketService.ts
 │   ├── store/
 │   │   ├── slices/
 │   │   │   └── userSlice.ts
@@ -186,12 +201,14 @@ Root path: `/Users/nguyenhuuthang/Documents/RepoGitHub/DMT-System-Web/dmt-edu-ui
 │   └── main.tsx
 ├── styles/
 │   └── optimized-animations.css
+├── # File Tree: dmt-edu-ui.md
 ├── .DS_Store 🚫 (auto-hidden)
 ├── .env.example
 ├── .eslintrc.cjs
 ├── .eslintrc.json
 ├── .gitignore
 ├── .prettierrc
+├── Database-DMT-System-Extended-Final.sql
 ├── Database-DMT-System.sql
 ├── Dự án Website Trung tâm DMT.txt
 ├── README.md

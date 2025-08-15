@@ -10,6 +10,35 @@
   box-sizing: border-box;
 }
 
+/* Remove unwanted outlines and focus states */
+*:focus {
+  outline: none !important;
+}
+
+*:focus-visible {
+  outline: none !important;
+}
+
+section:focus,
+section:hover,
+div:focus,
+div:hover {
+  outline: none !important;
+  border: none !important;
+}
+
+/* Remove default browser outlines for all elements */
+button:focus,
+button:focus-visible,
+a:focus,
+a:focus-visible,
+input:focus,
+input:focus-visible,
+textarea:focus,
+textarea:focus-visible {
+  outline: none !important;
+}
+
 html {
   scroll-behavior: smooth;
 }

@@ -36,11 +36,13 @@ export const COLORS = {
   
   // Background Gradients
   backgrounds: {
-    main: 'linear-gradient(135deg, #fef2f2 0%, #fce7f3 50%, #f3e8ff 100%)',
+    main: 'linear-gradient(135deg, #ffffff 0%, #f8fafc 50%, #ffffff 100%)',
     header: 'rgba(255, 255, 255, 0.95)',
-    card: 'linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.7))',
-    footer: '#111827',
-    announcement: 'linear-gradient(90deg, #fecaca, #fde68a)'
+    card: 'linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.9))',
+    footer: '#1f2937',
+    announcement: 'linear-gradient(90deg, #fee2e2, #fecaca)',
+    section: '#ffffff',
+    pattern: 'radial-gradient(circle at 20% 80%, rgba(220, 38, 38, 0.05) 0%, transparent 50%), radial-gradient(circle at 80% 20%, rgba(220, 38, 38, 0.03) 0%, transparent 50%)'
   },
   
   // Status Colors

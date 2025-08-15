@@ -47,7 +47,10 @@ const AboutSection: React.FC = () => {
             borderRadius: '1rem',
             padding: '2rem',
             textAlign: 'left',
-            boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
+            boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+            outline: 'none',
+            border: 'none',
+            transition: 'transform 0.3s ease, box-shadow 0.3s ease'
           }}>
             <div style={{
               width: '60px',
@@ -86,7 +89,10 @@ const AboutSection: React.FC = () => {
             borderRadius: '1rem',
             padding: '2rem',
             textAlign: 'left',
-            boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
+            boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+            outline: 'none',
+            border: 'none',
+            transition: 'transform 0.3s ease, box-shadow 0.3s ease'
           }}>
             <div style={{
               width: '60px',
@@ -125,7 +131,10 @@ const AboutSection: React.FC = () => {
             borderRadius: '1rem',
             padding: '2rem',
             textAlign: 'left',
-            boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
+            boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+            outline: 'none',
+            border: 'none',
+            transition: 'transform 0.3s ease, box-shadow 0.3s ease'
           }}>
             <div style={{
               width: '60px',
@@ -160,85 +169,213 @@ const AboutSection: React.FC = () => {
         </div>
 
         {/* Statistics */}
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-          gap: '2rem',
-          marginTop: '4rem',
-          padding: '2rem',
-          backgroundColor: 'white',
-          borderRadius: '1rem',
-          boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
-        }}>
-          <div style={{ textAlign: 'center' }}>
+        <div 
+          className="statistics-container"
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+            gap: '2rem',
+            marginTop: '4rem',
+            padding: '2rem',
+            backgroundColor: 'white',
+            borderRadius: '1rem',
+            boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+            outline: 'none !important',
+            border: 'none !important'
+          }}>
+          <div 
+            className="stat-item"
+            style={{ 
+              textAlign: 'center',
+              outline: 'none !important',
+              border: 'none !important'
+            }}
+          >
             <div style={{
               fontSize: '2.5rem',
               fontWeight: 'bold',
               color: '#3b82f6',
-              marginBottom: '0.5rem'
+              marginBottom: '0.5rem',
+              outline: 'none !important',
+              border: 'none !important'
             }}>
               500+
             </div>
             <div style={{
               color: '#64748b',
-              fontSize: '1rem'
+              fontSize: '1rem',
+              outline: 'none !important',
+              border: 'none !important'
             }}>
               Học sinh
             </div>
           </div>
 
-          <div style={{ textAlign: 'center' }}>
+          <div 
+            className="stat-item"
+            style={{ 
+              textAlign: 'center',
+              outline: 'none !important',
+              border: 'none !important'
+            }}
+          >
             <div style={{
               fontSize: '2.5rem',
               fontWeight: 'bold',
               color: '#ec4899',
-              marginBottom: '0.5rem'
+              marginBottom: '0.5rem',
+              outline: 'none !important',
+              border: 'none !important'
             }}>
               50+
             </div>
             <div style={{
               color: '#64748b',
-              fontSize: '1rem'
+              fontSize: '1rem',
+              outline: 'none !important',
+              border: 'none !important'
             }}>
               Giáo viên
             </div>
           </div>
 
-          <div style={{ textAlign: 'center' }}>
+          <div 
+            className="stat-item"
+            style={{ 
+              textAlign: 'center',
+              outline: 'none !important',
+              border: 'none !important'
+            }}
+          >
             <div style={{
               fontSize: '2.5rem',
               fontWeight: 'bold',
               color: '#10b981',
-              marginBottom: '0.5rem'
+              marginBottom: '0.5rem',
+              outline: 'none !important',
+              border: 'none !important'
             }}>
               15+
             </div>
             <div style={{
               color: '#64748b',
-              fontSize: '1rem'
+              fontSize: '1rem',
+              outline: 'none !important',
+              border: 'none !important'
             }}>
               Năm kinh nghiệm
             </div>
           </div>
 
-          <div style={{ textAlign: 'center' }}>
+          <div 
+            className="stat-item"
+            style={{ 
+              textAlign: 'center',
+              outline: 'none !important',
+              border: 'none !important'
+            }}
+          >
             <div style={{
               fontSize: '2.5rem',
               fontWeight: 'bold',
               color: '#f59e0b',
-              marginBottom: '0.5rem'
+              marginBottom: '0.5rem',
+              outline: 'none !important',
+              border: 'none !important'
             }}>
               100+
             </div>
             <div style={{
               color: '#64748b',
-              fontSize: '1rem'
+              fontSize: '1rem',
+              outline: 'none !important',
+              border: 'none !important'
             }}>
               Giải thưởng
             </div>
           </div>
         </div>
       </div>
+
+      {/* CSS to remove unwanted outlines */}
+      <style>
+        {`
+          #about,
+          #about *,
+          #about *::before,
+          #about *::after {
+            outline: none !important;
+            -webkit-tap-highlight-color: transparent !important;
+            -webkit-focus-ring-color: transparent !important;
+            -moz-outline: none !important;
+          }
+          
+          #about *:focus,
+          #about *:focus-visible,
+          #about *:focus-within,
+          #about *:hover,
+          #about *:active {
+            outline: none !important;
+            outline-color: transparent !important;
+            outline-width: 0 !important;
+            outline-style: none !important;
+            border: none !important;
+            box-shadow: none !important;
+          }
+          
+          #about div:focus,
+          #about div:focus-visible,
+          #about div:hover,
+          #about div:active {
+            outline: none !important;
+            outline-color: transparent !important;
+            outline-width: 0 !important;
+            outline-style: none !important;
+            border: none !important;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
+          }
+
+          #about h2:focus,
+          #about h3:focus,
+          #about p:focus,
+          #about h2:hover,
+          #about h3:hover,
+          #about p:hover {
+            outline: none !important;
+            outline-color: transparent !important;
+            outline-width: 0 !important;
+            outline-style: none !important;
+            border: none !important;
+          }
+
+          .statistics-container,
+          .statistics-container *,
+          .stat-item,
+          .stat-item * {
+            outline: none !important;
+            outline-color: transparent !important;
+            outline-width: 0 !important;
+            outline-style: none !important;
+            border: none !important;
+          }
+
+          .statistics-container:focus,
+          .statistics-container:hover,
+          .stat-item:focus,
+          .stat-item:hover,
+          .statistics-container *:focus,
+          .statistics-container *:hover,
+          .stat-item *:focus,
+          .stat-item *:hover {
+            outline: none !important;
+            outline-color: transparent !important;
+            outline-width: 0 !important;
+            outline-style: none !important;
+            border: none !important;
+            box-shadow: none !important;
+          }
+        `}
+      </style>
     </section>
   );
 };

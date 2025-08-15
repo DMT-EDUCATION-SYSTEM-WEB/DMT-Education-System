@@ -1,346 +1,402 @@
 import React from 'react';
-import { Icons } from '../common/Icons';
-import { BackgroundSection, SECTION_BACKGROUNDS } from '../common';
+import { COLORS } from '../../constants';
 
 const Hero: React.FC = () => {
   return (
-    <BackgroundSection
+    <section
       id="home"
-      backgroundImage={SECTION_BACKGROUNDS.hero.image}
-      overlay={SECTION_BACKGROUNDS.hero.overlay}
-      overlayColor={SECTION_BACKGROUNDS.hero.overlayColor}
-      parallax={SECTION_BACKGROUNDS.hero.parallax}
       style={{
         padding: '100px 1rem',
         minHeight: '100vh',
         display: 'flex',
-        alignItems: 'center'
+        alignItems: 'center',
+        background: `${COLORS.backgrounds.main}, ${COLORS.backgrounds.pattern}`,
+        position: 'relative',
+        overflow: 'hidden'
       }}
     >
+      {/* Background Pattern */}
+      <div style={{
+        position: 'absolute',
+        top: '10%',
+        right: '10%',
+        width: '200px',
+        height: '200px',
+        background: 'rgba(220, 38, 38, 0.03)',
+        borderRadius: '50%',
+        animation: 'float 8s ease-in-out infinite'
+      }}></div>
+      
+      <div style={{
+        position: 'absolute',
+        bottom: '20%',
+        left: '5%',
+        width: '150px',
+        height: '150px',
+        background: 'rgba(220, 38, 38, 0.02)',
+        borderRadius: '50%',
+        animation: 'float 10s ease-in-out infinite reverse'
+      }}></div>
+
       <div style={{
         maxWidth: '1200px',
         margin: '0 auto',
-        width: '100%'
+        width: '100%',
+        textAlign: 'center'
       }}>
+        {/* Hero Main Content */}
         <div style={{
-          display: 'grid',
-          gridTemplateColumns: '1fr 1fr',
-          gap: '60px',
-          alignItems: 'center'
+          marginBottom: '60px'
         }}>
-          {/* Hero Left Side - Content */}
-          <div>
-            <h1 className="fade-in-up" style={{
-              fontSize: '52px',
-              fontWeight: '800',
-              color: 'white',
-              lineHeight: '1.1',
-              marginBottom: '25px',
-              textShadow: '2px 2px 4px rgba(0,0,0,0.3)'
-            }}>
-              Phát triển{' '}
-              <span style={{
-                background: 'linear-gradient(135deg, #fbbf24, #f59e0b)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text'
-              }}>
-                Tư duy Logic
-              </span>
-              {' '}& Sáng tạo
-            </h1>
-            
-            <p className="fade-in-up stagger-2" style={{
-              fontSize: '18px',
-              color: 'rgba(255, 255, 255, 0.9)',
-              marginBottom: '35px',
-              lineHeight: '1.7',
-              textShadow: '1px 1px 2px rgba(0,0,0,0.3)'
-            }}>
-              Phương pháp giáo dục tiên tiến, giúp học sinh phát triển tư duy logic, 
-              sáng tạo và kỹ năng giải quyết vấn đề một cách hiệu quả với công nghệ hiện đại.
-            </p>
-            
-            <div style={{ display: 'flex', gap: '15px' }}>
-              <button className="hover-scale fade-in-up" style={{
-                background: 'linear-gradient(135deg, #dc2626, #f43f5e)',
-                color: 'white',
-                padding: '15px 30px',
-                borderRadius: '30px',
-                border: 'none',
-                fontSize: '16px',
-                fontWeight: '600',
-                cursor: 'pointer',
-                boxShadow: '0 8px 25px rgba(220, 38, 38, 0.3)'
-              }}>
-                Bắt đầu học ngay
-              </button>
-              <button className="hover-scale fade-in-up stagger-1" style={{
-                border: '2px solid white',
-                color: 'white',
-                padding: '13px 28px',
-                borderRadius: '30px',
-                background: 'rgba(255, 255, 255, 0.1)',
-                fontSize: '16px',
-                fontWeight: '600',
-                cursor: 'pointer',
-                backdropFilter: 'blur(10px)'
-              }}>
-                Tìm hiểu thêm
-              </button>
-            </div>
-          </div>
-
-          {/* Hero Right Side - Visual Elements */}
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: '1fr 1fr',
-            gap: '15px',
-            padding: '20px'
+          <h1 style={{
+            fontSize: 'clamp(2.5rem, 6vw, 4rem)',
+            fontWeight: '800',
+            color: COLORS.neutral.gray900,
+            lineHeight: '1.1',
+            marginBottom: '25px'
           }}>
-            {/* Feature Cards */}
-            <div style={{
-              background: 'rgba(255, 255, 255, 0.9)',
-              backdropFilter: 'blur(10px)',
-              borderRadius: '15px',
-              padding: '20px',
-              textAlign: 'center',
-              border: '1px solid rgba(255, 255, 255, 0.3)',
-              boxShadow: '0 10px 30px rgba(0, 0, 0, 0.1)'
+            Phát triển{' '}
+            <span style={{
+              color: COLORS.primary.main
             }}>
-              <div style={{
-                width: '50px',
-                height: '50px',
-                borderRadius: '50%',
-                background: 'linear-gradient(135deg, #dc2626, #f43f5e)',
-                color: 'white',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                margin: '0 auto 15px',
-                fontSize: '24px'
-              }}>
-                <Icons.Book />
-              </div>
-              <h4 style={{
-                fontWeight: '600',
-                color: '#111827',
-                marginBottom: '8px',
-                fontSize: '14px'
-              }}>
-                Chương trình đa dạng
-              </h4>
-              <p style={{
-                fontSize: '12px',
-                color: '#6b7280',
-                lineHeight: '1.4'
-              }}>
-                Toán học, IELTS, Lập trình
-              </p>
-            </div>
-
-            <div style={{
-              background: 'rgba(255, 255, 255, 0.9)',
-              backdropFilter: 'blur(10px)',
-              borderRadius: '15px',
-              padding: '20px',
-              textAlign: 'center',
-              border: '1px solid rgba(255, 255, 255, 0.3)',
-              boxShadow: '0 10px 30px rgba(0, 0, 0, 0.1)'
+              Tư duy Logic
+            </span>
+            {' '}& Sáng tạo
+          </h1>
+          
+          <p style={{
+            fontSize: '1.125rem',
+            color: COLORS.neutral.gray600,
+            marginBottom: '35px',
+            lineHeight: '1.7',
+            maxWidth: '600px',
+            margin: '0 auto 35px auto'
+          }}>
+            Phương pháp giáo dục tiên tiến, giúp học sinh phát triển tư duy logic, 
+            sáng tạo và kỹ năng giải quyết vấn đề một cách hiệu quả với công nghệ hiện đại.
+          </p>
+          
+          <div style={{ 
+            display: 'flex', 
+            gap: '15px', 
+            flexWrap: 'wrap',
+            justifyContent: 'center',
+            marginBottom: '60px'
+          }}>
+            <button style={{
+              background: COLORS.primary.main,
+              color: 'white',
+              padding: '15px 30px',
+              borderRadius: '30px',
+              border: 'none',
+              fontSize: '16px',
+              fontWeight: '600',
+              cursor: 'pointer',
+              boxShadow: '0 8px 25px rgba(220, 38, 38, 0.25)',
+              transition: 'all 0.3s ease'
             }}>
-              <div style={{
-                width: '50px',
-                height: '50px',
-                borderRadius: '50%',
-                background: 'linear-gradient(135deg, #0ea5e9, #06b6d4)',
-                color: 'white',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                margin: '0 auto 15px',
-                fontSize: '24px'
-              }}>
-                <Icons.Teacher />
-              </div>
-              <h4 style={{
-                fontWeight: '600',
-                color: '#111827',
-                marginBottom: '8px',
-                fontSize: '14px'
-              }}>
-                Giáo viên chuyên nghiệp
-              </h4>
-              <p style={{
-                fontSize: '12px',
-                color: '#6b7280',
-                lineHeight: '1.4'
-              }}>
-                Đội ngũ giàu kinh nghiệm
-              </p>
-            </div>
-
-            <div style={{
-              background: 'rgba(255, 255, 255, 0.9)',
-              backdropFilter: 'blur(10px)',
-              borderRadius: '15px',
-              padding: '20px',
-              textAlign: 'center',
-              border: '1px solid rgba(255, 255, 255, 0.3)',
-              boxShadow: '0 10px 30px rgba(0, 0, 0, 0.1)'
+              Bắt đầu học ngay
+            </button>
+            <button style={{
+              border: `2px solid ${COLORS.primary.main}`,
+              color: COLORS.primary.main,
+              padding: '13px 28px',
+              borderRadius: '30px',
+              background: 'transparent',
+              fontSize: '16px',
+              fontWeight: '600',
+              cursor: 'pointer',
+              transition: 'all 0.3s ease'
             }}>
-              <div style={{
-                width: '50px',
-                height: '50px',
-                borderRadius: '50%',
-                background: 'linear-gradient(135deg, #10b981, #059669)',
-                color: 'white',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                margin: '0 auto 15px',
-                fontSize: '24px'
-              }}>
-                <Icons.Star />
-              </div>
-              <h4 style={{
-                fontWeight: '600',
-                color: '#111827',
-                marginBottom: '8px',
-                fontSize: '14px'
-              }}>
-                Chứng chỉ quốc tế
-              </h4>
-              <p style={{
-                fontSize: '12px',
-                color: '#6b7280',
-                lineHeight: '1.4'
-              }}>
-                Được công nhận toàn cầu
-              </p>
-            </div>
-
-            <div style={{
-              background: 'rgba(255, 255, 255, 0.9)',
-              backdropFilter: 'blur(10px)',
-              borderRadius: '15px',
-              padding: '20px',
-              textAlign: 'center',
-              border: '1px solid rgba(255, 255, 255, 0.3)',
-              boxShadow: '0 10px 30px rgba(0, 0, 0, 0.1)'
-            }}>
-              <div style={{
-                width: '50px',
-                height: '50px',
-                borderRadius: '50%',
-                background: 'linear-gradient(135deg, #8b5cf6, #7c3aed)',
-                color: 'white',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                margin: '0 auto 15px',
-                fontSize: '24px'
-              }}>
-                <Icons.Graduation />
-              </div>
-              <h4 style={{
-                fontWeight: '600',
-                color: '#111827',
-                marginBottom: '8px',
-                fontSize: '14px'
-              }}>
-                Phát triển IQ & EQ
-              </h4>
-              <p style={{
-                fontSize: '12px',
-                color: '#6b7280',
-                lineHeight: '1.4'
-              }}>
-                Kích thích tiềm năng học tập toàn diện
-              </p>
-            </div>
+              Tìm hiểu thêm
+            </button>
           </div>
         </div>
 
-        {/* Achievement Stats */}
+        {/* Feature Cards Grid */}
         <div style={{
-          gridColumn: '1 / -1',
-          background: 'rgba(255, 255, 255, 0.9)',
-          backdropFilter: 'blur(10px)',
-          borderRadius: '20px',
-          padding: '25px',
-          border: '1px solid rgba(255, 255, 255, 0.3)',
-          boxShadow: '0 20px 40px rgba(0, 0, 0, 0.1)',
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+          gap: '20px',
+          marginBottom: '60px'
+        }}>
+          {/* Feature Card 1 */}
+          <div style={{
+            background: '#ffffff',
+            borderRadius: '16px',
+            padding: '30px 20px',
+            textAlign: 'center',
+            border: '1px solid #f1f5f9',
+            borderTop: '3px solid #dc2626',
+            boxShadow: '0 4px 20px rgba(0, 0, 0, 0.08)',
+            transition: 'transform 0.3s ease'
+          }}>
+            <div style={{
+              width: '60px',
+              height: '60px',
+              borderRadius: '50%',
+              background: '#dc2626',
+              color: 'white',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              margin: '0 auto 20px',
+              fontSize: '24px'
+            }}>
+              📚
+            </div>
+            <h4 style={{
+              fontWeight: '700',
+              color: '#1e293b',
+              marginBottom: '12px',
+              fontSize: '1.1rem'
+            }}>
+              Chương trình đa dạng
+            </h4>
+            <p style={{
+              fontSize: '0.9rem',
+              color: '#64748b',
+              lineHeight: '1.5'
+            }}>
+              Toán học, IELTS, Lập trình
+            </p>
+          </div>
+
+          {/* Feature Card 2 */}
+          <div style={{
+            background: '#ffffff',
+            borderRadius: '16px',
+            padding: '30px 20px',
+            textAlign: 'center',
+            border: '1px solid #f1f5f9',
+            borderTop: '3px solid #3b82f6',
+            boxShadow: '0 4px 20px rgba(0, 0, 0, 0.08)',
+            transition: 'transform 0.3s ease'
+          }}>
+            <div style={{
+              width: '60px',
+              height: '60px',
+              borderRadius: '50%',
+              background: '#3b82f6',
+              color: 'white',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              margin: '0 auto 20px',
+              fontSize: '24px'
+            }}>
+              👨‍🏫
+            </div>
+            <h4 style={{
+              fontWeight: '700',
+              color: '#1e293b',
+              marginBottom: '12px',
+              fontSize: '1.1rem'
+            }}>
+              Giáo viên chuyên nghiệp
+            </h4>
+            <p style={{
+              fontSize: '0.9rem',
+              color: '#64748b',
+              lineHeight: '1.5'
+            }}>
+              Đội ngũ giàu kinh nghiệm
+            </p>
+          </div>
+
+          {/* Feature Card 3 */}
+          <div style={{
+            background: '#ffffff',
+            borderRadius: '16px',
+            padding: '30px 20px',
+            textAlign: 'center',
+            border: '1px solid #f1f5f9',
+            borderTop: '3px solid #10b981',
+            boxShadow: '0 4px 20px rgba(0, 0, 0, 0.08)',
+            transition: 'transform 0.3s ease'
+          }}>
+            <div style={{
+              width: '60px',
+              height: '60px',
+              borderRadius: '50%',
+              background: '#10b981',
+              color: 'white',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              margin: '0 auto 20px',
+              fontSize: '24px'
+            }}>
+              🎯
+            </div>
+            <h4 style={{
+              fontWeight: '700',
+              color: '#1e293b',
+              marginBottom: '12px',
+              fontSize: '1.1rem'
+            }}>
+              Học tập hiệu quả
+            </h4>
+            <p style={{
+              fontSize: '0.9rem',
+              color: '#64748b',
+              lineHeight: '1.5'
+            }}>
+              Phương pháp hiện đại
+            </p>
+          </div>
+
+          {/* Feature Card 4 */}
+          <div style={{
+            background: '#ffffff',
+            borderRadius: '16px',
+            padding: '30px 20px',
+            textAlign: 'center',
+            border: '1px solid #f1f5f9',
+            borderTop: '3px solid #f59e0b',
+            boxShadow: '0 4px 20px rgba(0, 0, 0, 0.08)',
+            transition: 'transform 0.3s ease'
+          }}>
+            <div style={{
+              width: '60px',
+              height: '60px',
+              borderRadius: '50%',
+              background: '#f59e0b',
+              color: 'white',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              margin: '0 auto 20px',
+              fontSize: '24px'
+            }}>
+              🏆
+            </div>
+            <h4 style={{
+              fontWeight: '700',
+              color: '#1e293b',
+              marginBottom: '12px',
+              fontSize: '1.1rem'
+            }}>
+              Thành tích nổi bật
+            </h4>
+            <p style={{
+              fontSize: '0.9rem',
+              color: '#64748b',
+              lineHeight: '1.5'
+            }}>
+              Kết quả ấn tượng
+            </p>
+          </div>
+        </div>
+
+        {/* Statistics Row */}
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+          gap: '40px',
+          textAlign: 'center',
           marginTop: '40px'
         }}>
-          <h3 style={{
-            fontSize: '18px',
-            fontWeight: '700',
-            color: '#111827',
-            marginBottom: '20px',
-            textAlign: 'center'
-          }}>
-            <Icons.Trophy /> Thành tích nổi bật
-          </h3>
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(3, 1fr)',
-            gap: '20px'
-          }}>
-            <div style={{ textAlign: 'center' }}>
-              <div style={{
-                fontSize: '32px',
-                fontWeight: '800',
-                color: '#dc2626',
-                marginBottom: '5px'
-              }}>
-                5,000+
-              </div>
-              <div style={{
-                fontSize: '12px',
-                color: '#6b7280',
-                fontWeight: '500'
-              }}>
-                Học sinh tốt nghiệp
-              </div>
+          <div>
+            <div style={{
+              fontSize: 'clamp(2rem, 5vw, 3rem)',
+              fontWeight: '800',
+              color: '#dc2626',
+              marginBottom: '8px'
+            }}>
+              15+
             </div>
-            <div style={{ textAlign: 'center' }}>
-              <div style={{
-                fontSize: '32px',
-                fontWeight: '800',
-                color: '#f43f5e',
-                marginBottom: '5px'
-              }}>
-                98%
-              </div>
-              <div style={{
-                fontSize: '12px',
-                color: '#6b7280',
-                fontWeight: '500'
-              }}>
-                Tỷ lệ hài lòng
-              </div>
+            <div style={{
+              fontSize: '1rem',
+              color: '#64748b',
+              fontWeight: '500'
+            }}>
+              Năm kinh nghiệm
             </div>
-            <div style={{ textAlign: 'center' }}>
-              <div style={{
-                fontSize: '32px',
-                fontWeight: '800',
-                color: '#10b981',
-                marginBottom: '5px'
-              }}>
-                15+
-              </div>
-              <div style={{
-                fontSize: '12px',
-                color: '#6b7280',
-                fontWeight: '500'
-              }}>
-                Năm kinh nghiệm
-              </div>
+          </div>
+
+          <div>
+            <div style={{
+              fontSize: 'clamp(2rem, 5vw, 3rem)',
+              fontWeight: '800',
+              color: '#3b82f6',
+              marginBottom: '8px'
+            }}>
+              5000+
+            </div>
+            <div style={{
+              fontSize: '1rem',
+              color: '#64748b',
+              fontWeight: '500'
+            }}>
+              Học sinh thành công
+            </div>
+          </div>
+
+          <div>
+            <div style={{
+              fontSize: 'clamp(2rem, 5vw, 3rem)',
+              fontWeight: '800',
+              color: '#10b981',
+              marginBottom: '8px'
+            }}>
+              30+
+            </div>
+            <div style={{
+              fontSize: '1rem',
+              color: '#64748b',
+              fontWeight: '500'
+            }}>
+              Giảng viên chuyên nghiệp
+            </div>
+          </div>
+
+          <div>
+            <div style={{
+              fontSize: 'clamp(2rem, 5vw, 3rem)',
+              fontWeight: '800',
+              color: '#f59e0b',
+              marginBottom: '8px'
+            }}>
+              95%
+            </div>
+            <div style={{
+              fontSize: '1rem',
+              color: '#64748b',
+              fontWeight: '500'
+            }}>
+              Tỷ lệ đậu IELTS 6.5+
             </div>
           </div>
         </div>
       </div>
-    </BackgroundSection>
+
+      <style>
+        {`
+          @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+          }
+          
+          #home * {
+            outline: none !important;
+            -webkit-tap-highlight-color: transparent !important;
+          }
+          
+          #home *:focus,
+          #home *:focus-visible {
+            outline: none !important;
+            border: none !important;
+          }
+          
+          @media (max-width: 768px) {
+            section {
+              padding: 60px 1rem !important;
+            }
+          }
+        `}
+      </style>
+    </section>
   );
 };
 

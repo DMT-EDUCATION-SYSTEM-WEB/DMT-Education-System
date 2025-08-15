@@ -72,19 +72,7 @@ const HeaderComponent: React.FC = () => {
           }}>
             Trang chủ
           </Link>
-          <Link to="/about" className="fade-in-up stagger-2" style={{
-            color: isActive('/about') ? COLORS.primary.main : COLORS.neutral.gray700,
-            textDecoration: 'none',
-            fontWeight: TYPOGRAPHY.fontWeight.medium,
-            fontSize: TYPOGRAPHY.fontSize.md,
-            padding: SPACING.sm + ' 0',
-            borderBottom: isActive('/about') ? `${BORDERS.width.normal} solid ${COLORS.primary.main}` : 'none',
-            transition: EFFECTS.transition.normal,
-            cursor: 'pointer'
-          }}>
-            Giới thiệu
-          </Link>
-          <Link to="/courses" className="fade-in-up stagger-3" style={{
+          <Link to="/courses" className="fade-in-up stagger-2" style={{
             color: isActive('/courses') ? COLORS.primary.main : COLORS.neutral.gray700,
             textDecoration: 'none',
             fontWeight: TYPOGRAPHY.fontWeight.medium,
@@ -96,7 +84,7 @@ const HeaderComponent: React.FC = () => {
           }}>
             Khóa học
           </Link>
-          <Link to="/teachers" className="fade-in-up stagger-4" style={{
+          <Link to="/teachers" className="fade-in-up stagger-3" style={{
             color: isActive('/teachers') ? COLORS.primary.main : COLORS.neutral.gray700,
             textDecoration: 'none',
             fontWeight: TYPOGRAPHY.fontWeight.medium,
@@ -108,7 +96,7 @@ const HeaderComponent: React.FC = () => {
           }}>
             Giảng viên
           </Link>
-          <Link to="/schedule" className="fade-in-up stagger-5" style={{
+          <Link to="/schedule" className="fade-in-up stagger-4" style={{
             color: isActive('/schedule') ? COLORS.primary.main : COLORS.neutral.gray700,
             textDecoration: 'none',
             fontWeight: TYPOGRAPHY.fontWeight.medium,
@@ -120,7 +108,7 @@ const HeaderComponent: React.FC = () => {
           }}>
             Lịch khai giảng
           </Link>
-          <Link to="/announcement" className="fade-in-up stagger-6" style={{
+          <Link to="/announcement" className="fade-in-up stagger-5" style={{
             color: isActive('/announcement') ? COLORS.primary.main : COLORS.neutral.gray700,
             textDecoration: 'none',
             fontWeight: TYPOGRAPHY.fontWeight.medium,

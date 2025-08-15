@@ -2,6 +2,7 @@ import React from 'react';
 import { 
   AnnouncementBanner, 
   Hero, 
+  AboutSection,
   AchievementsSection,
   ContactSection
 } from '../components/sections';
@@ -13,13 +14,14 @@ const HomePage: React.FC = () => {
     <>
       <SEOHead 
         title="DMT Education - Trang chủ"
-        description="Trang chủ DMT Education - Hệ thống quản lý giáo dục"
-        keywords="DMT Education, trang chủ, giáo dục, khóa học"
+        description="DMT Education - Hệ thống quản lý giáo dục hàng đầu. Tìm hiểu về chúng tôi và các khóa học chất lượng cao."
+        keywords="DMT Education, trang chủ, giáo dục, khóa học, về chúng tôi, giới thiệu"
       />
       
       <Layout>
         <AnnouncementBanner />
         <Hero />
+        <AboutSection />
         <AchievementsSection />
         <ContactSection />
       </Layout>

@@ -1,122 +1,974 @@
 import React, { useState } from 'react';
+import { motion } from 'framer-motion';
+import {
+  COLORS,
+  TYPOGRAPHY,
+  SPACING,
+  BORDERS,
+  SHADOWS,
+  EFFECTS,
+} from '../../../constants';
 
-const Login = () => {
+// Custom SVG Icons
+const EyeIcon = () => (
+  <svg
+    className="w-5 h-5"
+    fill="none"
+    stroke="currentColor"
+    viewBox="0 0 24 24"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={2}
+      d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+    />
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={2}
+      d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+    />
+  </svg>
+);
+
+const EyeOffIcon = () => (
+  <svg
+    className="w-5 h-5"
+    fill="none"
+    stroke="currentColor"
+    viewBox="0 0 24 24"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={2}
+      d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L3 3m6.878 6.878L21 21"
+    />
+  </svg>
+);
+
+const MailIcon = () => (
+  <svg
+    className="w-5 h-5"
+    fill="none"
+    stroke="currentColor"
+    viewBox="0 0 24 24"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={2}
+      d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+    />
+  </svg>
+);
+
+const LockIcon = () => (
+  <svg
+    className="w-5 h-5"
+    fill="none"
+    stroke="currentColor"
+    viewBox="0 0 24 24"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={2}
+      d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+    />
+  </svg>
+);
+
+const UserIcon = () => (
+  <svg
+    className="w-4 h-4"
+    fill="none"
+    stroke="currentColor"
+    viewBox="0 0 24 24"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={2}
+      d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+    />
+  </svg>
+);
+
+const ShieldIcon = () => (
+  <svg
+    className="w-4 h-4"
+    fill="none"
+    stroke="currentColor"
+    viewBox="0 0 24 24"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={2}
+      d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+    />
+  </svg>
+);
+
+const ChartIcon = () => (
+  <svg
+    className="w-4 h-4"
+    fill="none"
+    stroke="currentColor"
+    viewBox="0 0 24 24"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={2}
+      d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+    />
+  </svg>
+);
+
+const BookIcon = () => (
+  <svg
+    className="w-4 h-4"
+    fill="none"
+    stroke="currentColor"
+    viewBox="0 0 24 24"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={2}
+      d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+    />
+  </svg>
+);
+
+const Login: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Login attempt:', { email, password });
+    setIsLoading(true);
+    // Simulate login process
+    setTimeout(() => {
+      setIsLoading(false);
+      // Handle login logic here
+    }, 2000);
   };
 
-  const demoAccounts = [
-    { role: 'Admin', email: 'admin@dmt.edu.vn', password: 'admin123' },
-    { role: 'Giáo viên', email: 'teacher@dmt.edu.vn', password: 'teacher123' },
-    { role: 'Học sinh', email: 'student@dmt.edu.vn', password: 'student123' },
-    { role: 'Phụ huynh', email: 'parent@dmt.edu.vn', password: 'parent123' }
-  ];
+  const handleDemoLogin = (demoEmail: string, demoPassword: string) => {
+    setEmail(demoEmail);
+    setPassword(demoPassword);
+  };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 flex items-center justify-center p-4">
-      <div className="w-full max-w-md">
-        {/* Main Login Card */}
-        <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border border-white/20 p-8">
-          {/* Header */}
-          <div className="text-center mb-8">
-            <div className="w-20 h-20 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full mx-auto mb-4 flex items-center justify-center">
-              <span className="text-white font-bold text-2xl">DMT</span>
-            </div>
-            <h1 className="text-2xl font-bold text-gray-800 mb-2">
-              Đăng nhập
-            </h1>
-            <p className="text-gray-600">
-              Trung tâm Giáo dục DMT
-            </p>
-          </div>
+    <div
+      style={{
+        minHeight: '100vh',
+        background: `linear-gradient(rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.3)), url('/DMT Education_Logo/banner.jpg')`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+        backgroundAttachment: 'fixed',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: SPACING.md,
+        position: 'relative',
+        overflow: 'hidden',
+      }}
+    >
+      {/* Overlay gradient for better content readability */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 2 }}
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background:
+            'linear-gradient(135deg, rgba(220, 38, 38, 0.01) 0%, rgba(244, 63, 94, 0.005) 50%, rgba(249, 115, 22, 0.01) 100%)',
+          pointerEvents: 'none',
+          zIndex: 1,
+        }}
+      />
 
-          {/* Login Form */}
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Email
-              </label>
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
-                placeholder="Nhập email của bạn"
-                required
-              />
-            </div>
+      {/* Subtle decorative elements */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ opacity: 1, scale: [1, 1.1, 1] }}
+        transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
+        style={{
+          position: 'absolute',
+          top: '15%',
+          right: '10%',
+          width: '120px',
+          height: '120px',
+          background: `radial-gradient(circle, rgba(${COLORS.primary.main
+            .slice(1)
+            .match(/.{2}/g)
+            ?.map(x => parseInt(x, 16))
+            .join(', ')}, 0.08) 0%, transparent 70%)`,
+          borderRadius: '50%',
+          filter: 'blur(20px)',
+          zIndex: 1,
+        }}
+      />
+      <motion.div
+        initial={{ opacity: 0, scale: 0.6 }}
+        animate={{ opacity: 1, scale: [1, 1.2, 1] }}
+        transition={{
+          duration: 10,
+          repeat: Infinity,
+          ease: 'easeInOut',
+          delay: 2,
+        }}
+        style={{
+          position: 'absolute',
+          bottom: '20%',
+          left: '8%',
+          width: '150px',
+          height: '150px',
+          background: `radial-gradient(circle, rgba(${COLORS.primary.light
+            .slice(1)
+            .match(/.{2}/g)
+            ?.map(x => parseInt(x, 16))
+            .join(', ')}, 0.06) 0%, transparent 70%)`,
+          borderRadius: '50%',
+          filter: 'blur(25px)',
+          zIndex: 1,
+        }}
+      />
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Mật khẩu
-              </label>
-              <div className="relative">
-                <input
-                  type={showPassword ? 'text' : 'password'}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 pr-12"
-                  placeholder="Nhập mật khẩu"
-                  required
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
-                >
-                  {showPassword ? '🙈' : '👁️'}
-                </button>
-              </div>
-            </div>
+      {/* Geometric shapes */}
+      <motion.div
+        animate={{ rotate: 360 }}
+        transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
+        style={{
+          position: 'absolute',
+          top: '25%',
+          left: '25%',
+          width: '16px',
+          height: '16px',
+          background: COLORS.primary.main,
+          borderRadius: '50%',
+          opacity: 0.6,
+        }}
+      />
+      <motion.div
+        animate={{ rotate: -360 }}
+        transition={{ duration: 25, repeat: Infinity, ease: 'linear' }}
+        style={{
+          position: 'absolute',
+          bottom: '33%',
+          right: '25%',
+          width: '24px',
+          height: '24px',
+          border: `2px solid ${COLORS.primary.light}`,
+          transform: 'rotate(45deg)',
+          opacity: 0.5,
+        }}
+      />
+      <motion.div
+        animate={{ y: [-10, 10, -10] }}
+        transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+        style={{
+          position: 'absolute',
+          top: '160px',
+          right: '33%',
+          width: '12px',
+          height: '12px',
+          background: COLORS.secondary.orange,
+          borderRadius: '50%',
+          opacity: 0.7,
+        }}
+      />
 
-            <button
-              type="submit"
-              className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 rounded-lg font-medium hover:from-blue-700 hover:to-purple-700 focus:ring-4 focus:ring-blue-300 transition-all duration-200"
+      <div
+        style={{
+          width: '100%',
+          maxWidth: '1200px',
+          margin: '0 auto',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: SPACING['6xl'],
+          position: 'relative',
+          zIndex: 10,
+        }}
+        className="lg:justify-between"
+      >
+        {/* Left Side - Welcome Message */}
+        <motion.div
+          initial={{ opacity: 0, x: -50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8 }}
+          style={{
+            display: 'none',
+            flexDirection: 'column',
+            alignItems: 'flex-start',
+            maxWidth: '576px',
+          }}
+          className="lg:flex"
+        >
+          {/* Logo */}
+          <motion.div
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: SPACING.md,
+              marginBottom: SPACING['4xl'],
+            }}
+          >
+            <div
+              style={{
+                width: '48px',
+                height: '48px',
+                backgroundImage:
+                  'url("/DMT Education_Logo/LOGO DMT FINAL-06.png")',
+                backgroundSize: 'contain',
+                backgroundRepeat: 'no-repeat',
+                backgroundPosition: 'center',
+                borderRadius: BORDERS.radius.lg,
+                boxShadow: SHADOWS.sm,
+              }}
+            />
+            <span
+              style={{
+                fontSize: TYPOGRAPHY.fontSize['3xl'],
+                fontWeight: TYPOGRAPHY.fontWeight.bold,
+                color: COLORS.neutral.gray900,
+              }}
             >
-              Đăng nhập
-            </button>
-          </form>
+              DMT Education
+            </span>
+          </motion.div>
 
-          {/* Forgot Password */}
-          <div className="text-center mt-6">
-            <a href="#" className="text-sm text-blue-600 hover:text-blue-800">
-              Quên mật khẩu?
-            </a>
-          </div>
-        </div>
+          {/* Main heading */}
+          <motion.h1
+            initial={{ y: 30, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            style={{
+              fontSize: TYPOGRAPHY.fontSize['5xl'],
+              fontWeight: TYPOGRAPHY.fontWeight.bold,
+              color: COLORS.neutral.gray900,
+              marginBottom: SPACING['3xl'],
+              lineHeight: TYPOGRAPHY.lineHeight.tight,
+            }}
+          >
+            Chào mừng trở lại
+          </motion.h1>
 
-        {/* Demo Accounts Card */}
-        <div className="mt-6 bg-white/60 backdrop-blur-sm rounded-2xl border border-white/20 p-6">
-          <h3 className="text-lg font-semibold text-gray-800 mb-4 text-center">
-            Tài khoản demo
-          </h3>
-          <div className="space-y-3">
-            {demoAccounts.map((account, index) => (
-              <div 
+          <motion.p
+            initial={{ y: 30, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.6 }}
+            style={{
+              fontSize: TYPOGRAPHY.fontSize.xl,
+              color: COLORS.neutral.gray600,
+              marginBottom: SPACING['4xl'],
+              lineHeight: TYPOGRAPHY.lineHeight.relaxed,
+            }}
+          >
+            Hệ thống quản lý giáo dục hiện đại và toàn diện cho trung tâm DMT
+          </motion.p>
+
+          {/* Service Tags */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.8 }}
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(2, 1fr)',
+              gap: SPACING.md,
+              width: '100%',
+            }}
+          >
+            {[
+              {
+                icon: UserIcon,
+                text: 'Quản lý học viên',
+                color: COLORS.primary.main,
+              },
+              {
+                icon: ShieldIcon,
+                text: 'Hệ thống điểm',
+                color: COLORS.secondary.blue,
+              },
+              {
+                icon: ChartIcon,
+                text: 'Báo cáo thống kê',
+                color: COLORS.secondary.orange,
+              },
+              {
+                icon: BookIcon,
+                text: 'Quản lý lớp học',
+                color: COLORS.secondary.green,
+              },
+            ].map((item, index) => (
+              <motion.div
                 key={index}
-                onClick={() => {
-                  setEmail(account.email);
-                  setPassword(account.password);
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.5, delay: 1 + index * 0.1 }}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: SPACING.md,
+                  padding: SPACING.md,
+                  background: COLORS.neutral.white,
+                  borderRadius: BORDERS.radius.lg,
+                  boxShadow: SHADOWS.sm,
+                  border: `1px solid ${COLORS.neutral.gray100}`,
+                  borderTop: `3px solid ${item.color}`,
                 }}
-                className="p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors"
               >
-                <div className="flex justify-between items-center">
-                  <span className="font-medium text-gray-800">{account.role}</span>
-                  <span className="text-sm text-gray-500">Click để điền</span>
+                <div
+                  style={{
+                    width: '32px',
+                    height: '32px',
+                    background: item.color,
+                    borderRadius: BORDERS.radius.sm,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    color: COLORS.neutral.white,
+                  }}
+                >
+                  <item.icon />
                 </div>
-                <div className="text-sm text-gray-600 mt-1">
-                  {account.email}
+                <span
+                  style={{
+                    fontSize: TYPOGRAPHY.fontSize.sm,
+                    fontWeight: TYPOGRAPHY.fontWeight.medium,
+                    color: COLORS.neutral.gray700,
+                  }}
+                >
+                  {item.text}
+                </span>
+              </motion.div>
+            ))}
+          </motion.div>
+        </motion.div>
+
+        {/* Right Side - Login Form */}
+        <motion.div
+          initial={{ opacity: 0, x: 50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8 }}
+          style={{
+            width: '100%',
+            maxWidth: '448px',
+          }}
+        >
+          <div
+            style={{
+              background: 'rgba(255, 255, 255, 0.98)',
+              backdropFilter: 'blur(25px) saturate(180%)',
+              borderRadius: BORDERS.radius['3xl'],
+              boxShadow:
+                '0 25px 50px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(255, 255, 255, 0.5)',
+              padding: SPACING['4xl'],
+              border: `1px solid rgba(255, 255, 255, 0.6)`,
+              position: 'relative',
+              overflow: 'hidden',
+            }}
+          >
+            {/* Subtle glow effect */}
+            <div
+              style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                background:
+                  'linear-gradient(135deg, rgba(220, 38, 38, 0.02), rgba(244, 63, 94, 0.01))',
+                borderRadius: BORDERS.radius['3xl'],
+                pointerEvents: 'none',
+              }}
+            />
+
+            {/* Mobile Logo */}
+            <div
+              style={{
+                textAlign: 'center',
+                marginBottom: SPACING['4xl'],
+              }}
+              className="lg:hidden"
+            >
+              <div
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: SPACING.md,
+                  marginBottom: SPACING.md,
+                }}
+              >
+                <div
+                  style={{
+                    width: '40px',
+                    height: '40px',
+                    backgroundImage:
+                      'url("/DMT Education_Logo/LOGO DMT FINAL-06.png")',
+                    backgroundSize: 'contain',
+                    backgroundRepeat: 'no-repeat',
+                    backgroundPosition: 'center',
+                    borderRadius: BORDERS.radius.lg,
+                    boxShadow: SHADOWS.sm,
+                  }}
+                />
+                <span
+                  style={{
+                    fontSize: TYPOGRAPHY.fontSize.xl,
+                    fontWeight: TYPOGRAPHY.fontWeight.bold,
+                    color: COLORS.neutral.gray900,
+                  }}
+                >
+                  DMT Education
+                </span>
+              </div>
+              <h2
+                style={{
+                  fontSize: TYPOGRAPHY.fontSize['4xl'],
+                  fontWeight: TYPOGRAPHY.fontWeight.bold,
+                  color: COLORS.neutral.gray900,
+                  marginBottom: SPACING.sm,
+                }}
+              >
+                Chào mừng trở lại
+              </h2>
+            </div>
+
+            <form
+              onSubmit={handleSubmit}
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: SPACING['3xl'],
+              }}
+            >
+              {/* Email Input */}
+              <div>
+                <label
+                  style={{
+                    display: 'block',
+                    fontSize: TYPOGRAPHY.fontSize.sm,
+                    fontWeight: TYPOGRAPHY.fontWeight.medium,
+                    color: COLORS.neutral.gray700,
+                    marginBottom: SPACING.sm,
+                  }}
+                >
+                  Email của bạn
+                </label>
+                <div style={{ position: 'relative' }}>
+                  <div
+                    style={{
+                      position: 'absolute',
+                      left: SPACING.md,
+                      top: '50%',
+                      transform: 'translateY(-50%)',
+                      color: COLORS.neutral.gray400,
+                      pointerEvents: 'none',
+                    }}
+                  >
+                    <MailIcon />
+                  </div>
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={e => setEmail(e.target.value)}
+                    style={{
+                      width: '100%',
+                      paddingLeft: '40px',
+                      paddingRight: SPACING.md,
+                      paddingTop: SPACING.md,
+                      paddingBottom: SPACING.md,
+                      border: `${BORDERS.width.thin} solid ${COLORS.neutral.gray300}`,
+                      borderRadius: BORDERS.radius.lg,
+                      fontSize: TYPOGRAPHY.fontSize.base,
+                      transition: EFFECTS.transition.normal,
+                      background: COLORS.neutral.gray50,
+                    }}
+                    onFocus={e => {
+                      (e.target as HTMLElement).style.borderColor =
+                        COLORS.primary.main;
+                      (e.target as HTMLElement).style.background =
+                        COLORS.neutral.white;
+                      (
+                        e.target as HTMLElement
+                      ).style.boxShadow = `0 0 0 3px rgba(220, 38, 38, 0.1)`;
+                    }}
+                    onBlur={e => {
+                      (e.target as HTMLElement).style.borderColor =
+                        COLORS.neutral.gray300;
+                      (e.target as HTMLElement).style.background =
+                        COLORS.neutral.gray50;
+                      (e.target as HTMLElement).style.boxShadow = 'none';
+                    }}
+                    placeholder="vd. giang@metela.com"
+                    required
+                  />
                 </div>
               </div>
-            ))}
+
+              {/* Password Input */}
+              <div>
+                <label
+                  style={{
+                    display: 'block',
+                    fontSize: TYPOGRAPHY.fontSize.sm,
+                    fontWeight: TYPOGRAPHY.fontWeight.medium,
+                    color: COLORS.neutral.gray700,
+                    marginBottom: SPACING.sm,
+                  }}
+                >
+                  Mật khẩu của bạn
+                </label>
+                <div style={{ position: 'relative' }}>
+                  <div
+                    style={{
+                      position: 'absolute',
+                      left: SPACING.md,
+                      top: '50%',
+                      transform: 'translateY(-50%)',
+                      color: COLORS.neutral.gray400,
+                      pointerEvents: 'none',
+                    }}
+                  >
+                    <LockIcon />
+                  </div>
+                  <input
+                    type={showPassword ? 'text' : 'password'}
+                    value={password}
+                    onChange={e => setPassword(e.target.value)}
+                    style={{
+                      width: '100%',
+                      paddingLeft: '40px',
+                      paddingRight: '48px',
+                      paddingTop: SPACING.md,
+                      paddingBottom: SPACING.md,
+                      border: `${BORDERS.width.thin} solid ${COLORS.neutral.gray300}`,
+                      borderRadius: BORDERS.radius.lg,
+                      fontSize: TYPOGRAPHY.fontSize.base,
+                      transition: EFFECTS.transition.normal,
+                      background: COLORS.neutral.gray50,
+                    }}
+                    onFocus={e => {
+                      (e.target as HTMLElement).style.borderColor =
+                        COLORS.primary.main;
+                      (e.target as HTMLElement).style.background =
+                        COLORS.neutral.white;
+                      (
+                        e.target as HTMLElement
+                      ).style.boxShadow = `0 0 0 3px rgba(220, 38, 38, 0.1)`;
+                    }}
+                    onBlur={e => {
+                      (e.target as HTMLElement).style.borderColor =
+                        COLORS.neutral.gray300;
+                      (e.target as HTMLElement).style.background =
+                        COLORS.neutral.gray50;
+                      (e.target as HTMLElement).style.boxShadow = 'none';
+                    }}
+                    placeholder="vd. ilovemangools123"
+                    required
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    style={{
+                      position: 'absolute',
+                      right: SPACING.md,
+                      top: '50%',
+                      transform: 'translateY(-50%)',
+                      background: 'none',
+                      border: 'none',
+                      color: COLORS.neutral.gray400,
+                      cursor: 'pointer',
+                      transition: EFFECTS.transition.fast,
+                    }}
+                    onMouseEnter={e => {
+                      (e.target as HTMLElement).style.color =
+                        COLORS.neutral.gray600;
+                    }}
+                    onMouseLeave={e => {
+                      (e.target as HTMLElement).style.color =
+                        COLORS.neutral.gray400;
+                    }}
+                  >
+                    {showPassword ? <EyeOffIcon /> : <EyeIcon />}
+                  </button>
+                </div>
+              </div>
+
+              {/* Remember Me & Forgot Password */}
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                }}
+              >
+                <label
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    cursor: 'pointer',
+                  }}
+                >
+                  <input
+                    type="checkbox"
+                    checked={rememberMe}
+                    onChange={e => setRememberMe(e.target.checked)}
+                    style={{
+                      width: '16px',
+                      height: '16px',
+                      accentColor: COLORS.primary.main,
+                    }}
+                  />
+                  <span
+                    style={{
+                      marginLeft: SPACING.sm,
+                      fontSize: TYPOGRAPHY.fontSize.sm,
+                      color: COLORS.neutral.gray600,
+                    }}
+                  >
+                    Ghi nhớ đăng nhập?
+                  </span>
+                </label>
+                <a
+                  href="#"
+                  style={{
+                    fontSize: TYPOGRAPHY.fontSize.sm,
+                    color: COLORS.primary.main,
+                    fontWeight: TYPOGRAPHY.fontWeight.medium,
+                    textDecoration: 'none',
+                    transition: EFFECTS.transition.fast,
+                  }}
+                  onMouseEnter={e => {
+                    (e.target as HTMLElement).style.color = COLORS.primary.dark;
+                  }}
+                  onMouseLeave={e => {
+                    (e.target as HTMLElement).style.color = COLORS.primary.main;
+                  }}
+                >
+                  Quên mật khẩu?
+                </a>
+              </div>
+
+              {/* Sign In Button */}
+              <motion.button
+                type="submit"
+                disabled={isLoading}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                style={{
+                  width: '100%',
+                  background: COLORS.primary.gradient,
+                  color: COLORS.neutral.white,
+                  padding: `${SPACING.md} ${SPACING.lg}`,
+                  borderRadius: BORDERS.radius.lg,
+                  border: 'none',
+                  fontSize: TYPOGRAPHY.fontSize.lg,
+                  fontWeight: TYPOGRAPHY.fontWeight.semibold,
+                  cursor: isLoading ? 'not-allowed' : 'pointer',
+                  boxShadow: SHADOWS.primary,
+                  transition: EFFECTS.transition.normal,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: SPACING.sm,
+                  opacity: isLoading ? 0.5 : 1,
+                }}
+              >
+                {isLoading ? (
+                  <>
+                    <div
+                      style={{
+                        width: '20px',
+                        height: '20px',
+                        border: `2px solid ${COLORS.neutral.white}`,
+                        borderTop: '2px solid transparent',
+                        borderRadius: '50%',
+                        animation: 'spin 1s linear infinite',
+                      }}
+                    ></div>
+                    Đang đăng nhập...
+                  </>
+                ) : (
+                  'Đăng nhập'
+                )}
+              </motion.button>
+            </form>
+
+            {/* Demo Accounts */}
+            <div
+              style={{
+                marginTop: SPACING['4xl'],
+                paddingTop: SPACING['3xl'],
+                borderTop: `1px solid ${COLORS.neutral.gray200}`,
+              }}
+            >
+              <p
+                style={{
+                  textAlign: 'center',
+                  fontSize: TYPOGRAPHY.fontSize.sm,
+                  color: COLORS.neutral.gray600,
+                  marginBottom: SPACING.md,
+                }}
+              >
+                Tài khoản demo
+              </p>
+              <div
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(2, 1fr)',
+                  gap: SPACING.md,
+                }}
+              >
+                {[
+                  {
+                    role: 'Admin',
+                    email: 'admin@dmt.edu.vn',
+                    color: COLORS.primary.main,
+                  },
+                  {
+                    role: 'Giáo viên',
+                    email: 'teacher@dmt.edu.vn',
+                    color: COLORS.secondary.blue,
+                  },
+                  {
+                    role: 'Học viên',
+                    email: 'student@dmt.edu.vn',
+                    color: COLORS.secondary.green,
+                  },
+                  {
+                    role: 'Phụ huynh',
+                    email: 'parent@dmt.edu.vn',
+                    color: COLORS.secondary.purple,
+                  },
+                ].map((demo, index) => (
+                  <motion.button
+                    key={index}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => handleDemoLogin(demo.email, 'demo123')}
+                    style={{
+                      padding: SPACING.md,
+                      textAlign: 'left',
+                      border: `1px solid ${COLORS.neutral.gray200}`,
+                      borderRadius: BORDERS.radius.md,
+                      background: COLORS.neutral.white,
+                      cursor: 'pointer',
+                      transition: EFFECTS.transition.normal,
+                    }}
+                    onMouseEnter={e => {
+                      (e.target as HTMLElement).style.borderColor = demo.color;
+                      (
+                        e.target as HTMLElement
+                      ).style.background = `${demo.color}08`;
+                    }}
+                    onMouseLeave={e => {
+                      (e.target as HTMLElement).style.borderColor =
+                        COLORS.neutral.gray200;
+                      (e.target as HTMLElement).style.background =
+                        COLORS.neutral.white;
+                    }}
+                  >
+                    <div
+                      style={{
+                        fontSize: TYPOGRAPHY.fontSize.xs,
+                        fontWeight: TYPOGRAPHY.fontWeight.semibold,
+                        color: demo.color,
+                        marginBottom: '2px',
+                      }}
+                    >
+                      {demo.role}
+                    </div>
+                    <div
+                      style={{
+                        fontSize: TYPOGRAPHY.fontSize.xs,
+                        color: COLORS.neutral.gray500,
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        whiteSpace: 'nowrap',
+                      }}
+                    >
+                      {demo.email}
+                    </div>
+                  </motion.button>
+                ))}
+              </div>
+            </div>
+
+            {/* Footer */}
+            <div
+              style={{
+                marginTop: SPACING['3xl'],
+                textAlign: 'center',
+              }}
+            >
+              <p
+                style={{
+                  fontSize: TYPOGRAPHY.fontSize.xs,
+                  color: COLORS.neutral.gray500,
+                }}
+              >
+                Không có tài khoản?
+                <a
+                  href="#"
+                  style={{
+                    color: COLORS.primary.main,
+                    fontWeight: TYPOGRAPHY.fontWeight.medium,
+                    marginLeft: '4px',
+                    textDecoration: 'none',
+                    transition: EFFECTS.transition.fast,
+                  }}
+                  onMouseEnter={e => {
+                    (e.target as HTMLElement).style.color = COLORS.primary.dark;
+                  }}
+                  onMouseLeave={e => {
+                    (e.target as HTMLElement).style.color = COLORS.primary.main;
+                  }}
+                >
+                  Liên hệ quản trị viên
+                </a>
+              </p>
+            </div>
           </div>
-        </div>
+        </motion.div>
       </div>
+
+      {/* Global Styles */}
+      <style>
+        {`
+          @keyframes spin {
+            to { transform: rotate(360deg); }
+          }
+          
+          @media (max-width: 1024px) {
+            .lg\\:flex {
+              display: flex !important;
+            }
+            .lg\\:hidden {
+              display: none !important;
+            }
+          }
+        `}
+      </style>
     </div>
   );
 };

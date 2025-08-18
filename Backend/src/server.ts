@@ -2,6 +2,7 @@ import Fastify from 'fastify';
 import cors from '@fastify/cors';
 import * as dotenv from 'dotenv';
 import { createClient } from '@supabase/supabase-js';
+import authPlugin from './plugins/auth';
 
 dotenv.config();
 
@@ -21,6 +22,9 @@ await app.register(cors, {
   },
   credentials: true,
 });
+
+// JWT/auth plugin
+await app.register(authPlugin);
 
 // Supabase client (service role for backend)
 const supabaseUrl = process.env.SUPABASE_URL || '';

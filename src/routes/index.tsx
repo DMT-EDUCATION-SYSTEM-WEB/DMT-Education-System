@@ -5,6 +5,7 @@ import CoursesPage from '../pages/CoursesPage';
 import TeachersPage from '../pages/TeachersPage';
 import SchedulePage from '../pages/SchedulePage';
 import AnnouncementPage from '../pages/AnnouncementPage';
+import Login from '../features/auth/pages/Login';
 
 // Teacher Pages
 import TeacherDashboard from '../features/teachers/pages/Dashboard';
@@ -25,7 +26,8 @@ const AppRoutes = () => {
       <Route path="/teachers" element={<TeachersPage />} />
       <Route path="/schedule" element={<SchedulePage />} />
       <Route path="/announcement" element={<AnnouncementPage />} />
-      
+      <Route path="/auth/login" element={<Login />} />
+
       {/* Teacher Routes */}
       <Route path="/teacher/dashboard" element={<TeacherDashboard />} />
       <Route path="/teacher/assignments" element={<TeacherAssignments />} />
@@ -35,35 +37,40 @@ const AppRoutes = () => {
       <Route path="/teacher/timesheet" element={<TeacherTimesheet />} />
       <Route path="/teacher/calendar" element={<TeacherCalendar />} />
       <Route path="/teacher/reports" element={<TeacherReports />} />
-      
-      <Route path="*" element={
-        <div style={{ 
-          padding: '2rem', 
-          textAlign: 'center',
-          minHeight: '100vh',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'center'
-        }}>
-          <h2 style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>
-            Không tìm thấy trang
-          </h2>
-          <p style={{ marginBottom: '1rem' }}>
-            Liên kết bạn truy cập không tồn tại.
-          </p>
-          <a 
-            href="/home" 
-            style={{ 
-              color: '#6366f1', 
-              textDecoration: 'underline',
-              fontSize: '1.1rem'
+
+      <Route
+        path="*"
+        element={
+          <div
+            style={{
+              padding: '2rem',
+              textAlign: 'center',
+              minHeight: '100vh',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+              alignItems: 'center',
             }}
           >
-            Quay lại trang chủ
-          </a>
-        </div>
-      } />
+            <h2 style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>
+              Không tìm thấy trang
+            </h2>
+            <p style={{ marginBottom: '1rem' }}>
+              Liên kết bạn truy cập không tồn tại.
+            </p>
+            <a
+              href="/home"
+              style={{
+                color: '#6366f1',
+                textDecoration: 'underline',
+                fontSize: '1.1rem',
+              }}
+            >
+              Quay lại trang chủ
+            </a>
+          </div>
+        }
+      />
     </Routes>
   );
 };

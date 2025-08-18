@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import {
   COLORS,
   TYPOGRAPHY,
@@ -8,6 +9,18 @@ import {
   SHADOWS,
   EFFECTS,
 } from '../../../constants';
+import authService from '../../../services/auth';
+
+// Types
+interface LoginResponse {
+  token: string;
+  user: {
+    id: number;
+    email: string;
+    full_name: string;
+    role_id: number;
+  };
+}
 
 // Custom SVG Icons
 const EyeIcon = () => (
@@ -150,15 +163,55 @@ const Login: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState(false);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    // Simulate login process
-    setTimeout(() => {
+    setError(null);
+
+    try {
+      const data = await authService.login({ email, password });
+
+      // Save token to localStorage
+      if (data.token) {
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('user', JSON.stringify(data.user));
+      }
+
+      setSuccess(true);
+
+      // Redirect based on user role
+      setTimeout(() => {
+        switch (data.user.role_id) {
+          case 1: // Admin
+            navigate('/admin/dashboard');
+            break;
+          case 2: // Teacher
+            navigate('/teachers/dashboard');
+            break;
+          case 3: // Student
+            navigate('/students/dashboard');
+            break;
+          case 4: // Parent
+            navigate('/students/dashboard'); // Parents see student dashboard
+            break;
+          default:
+            navigate('/dashboard');
+        }
+      }, 1500);
+    } catch (err: any) {
+      console.error('Login error:', err);
+      setError(
+        err.response?.data?.error ||
+          err.message ||
+          'Đăng nhập thất bại. Vui lòng thử lại.'
+      );
+    } finally {
       setIsLoading(false);
-      // Handle login logic here
-    }, 2000);
+    }
   };
 
   const handleDemoLogin = (demoEmail: string, demoPassword: string) => {
@@ -561,6 +614,53 @@ const Login: React.FC = () => {
                 gap: SPACING['3xl'],
               }}
             >
+              {/* Error Message */}
+              {error && (
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  style={{
+                    background: 'linear-gradient(135deg, #fee2e2, #fecaca)',
+                    color: '#dc2626',
+                    padding: SPACING.md,
+                    borderRadius: BORDERS.radius.md,
+                    fontSize: TYPOGRAPHY.fontSize.sm,
+                    textAlign: 'center',
+                    border: `1px solid #fca5a5`,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: SPACING.sm,
+                  }}
+                >
+                  <span>⚠️</span>
+                  {error}
+                </motion.div>
+              )}
+
+              {/* Success Message */}
+              {success && (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  style={{
+                    background: 'linear-gradient(135deg, #d1fae5, #a7f3d0)',
+                    color: '#059669',
+                    padding: SPACING.md,
+                    borderRadius: BORDERS.radius.md,
+                    fontSize: TYPOGRAPHY.fontSize.sm,
+                    textAlign: 'center',
+                    border: `1px solid #6ee7b7`,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: SPACING.sm,
+                  }}
+                >
+                  <span>✅</span>
+                  Đăng nhập thành công! Đang chuyển hướng...
+                </motion.div>
+              )}
               {/* Email Input */}
               <div>
                 <label
@@ -843,21 +943,25 @@ const Login: React.FC = () => {
                   {
                     role: 'Admin',
                     email: 'admin@dmt.edu.vn',
+                    password: 'password',
                     color: COLORS.primary.main,
                   },
                   {
                     role: 'Giáo viên',
                     email: 'teacher@dmt.edu.vn',
+                    password: 'teacher123',
                     color: COLORS.secondary.blue,
                   },
                   {
                     role: 'Học viên',
                     email: 'student@dmt.edu.vn',
+                    password: 'student123',
                     color: COLORS.secondary.green,
                   },
                   {
                     role: 'Phụ huynh',
                     email: 'parent@dmt.edu.vn',
+                    password: 'parent123',
                     color: COLORS.secondary.purple,
                   },
                 ].map((demo, index) => (
@@ -865,7 +969,7 @@ const Login: React.FC = () => {
                     key={index}
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    onClick={() => handleDemoLogin(demo.email, 'demo123')}
+                    onClick={() => handleDemoLogin(demo.email, demo.password)}
                     style={{
                       padding: SPACING.md,
                       textAlign: 'left',

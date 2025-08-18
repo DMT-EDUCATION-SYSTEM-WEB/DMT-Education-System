@@ -1,8 +1,5 @@
-module.exports = {
-  content: [
-    "./index.html",
-    "./src/**/*.{js,jsx,ts,tsx}",
-  ],
+export default {
+  content: ['./index.html', './src/**/*.{js,jsx,ts,tsx}'],
   theme: {
     extend: {
       colors: {
@@ -37,8 +34,8 @@ module.exports = {
         },
       },
       spacing: {
-        '128': '32rem',
-        '144': '36rem',
+        128: '32rem',
+        144: '36rem',
       },
       fontFamily: {
         sans: [
@@ -54,4 +51,4 @@ module.exports = {
     },
   },
   plugins: [],
-}
+};

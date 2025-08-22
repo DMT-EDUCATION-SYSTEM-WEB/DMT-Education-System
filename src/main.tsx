@@ -14,7 +14,7 @@ if (rootElement) {
   ReactDOM.render(
     <React.StrictMode>
       <Provider store={store}>
-        <BrowserRouter>
+        <BrowserRouter basename={import.meta.env.BASE_URL}>
           <AppRoutes />
         </BrowserRouter>
       </Provider>

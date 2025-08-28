@@ -183,25 +183,10 @@ const Login: React.FC = () => {
 
       setSuccess(true);
 
-      // Redirect based on user role
+      // Redirect: luôn về trang chủ sau khi đăng nhập (thêm độ trễ nhẹ cho UX)
       setTimeout(() => {
-        switch (data.user.role_id) {
-          case 1: // Admin
-            navigate('/admin/dashboard');
-            break;
-          case 2: // Teacher
-            navigate('/teachers/dashboard');
-            break;
-          case 3: // Student
-            navigate('/students/dashboard');
-            break;
-          case 4: // Parent
-            navigate('/students/dashboard'); // Parents see student dashboard
-            break;
-          default:
-            navigate('/dashboard');
-        }
-      }, 1500);
+        navigate('/', { replace: true });
+      }, 700);
     } catch (err: any) {
       console.error('Login error:', err);
       setError(

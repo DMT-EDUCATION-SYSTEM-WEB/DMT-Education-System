@@ -83,6 +83,8 @@ erDiagram
 
 - `users.email` **unique**
 - `students.user_id`, `teachers.user_id`, `staffs.user_id`, `admins.user_id` **unique**
+- `students.user_id` FK → `users.id` với hành vi **ON DELETE CASCADE**
+- `students.student_code` **unique**, có ràng buộc định dạng: `^stu[0-9]{2}[0-9]{2,}$`
 - `courses.code`, `classes.code` **unique**
 - `enrollments(class_id, student_id)` **unique**
 - `submissions(assignment_id, enrollment_id)` **unique**
@@ -111,6 +113,13 @@ erDiagram
 
 - Hồ sơ mở rộng 1–1 với `users`.
 - Chứa thông tin đặc thù (vd: chuyên môn của teacher, phòng ban của staff, quyền hạn đặc biệt của admin).
+
+##### Ghi chú cho `students`
+
+- Cột `cohort` (int) biểu thị khóa học/năm nhập học (vd: 23).
+- Cột `student_code` là mã đọc được cho con người, có dạng: `stu{cohort}{ordinal padded ≥2}` (ví dụ: `stu2301`, `stu2310`, `stu23100`).
+- Ràng buộc định dạng bằng CHECK: `^stu[0-9]{2}[0-9]{2,}$` và UNIQUE để chống trùng.
+- Khóa ngoại `user_id` trỏ `users.id` và **ON DELETE CASCADE** để xóa hồ sơ khi user bị xóa.
 
 ---
 

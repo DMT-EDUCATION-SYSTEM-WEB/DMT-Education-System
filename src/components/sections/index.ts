@@ -12,12 +12,13 @@ export { default as ScheduleSection } from './ScheduleSection';
 export { default as NewsSection } from './NewsSection';
 export { default as AchievementsSection } from './AchievementsSection';
 export { default as ContactSection } from './ContactSection';
+export { default as ProgramsSection } from './ProgramsSection';
 
 // Temporarily disabled - not used
 // export { default as SponsorsSection } from './SponsorsSection';
 
 // Note: These files exist but are duplicates/alternatives to the ones being used:
 // - HeroSection.tsx (duplicate of Hero.tsx - Hero.tsx is used)
-// - HeaderSection.tsx (duplicate of HeaderComponent.tsx - HeaderComponent.tsx is used)  
+// - HeaderSection.tsx (duplicate of HeaderComponent.tsx - HeaderComponent.tsx is used)
 // - FooterSection.tsx (duplicate of Footer.tsx - Footer.tsx is used)
 // Consider removing duplicate files to avoid confusion

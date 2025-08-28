@@ -1,7 +1,29 @@
-/* Global Styles for DMT Education System */
-
 /* Font imports */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+/* Tailwind CSS directives */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Global Styles for DMT Education System */
+
+@keyframes gradientBG {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animate-gradient {
+  background-size: 200% 200%;
+  animation: gradientBG 8s ease-in-out infinite;
+}
 
 /* Reset and base styles */
 * {
@@ -692,6 +714,188 @@ body {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
+}
+
+/* ===== DMT Enhanced UI Kit (reusable) ===== */
+:root {
+  --dmt-card-radius: 20px;
+  --dmt-border: #eef2f7;
+  --dmt-shadow-sm: 0 6px 18px rgba(15, 23, 42, 0.06);
+  --dmt-shadow-md: 0 12px 28px rgba(15, 23, 42, 0.1);
+  --dmt-shadow-lg: 0 18px 48px rgba(15, 23, 42, 0.16);
+}
+
+.dmt-smooth * {
+  transition: all 0.25s ease;
+}
+
+.dmt-card {
+  background: #fff;
+  border: 1px solid var(--dmt-border);
+  border-radius: var(--dmt-card-radius);
+  box-shadow: var(--dmt-shadow-sm);
+}
+
+.dmt-card-hover:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--dmt-shadow-lg);
+}
+
+.dmt-btn {
+  border: none;
+  border-radius: 9999px;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 14px 28px;
+}
+
+.dmt-btn-gradient {
+  background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+  color: #fff;
+  box-shadow: 0 10px 30px rgba(220, 38, 38, 0.28);
+}
+.dmt-btn-gradient:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 40px rgba(220, 38, 38, 0.4);
+}
+.dmt-btn-outline {
+  background: transparent;
+  color: #dc2626;
+  border: 2px solid #dc2626;
+}
+.dmt-btn-outline:hover {
+  background: #dc2626;
+  color: #fff;
+  transform: translateY(-2px);
+}
+
+.dmt-chip {
+  padding: 6px 12px;
+  border-radius: 9999px;
+  font-size: 12px;
+  font-weight: 700;
+  background: #f1f5f9;
+  color: #475569;
+}
+
+.dmt-list-dot {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.dmt-list-dot::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.dmt-hover-zoom {
+  will-change: transform, box-shadow;
+}
+.dmt-hover-zoom:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--dmt-shadow-md);
+}
+
+/* Premium effects */
+.dmt-glass {
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: saturate(160%) blur(14px);
+  -webkit-backdrop-filter: saturate(160%) blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+}
+
+.dmt-gradient-border {
+  position: relative;
+}
+.dmt-gradient-border::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  background: linear-gradient(
+    135deg,
+    #0ea5e9 0%,
+    #22c55e 35%,
+    #eab308 70%,
+    #ef4444 100%
+  );
+  z-index: 0;
+}
+.dmt-gradient-border > * {
+  position: relative;
+  z-index: 1;
+}
+
+.dmt-shine {
+  position: relative;
+  overflow: hidden;
+}
+.dmt-shine::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -30%;
+  width: 60%;
+  height: 200%;
+  transform: rotate(25deg);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.35),
+    transparent
+  );
+  opacity: 0;
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+.dmt-shine:hover::after {
+  opacity: 1;
+  transform: translateX(220%) rotate(25deg);
+}
+
+.dmt-tilt {
+  transform-style: preserve-3d;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.dmt-tilt:hover {
+  transform: perspective(900px) rotateX(3deg) rotateY(-3deg) translateY(-4px);
+  box-shadow: var(--dmt-shadow-md);
+}
+
+.dmt-float:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--dmt-shadow-lg);
+}
+
+.dmt-btn-premium {
+  background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+  color: #fff;
+  box-shadow: 0 12px 34px rgba(220, 38, 38, 0.35);
+}
+.dmt-btn-premium:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 18px 46px rgba(220, 38, 38, 0.45);
+}
+
+.dmt-spotlight {
+  position: relative;
+  background: radial-gradient(
+      600px 220px at var(--mx, 50%) var(--my, 50%),
+      rgba(220, 38, 38, 0.08),
+      transparent 60%
+    ),
+    radial-gradient(
+      400px 160px at calc(var(--mx, 50%) + 20%) calc(var(--my, 50%) - 10%),
+      rgba(59, 130, 246, 0.08),
+      transparent 60%
+    );
+}
+
+.dmt-spotlight[data-mouse='true'] {
+  --mx: 50%;
+  --my: 50%;
 }
 
 /* Focus styles */

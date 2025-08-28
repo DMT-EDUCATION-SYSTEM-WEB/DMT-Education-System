@@ -342,7 +342,6 @@ const Login: React.FC = () => {
           position: 'relative',
           zIndex: 10,
         }}
-        className="lg:justify-between"
       >
         {/* Left Side - Welcome Message */}
         <motion.div
@@ -355,7 +354,6 @@ const Login: React.FC = () => {
             alignItems: 'flex-start',
             maxWidth: '576px',
           }}
-          className="lg:flex"
         >
           {/* Logo */}
           <motion.div
@@ -546,7 +544,6 @@ const Login: React.FC = () => {
                 textAlign: 'center',
                 marginBottom: SPACING['4xl'],
               }}
-              className="lg:hidden"
             >
               <div
                 style={{

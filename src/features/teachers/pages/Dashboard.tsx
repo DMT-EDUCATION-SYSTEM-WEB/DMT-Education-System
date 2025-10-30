@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { SEOHead } from '../../../components/common';
 import TeacherLayout from '../../../components/layout/TeacherLayout';
+import { FileText, ClipboardList, Users, Clock, Calendar, AlertTriangle, BookOpen, BarChart, Download, CheckCircle, Plus, Pin } from 'lucide-react';
 
 interface DashboardStats {
   totalAssignments: number;
@@ -90,10 +91,10 @@ const TeacherDashboard: React.FC = () => {
 
   const getActivityIcon = (type: string) => {
     switch (type) {
-      case 'submission': return '📥';
-      case 'graded': return '✅';
-      case 'created': return '➕';
-      default: return '📌';
+      case 'submission': return <Download size={16} />;
+      case 'graded': return <CheckCircle size={16} />;
+      case 'created': return <Plus size={16} />;
+      default: return <Pin size={16} />;
     }
   };
 
@@ -114,8 +115,7 @@ const TeacherDashboard: React.FC = () => {
         keywords="giáo viên, dashboard, quản lý, bài tập, chấm điểm"
       />
       
-      <TeacherLayout>
-        <div style={{ padding: '24px' }}>
+      <div style={{ padding: '24px' }}>
           {/* Header */}
           <div style={{ marginBottom: '32px' }}>
             <h1 style={{
@@ -154,7 +154,7 @@ const TeacherDashboard: React.FC = () => {
                     {stats.totalAssignments}
                   </p>
                 </div>
-                <div style={{ fontSize: '32px' }}>📝</div>
+                <div style={{ color: '#3b82f6' }}><FileText size={32} /></div>
               </div>
             </div>
 
@@ -174,7 +174,7 @@ const TeacherDashboard: React.FC = () => {
                     {stats.pendingGrading}
                   </p>
                 </div>
-                <div style={{ fontSize: '32px' }}>📋</div>
+                <div style={{ color: '#dc2626' }}><ClipboardList size={32} /></div>
               </div>
             </div>
 
@@ -194,7 +194,7 @@ const TeacherDashboard: React.FC = () => {
                     {stats.totalStudents}
                   </p>
                 </div>
-                <div style={{ fontSize: '32px' }}>👥</div>
+                <div style={{ color: '#10b981' }}><Users size={32} /></div>
               </div>
             </div>
 
@@ -214,7 +214,7 @@ const TeacherDashboard: React.FC = () => {
                     {stats.upcomingDeadlines}
                   </p>
                 </div>
-                <div style={{ fontSize: '32px' }}>⏰</div>
+                <div style={{ color: '#f59e0b' }}><Clock size={32} /></div>
               </div>
             </div>
           </div>
@@ -266,13 +266,13 @@ const TeacherDashboard: React.FC = () => {
                              deadline.type === 'homework' ? 'Bài tập' : 
                              deadline.type === 'midterm' ? 'Giữa kỳ' : 'Cuối kỳ'}
                           </span>
-                          <span style={{ fontSize: '14px', color: '#64748b' }}>
-                            📅 {formatDate(deadline.dueDate)}
+                          <span style={{ fontSize: '14px', color: '#64748b', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                            <Calendar size={14} /> {formatDate(deadline.dueDate)}
                           </span>
                         </div>
                         {deadline.pendingSubmissions > 0 && (
-                          <p style={{ fontSize: '14px', color: '#f59e0b' }}>
-                            ⚠️ {deadline.pendingSubmissions} bài chưa nộp
+                          <p style={{ fontSize: '14px', color: '#f59e0b', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                            <AlertTriangle size={14} /> {deadline.pendingSubmissions} bài chưa nộp
                           </p>
                         )}
                       </div>
@@ -339,7 +339,7 @@ const TeacherDashboard: React.FC = () => {
                 color: '#1e293b',
                 transition: 'transform 0.2s ease'
               }}>
-                <div style={{ fontSize: '32px', marginBottom: '8px' }}>📝</div>
+                <div style={{ color: '#3b82f6', marginBottom: '8px' }}><FileText size={32} /></div>
                 <span style={{ fontSize: '14px', fontWeight: '500' }}>Tạo bài tập mới</span>
               </Link>
               
@@ -356,7 +356,7 @@ const TeacherDashboard: React.FC = () => {
                 color: '#1e293b',
                 transition: 'transform 0.2s ease'
               }}>
-                <div style={{ fontSize: '32px', marginBottom: '8px' }}>📋</div>
+                <div style={{ color: '#dc2626', marginBottom: '8px' }}><ClipboardList size={32} /></div>
                 <span style={{ fontSize: '14px', fontWeight: '500' }}>Chấm điểm</span>
               </Link>
               
@@ -373,7 +373,7 @@ const TeacherDashboard: React.FC = () => {
                 color: '#1e293b',
                 transition: 'transform 0.2s ease'
               }}>
-                <div style={{ fontSize: '32px', marginBottom: '8px' }}>📚</div>
+                <div style={{ color: '#10b981', marginBottom: '8px' }}><BookOpen size={32} /></div>
                 <span style={{ fontSize: '14px', fontWeight: '500' }}>Upload tài liệu</span>
               </Link>
               
@@ -390,13 +390,12 @@ const TeacherDashboard: React.FC = () => {
                 color: '#1e293b',
                 transition: 'transform 0.2s ease'
               }}>
-                <div style={{ fontSize: '32px', marginBottom: '8px' }}>📊</div>
+                <div style={{ color: '#f59e0b', marginBottom: '8px' }}><BarChart size={32} /></div>
                 <span style={{ fontSize: '14px', fontWeight: '500' }}>Tạo khảo sát</span>
               </Link>
             </div>
           </div>
         </div>
-      </TeacherLayout>
     </>
   );
 };

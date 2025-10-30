@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { getStudentMaterials } from '../api';
 import Card from '../../../components/common/Card';
 import Spinner from '../../../components/common/Spinner';
+import { FileText, File, Presentation, Image, Paperclip, Lock, ClipboardList } from 'lucide-react';
 
 interface Material {
   id: string;
@@ -19,11 +20,11 @@ interface Material {
 const MaterialCard: React.FC<{ material: Material }> = ({ material }) => {
   const getFileIcon = (type: string) => {
     switch (type) {
-      case 'pdf': return '📄';
-      case 'doc': return '📝';
-      case 'ppt': return '📊';
-      case 'image': return '🖼️';
-      default: return '📎';
+      case 'pdf': return <FileText size={24} />;
+      case 'doc': return <File size={24} />;
+      case 'ppt': return <Presentation size={24} />;
+      case 'image': return <Image size={24} />;
+      default: return <Paperclip size={24} />;
     }
   };
 
@@ -32,7 +33,7 @@ const MaterialCard: React.FC<{ material: Material }> = ({ material }) => {
   return (
     <Card>
       <div className="flex items-start gap-3">
-        <div className="text-2xl">{getFileIcon(material.fileType)}</div>
+        <div className="text-gray-600">{getFileIcon(material.fileType)}</div>
         <div className="flex-1 min-w-0">
           <h3 className="font-semibold text-gray-900 truncate">{material.title}</h3>
           <p className="text-sm text-gray-600 mt-1">{material.description}</p>
@@ -46,7 +47,7 @@ const MaterialCard: React.FC<{ material: Material }> = ({ material }) => {
           <div className="mt-3">
             <div className="flex justify-between text-xs text-gray-500 mb-1">
               <span>Lượt tải: {material.downloadCount}/{material.maxDownloads}</span>
-              {material.hasWatermark && <span className="text-primary-600">🔒 Có watermark</span>}
+              {material.hasWatermark && <span className="text-primary-600 flex items-center gap-1"><Lock size={12} /> Có watermark</span>}
             </div>
             <div className="w-full bg-gray-200 rounded-full h-2">
               <div 
@@ -196,7 +197,7 @@ const Materials: React.FC = () => {
 
       <Card>
         <div className="space-y-2 text-sm text-gray-600">
-          <p className="font-medium">📋 Quy định sử dụng tài liệu:</p>
+          <p className="font-medium flex items-center gap-2"><ClipboardList size={16} /> Quy định sử dụng tài liệu:</p>
           <ul className="list-disc list-inside space-y-1 text-xs">
             <li>Tài liệu có watermark, không được chỉnh sửa hoặc phân phối</li>
             <li>Số lượt tải giới hạn theo từng tài liệu</li>

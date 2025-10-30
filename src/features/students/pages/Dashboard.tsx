@@ -2,6 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../store';
 import { Link } from 'react-router-dom';
+import { Hand } from 'lucide-react';
 
 const StatCard: React.FC<{ title: string; value: string | number; hint?: string }> = ({ title, value, hint }) => (
   <div className="card relative overflow-hidden">
@@ -27,7 +28,9 @@ const Dashboard: React.FC = () => {
   return (
     <div className="space-y-8">
       <div className="hero mb-2">
-        <h1 className="text-xl font-semibold text-gray-900">Xin chào, {student.name || 'Học viên'} 👋</h1>
+        <h1 className="text-xl font-semibold text-gray-900 flex items-center gap-2">
+          Xin chào, {student.name || 'Học viên'} <Hand size={24} className="inline-block" />
+        </h1>
         <p className="mt-1 text-sm text-gray-600">Theo dõi tiến độ học tập và truy cập nhanh các tài nguyên.</p>
       </div>
 

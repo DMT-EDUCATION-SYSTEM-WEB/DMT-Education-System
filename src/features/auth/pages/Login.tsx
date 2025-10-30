@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import {
   COLORS,
   TYPOGRAPHY,
@@ -10,6 +11,9 @@ import {
   EFFECTS,
 } from '../../../constants';
 import authService from '../../../services/auth';
+import { login as loginAction } from '../../../store/slices/userSlice';
+import { Role } from '../../../types';
+import { AlertTriangle, CheckCircle } from 'lucide-react';
 
 // Types
 interface LoginResponse {
@@ -166,6 +170,7 @@ const Login: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -181,6 +186,35 @@ const Login: React.FC = () => {
         localStorage.setItem('user', JSON.stringify(data.user));
       }
 
+      // Map role_id to Role enum
+      let userRole: Role;
+      switch (data.user.role_id) {
+        case 1:
+          userRole = Role.ADMIN;
+          break;
+        case 2:
+          userRole = Role.TEACHER;
+          break;
+        case 3:
+          userRole = Role.STUDENT;
+          break;
+        case 4:
+          userRole = Role.STUDENT; // Parent see student dashboard
+          break;
+        default:
+          userRole = Role.STUDENT;
+      }
+
+      // Dispatch login action to Redux store
+      dispatch(loginAction({
+        id: data.user.id.toString(),
+        name: data.user.full_name,
+        email: data.user.email,
+        role: userRole,
+        status: 'active',
+        lastLogin: new Date().toISOString()
+      }));
+
       setSuccess(true);
 
       // Redirect based on user role
@@ -190,7 +224,7 @@ const Login: React.FC = () => {
             navigate('/admin/dashboard');
             break;
           case 2: // Teacher
-            navigate('/teachers/dashboard');
+            navigate('/teacher/dashboard');
             break;
           case 3: // Student
             navigate('/students/dashboard');
@@ -199,7 +233,7 @@ const Login: React.FC = () => {
             navigate('/students/dashboard'); // Parents see student dashboard
             break;
           default:
-            navigate('/dashboard');
+            navigate('/');
         }
       }, 1500);
     } catch (err: any) {
@@ -223,7 +257,7 @@ const Login: React.FC = () => {
     <div
       style={{
         minHeight: '100vh',
-        background: `linear-gradient(rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.3)), url('/DMT Education_Logo/banner.jpg')`,
+        background: `linear-gradient(rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.3)), url('/banner.jpg')`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
@@ -389,7 +423,7 @@ const Login: React.FC = () => {
                 width: '48px',
                 height: '48px',
                 backgroundImage:
-                  'url("/DMT Education_Logo/LOGO DMT FINAL-06.png")',
+                  'url("/logo-dmt-main.png")',
                 backgroundSize: 'contain',
                 backgroundRepeat: 'no-repeat',
                 backgroundPosition: 'center',
@@ -576,7 +610,7 @@ const Login: React.FC = () => {
                     width: '40px',
                     height: '40px',
                     backgroundImage:
-                      'url("/DMT Education_Logo/LOGO DMT FINAL-06.png")',
+                      'url("/logo-dmt-main.png")',
                     backgroundSize: 'contain',
                     backgroundRepeat: 'no-repeat',
                     backgroundPosition: 'center',
@@ -620,20 +654,20 @@ const Login: React.FC = () => {
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
                   style={{
-                    background: 'linear-gradient(135deg, #fee2e2, #fecaca)',
+                    background: 'linear-gradient(135deg, #e43535ff, #ffffffff)',
                     color: '#dc2626',
                     padding: SPACING.md,
                     borderRadius: BORDERS.radius.md,
                     fontSize: TYPOGRAPHY.fontSize.sm,
                     textAlign: 'center',
-                    border: `1px solid #fca5a5`,
+                    border: `1px solid #ff5555ff`,
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
                     gap: SPACING.sm,
                   }}
                 >
-                  <span>⚠️</span>
+                  <AlertTriangle size={20} />
                   {error}
                 </motion.div>
               )}
@@ -657,7 +691,7 @@ const Login: React.FC = () => {
                     gap: SPACING.sm,
                   }}
                 >
-                  <span>✅</span>
+                  <CheckCircle size={20} />
                   Đăng nhập thành công! Đang chuyển hướng...
                 </motion.div>
               )}
@@ -979,13 +1013,13 @@ const Login: React.FC = () => {
                       cursor: 'pointer',
                       transition: EFFECTS.transition.normal,
                     }}
-                    onMouseEnter={e => {
+                    onMouseEnter={(e: React.MouseEvent<HTMLDivElement>) => {
                       (e.target as HTMLElement).style.borderColor = demo.color;
                       (
                         e.target as HTMLElement
                       ).style.background = `${demo.color}08`;
                     }}
-                    onMouseLeave={e => {
+                    onMouseLeave={(e: React.MouseEvent<HTMLDivElement>) => {
                       (e.target as HTMLElement).style.borderColor =
                         COLORS.neutral.gray200;
                       (e.target as HTMLElement).style.background =

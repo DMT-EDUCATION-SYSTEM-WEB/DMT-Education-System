@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { SEOHead } from '../../../components/common';
 import TeacherLayout from '../../../components/layout/TeacherLayout';
+import { Calendar as CalendarIcon, MapPin } from 'lucide-react';
 
 interface ClassSchedule {
   id: string;
@@ -163,8 +164,7 @@ const Calendar: React.FC = () => {
         keywords="lịch dạy, lịch giảng dạy, thời khóa biểu"
       />
       
-      <TeacherLayout>
-        <div style={{ padding: '24px' }}>
+      <div style={{ padding: '24px' }}>
           {/* Header */}
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
             <div>
@@ -172,9 +172,12 @@ const Calendar: React.FC = () => {
                 fontSize: '24px',
                 fontWeight: 'bold',
                 color: '#1e293b',
-                marginBottom: '4px'
+                marginBottom: '4px',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.5rem'
               }}>
-                📅 Lịch dạy & Sự kiện
+                <CalendarIcon size={24} /> Lịch dạy & Sự kiện
               </h1>
               <p style={{ color: '#64748b', fontSize: '14px' }}>
                 Quản lý lịch giảng dạy và các sự kiện quan trọng
@@ -358,8 +361,8 @@ const Calendar: React.FC = () => {
                         <div style={{ color: '#374151' }}>
                           {formatTime(schedule.startTime)} - {formatTime(schedule.endTime)}
                         </div>
-                        <div style={{ color: '#6b7280', fontSize: '11px' }}>
-                          📍 {schedule.room} • {schedule.studentCount} HS
+                        <div style={{ color: '#6b7280', fontSize: '11px', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                          <MapPin size={11} /> {schedule.room} • {schedule.studentCount} HS
                         </div>
                       </div>
                     ))}
@@ -376,8 +379,8 @@ const Calendar: React.FC = () => {
                         <div style={{ fontWeight: 'bold', marginBottom: '2px' }}>
                           {event.title}
                         </div>
-                        <div style={{ fontSize: '11px' }}>
-                          {event.type === 'deadline' ? '📅' : '📍'} {event.description}
+                        <div style={{ fontSize: '11px', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                          {event.type === 'deadline' ? <CalendarIcon size={11} /> : <MapPin size={11} />} {event.description}
                         </div>
                       </div>
                     ))}
@@ -424,8 +427,8 @@ const Calendar: React.FC = () => {
               <div style={{
                 width: '16px',
                 height: '16px',
-                backgroundColor: '#fecaca',
-                border: '1px solid #fca5a5',
+                backgroundColor: '#ffffffff',
+                border: '1px solid #ffffffff',
                 borderRadius: '4px'
               }}></div>
               <span style={{ fontSize: '14px', color: '#374151' }}>Deadline</span>
@@ -443,7 +446,6 @@ const Calendar: React.FC = () => {
             </div>
           </div>
         </div>
-      </TeacherLayout>
     </>
   );
 };

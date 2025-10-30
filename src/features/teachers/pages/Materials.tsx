@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { Plus, Search, Download, Edit, Trash2, FileText, Upload, Video, Image, File, Paperclip, BookOpen, Calendar, Folder } from 'lucide-react';
 import { SEOHead } from '../../../components/common';
 import TeacherLayout from '../../../components/layout/TeacherLayout';
 
@@ -62,11 +63,11 @@ const Materials: React.FC = () => {
 
   const getTypeIcon = (type: string) => {
     switch (type) {
-      case 'pdf': return '📄';
-      case 'video': return '🎥';
-      case 'image': return '🖼️';
-      case 'document': return '📝';
-      default: return '📎';
+      case 'pdf': return <FileText size={20} />;
+      case 'video': return <Video size={20} />;
+      case 'image': return <Image size={20} />;
+      case 'document': return <File size={20} />;
+      default: return <Paperclip size={20} />;
     }
   };
 
@@ -115,8 +116,7 @@ const Materials: React.FC = () => {
         keywords="tài liệu, video, giảng dạy, upload"
       />
       
-      <TeacherLayout>
-        <div style={{ padding: '24px' }}>
+      <div style={{ padding: '24px' }}>
           {/* Header */}
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
             <div>
@@ -124,9 +124,12 @@ const Materials: React.FC = () => {
                 fontSize: '24px',
                 fontWeight: 'bold',
                 color: '#1e293b',
-                marginBottom: '4px'
+                marginBottom: '4px',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.5rem'
               }}>
-                📚 Quản lý Tài liệu
+                <BookOpen size={24} /> Quản lý Tài liệu
               </h1>
               <p style={{ color: '#64748b', fontSize: '14px' }}>
                 Upload và quản lý tài liệu, video bài giảng
@@ -149,7 +152,7 @@ const Materials: React.FC = () => {
                 gap: '8px'
               }}
             >
-              ➕ Upload tài liệu mới
+              <Plus size={16} /> Upload tài liệu mới
             </button>
           </div>
 
@@ -176,7 +179,7 @@ const Materials: React.FC = () => {
                     {materials.length}
                   </p>
                 </div>
-                <div style={{ fontSize: '24px' }}>📚</div>
+                <div style={{ color: '#3b82f6' }}><BookOpen size={24} /></div>
               </div>
             </div>
 
@@ -196,7 +199,7 @@ const Materials: React.FC = () => {
                     {materials.filter(m => m.type === 'video').length}
                   </p>
                 </div>
-                <div style={{ fontSize: '24px' }}>🎥</div>
+                <div style={{ color: '#10b981' }}><Video size={24} /></div>
               </div>
             </div>
 
@@ -216,7 +219,7 @@ const Materials: React.FC = () => {
                     {materials.reduce((sum, m) => sum + m.downloadCount, 0)}
                   </p>
                 </div>
-                <div style={{ fontSize: '24px' }}>📥</div>
+                <div style={{ color: '#f59e0b' }}><Download size={24} /></div>
               </div>
             </div>
 
@@ -236,7 +239,7 @@ const Materials: React.FC = () => {
                     2.1 GB
                   </p>
                 </div>
-                <div style={{ fontSize: '24px' }}>💾</div>
+                <div style={{ color: '#64748b' }}><FileText size={24} /></div>
               </div>
             </div>
           </div>
@@ -264,7 +267,7 @@ const Materials: React.FC = () => {
                   padding: '40px',
                   color: '#64748b'
                 }}>
-                  <div style={{ fontSize: '48px', marginBottom: '16px' }}>📚</div>
+                  <div style={{ color: '#64748b', marginBottom: '16px' }}><BookOpen size={48} /></div>
                   <p>Chưa có tài liệu nào. Hãy upload tài liệu đầu tiên!</p>
                 </div>
               ) : (
@@ -302,11 +305,11 @@ const Materials: React.FC = () => {
                         </p>
                         
                         <div style={{ display: 'flex', alignItems: 'center', gap: '16px', fontSize: '12px', color: '#64748b' }}>
-                          <span>📂 {material.subject}</span>
-                          <span>🎓 Lớp {material.grade}</span>
-                          <span>📏 {material.fileSize}</span>
-                          <span>📥 {material.downloadCount} lượt tải</span>
-                          <span>📅 {formatDate(material.uploadedAt)}</span>
+                          <span style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}><File size={12} /> {material.subject}</span>
+                          <span style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}><BookOpen size={12} /> Lớp {material.grade}</span>
+                          <span>{material.fileSize}</span>
+                          <span style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}><Download size={12} /> {material.downloadCount} lượt tải</span>
+                          <span style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}><Calendar size={12} /> {formatDate(material.uploadedAt)}</span>
                         </div>
                       </div>
                       
@@ -318,23 +321,29 @@ const Materials: React.FC = () => {
                           border: '1px solid #e2e8f0',
                           borderRadius: '6px',
                           fontSize: '12px',
-                          cursor: 'pointer'
+                          cursor: 'pointer',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '0.25rem'
                         }}>
-                          ✏️ Sửa
+                          <Edit size={12} /> Sửa
                         </button>
                         
                         <button style={{
                           padding: '8px 12px',
                           backgroundColor: '#fef2f2',
                           color: '#dc2626',
-                          border: '1px solid #fecaca',
+                          border: '1px solid #ffffffff',
                           borderRadius: '6px',
                           fontSize: '12px',
-                          cursor: 'pointer'
+                          cursor: 'pointer',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '0.25rem'
                         }}
                         onClick={() => handleDelete(material.id)}
                         >
-                          🗑️ Xóa
+                          <Trash2 size={12} /> Xóa
                         </button>
                       </div>
                     </div>
@@ -492,7 +501,14 @@ const Materials: React.FC = () => {
                     textAlign: 'center',
                     backgroundColor: '#f9fafb'
                   }}>
-                    <div style={{ fontSize: '32px', marginBottom: '8px' }}>📁</div>
+                    <div style={{ 
+                      marginBottom: '8px',
+                      display: 'flex',
+                      justifyContent: 'center',
+                      color: '#64748b'
+                    }}>
+                      <Folder size={32} strokeWidth={1.5} />
+                    </div>
                     <p style={{ color: '#64748b', fontSize: '14px' }}>
                       Kéo thả file vào đây hoặc click để chọn file
                     </p>
@@ -534,7 +550,6 @@ const Materials: React.FC = () => {
             </div>
           )}
         </div>
-      </TeacherLayout>
     </>
   );
 };

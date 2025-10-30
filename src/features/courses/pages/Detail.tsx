@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { getCourseDetail, CourseCardData } from '../api';
 import LoadingSpinner from '../../../components/common/LoadingSpinner';
 import ErrorMessage from '../../../components/common/ErrorMessage';
+import { Star } from 'lucide-react';
 
 const CourseDetail = () => {
     const { courseId } = useParams<{ courseId: string }>();
@@ -51,7 +52,9 @@ const CourseDetail = () => {
             <h3 style={{ marginTop: '1rem' }}>Thời gian: {course.duration}</h3>
             <h3 style={{ marginTop: '1rem' }}>Giá: {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(course.price)}</h3>
             {course.rating && (
-                <h3 style={{ marginTop: '1rem' }}>Đánh giá: ⭐ {course.rating}/5</h3>
+                <h3 style={{ marginTop: '1rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  Đánh giá: <Star size={20} fill="currentColor" className="text-yellow-400" /> {course.rating}/5
+                </h3>
             )}
             {course.studentsCount && (
                 <h3 style={{ marginTop: '1rem' }}>Học viên: {course.studentsCount} người</h3>

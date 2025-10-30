@@ -1,62 +1,253 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Icons } from '../common/Icons';
 import { useOptimizedAnimation } from '../../hooks/useOptimizedAnimation';
+import { teachersApi, Teacher } from '../../services/academic';
+import { Loader } from 'lucide-react';
 
 const TeacherReviewsSection: React.FC = () => {
   const { ref: reviewsRef, inView: reviewsInView } = useOptimizedAnimation();
+  const [teachers, setTeachers] = useState<Teacher[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  // Dữ liệu giảng viên DMT 
-  const teacherReviews = [
+  useEffect(() => {
+    const fetchTeachers = async () => {
+      try {
+        setLoading(true);
+        const response = await teachersApi.getAll({ 
+          status: true,
+          page: 1,
+          limit: 8
+        });
+        
+        if (response.success && response.data && response.data.length > 0) {
+          setTeachers(response.data);
+        } else {
+          // Fallback to mock data if no teachers returned
+          console.warn('No teachers returned from API, using fallback data');
+          setTeachers(getMockTeachers());
+        }
+      } catch (err: any) {
+        console.error('Error fetching teachers:', err);
+        setError(err.message || 'Không thể tải thông tin giáo viên');
+        // Use mock data on error
+        setTeachers(getMockTeachers());
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTeachers();
+  }, []);
+
+  // Mock data fallback
+  const getMockTeachers = (): Teacher[] => [
     {
       id: 1,
-      name: 'Trần Giang Thanh',
-      position: 'Giáo dục không phải là việc đổ đầy một cái thùng, mà là thắp sáng ngọn lửa tri thức.',
-      avatar: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=300&h=300&fit=crop&crop=face',
-      score: 'Giáo viên Toán',
-      scoreType: 'Chuyên môn',
-      bgColor: '#E5E7EB'
+      user_id: 101,
+      teacher_code: 'GV001',
+      main_subject_id: 1,
+      years_experience: 10,
+      degree: 'Thạc sĩ Toán học',
+      specialization: 'Toán học',
+      created_at: new Date().toISOString(),
+      users: {
+        id: 101,
+        email: 'thanh@dmt.edu.vn',
+        full_name: 'Trần Giang Thanh',
+        phone: '0901234567',
+        avatar: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=300&h=300&fit=crop&crop=face',
+        address: 'TP.HCM',
+        role: 'teacher',
+        birth_date: '1985-01-15',
+        status: true,
+        created_at: new Date().toISOString()
+      },
+      subjects: {
+        id: 1,
+        name: 'Toán học',
+        code: 'MATH',
+        description: 'Môn Toán'
+      }
     },
     {
       id: 2,
-      name: 'Hà Đăng Như Quỳnh',
-      position: 'Thành công đến từ sự kiên trì và đam mê không ngừng nghỉ.',
-      avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=300&fit=crop&crop=face',
-      score: 'Giáo viên Văn',
-      scoreType: 'Chuyên môn',
-      bgColor: '#FDE2E7'
+      user_id: 102,
+      teacher_code: 'GV002',
+      main_subject_id: 2,
+      years_experience: 8,
+      degree: 'Thạc sĩ Ngữ văn',
+      specialization: 'Ngữ văn',
+      created_at: new Date().toISOString(),
+      users: {
+        id: 102,
+        email: 'quynh@dmt.edu.vn',
+        full_name: 'Hà Đăng Như Quỳnh',
+        phone: '0902234567',
+        avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=300&h=300&fit=crop&crop=face',
+        address: 'TP.HCM',
+        role: 'teacher',
+        birth_date: '1987-03-20',
+        status: true,
+        created_at: new Date().toISOString()
+      },
+      subjects: {
+        id: 2,
+        name: 'Ngữ văn',
+        code: 'LIT',
+        description: 'Môn Văn'
+      }
     },
     {
       id: 3,
-      name: 'Trần Anh Khoa',
-      position: 'Học tập là hành trình không có điểm kết thúc, chỉ có những cột mốc.',
-      avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=300&h=300&fit=crop&crop=face',
-      score: 'Giáo viên Anh',
-      scoreType: 'Chuyên môn',
-      bgColor: '#FECACA'
+      user_id: 103,
+      teacher_code: 'GV003',
+      main_subject_id: 3,
+      years_experience: 12,
+      degree: 'Cử nhân Tiếng Anh',
+      specialization: 'Tiếng Anh',
+      created_at: new Date().toISOString(),
+      users: {
+        id: 103,
+        email: 'khoa@dmt.edu.vn',
+        full_name: 'Trần Anh Khoa',
+        phone: '0903234567',
+        avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=300&h=300&fit=crop&crop=face',
+        address: 'TP.HCM',
+        role: 'teacher',
+        birth_date: '1983-07-10',
+        status: true,
+        created_at: new Date().toISOString()
+      },
+      subjects: {
+        id: 3,
+        name: 'Tiếng Anh',
+        code: 'ENG',
+        description: 'Môn Anh'
+      }
     },
     {
       id: 4,
-      name: 'Nguyễn Bá Thọ',
-      position: 'Giáo viên giỏi là người biết cách thắp lên ngọn lửa học tập trong mỗi học sinh.',
-      avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=300&h=300&fit=crop&crop=face',
-      score: 'Giáo viên Lý',
-      scoreType: 'Chuyên môn',
-      bgColor: '#E5E7EB'
+      user_id: 104,
+      teacher_code: 'GV004',
+      main_subject_id: 4,
+      years_experience: 15,
+      degree: 'Tiến sĩ Vật lý',
+      specialization: 'Vật lý',
+      created_at: new Date().toISOString(),
+      users: {
+        id: 104,
+        email: 'tho@dmt.edu.vn',
+        full_name: 'Nguyễn Bá Thọ',
+        phone: '0904234567',
+        avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=300&h=300&fit=crop&crop=face',
+        address: 'TP.HCM',
+        role: 'teacher',
+        birth_date: '1980-05-25',
+        status: true,
+        created_at: new Date().toISOString()
+      },
+      subjects: {
+        id: 4,
+        name: 'Vật lý',
+        code: 'PHY',
+        description: 'Môn Lý'
+      }
     },
     {
       id: 5,
-      name: 'Từ Kim Loan',
-      position: 'Mỗi học sinh đều có tiềm năng vô hạn, nhiệm vụ của tôi là giúp họ khám phá ra điều đó.',
-      avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=300&h=300&fit=crop&crop=face',
-      score: 'Giáo viên Hóa',
-      scoreType: 'Chuyên môn',
-      bgColor: '#F3E8FF'
+      user_id: 105,
+      teacher_code: 'GV005',
+      main_subject_id: 5,
+      years_experience: 9,
+      degree: 'Thạc sĩ Hóa học',
+      specialization: 'Hóa học',
+      created_at: new Date().toISOString(),
+      users: {
+        id: 105,
+        email: 'loan@dmt.edu.vn',
+        full_name: 'Từ Kim Loan',
+        phone: '0905234567',
+        avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=300&h=300&fit=crop&crop=face',
+        address: 'TP.HCM',
+        role: 'teacher',
+        birth_date: '1986-11-30',
+        status: true,
+        created_at: new Date().toISOString()
+      },
+      subjects: {
+        id: 5,
+        name: 'Hóa học',
+        code: 'CHEM',
+        description: 'Môn Hóa'
+      }
     }
   ];
+
+  if (loading) {
+    return (
+      <section style={{
+        padding: '80px 20px',
+        textAlign: 'center',
+        minHeight: '400px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        background: 'linear-gradient(135deg, #fef3c7 0%, #fde68a 50%, #fcd34d 100%)'
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', color: '#92400e' }}>
+          <Loader className="animate-spin" size={24} />
+          <span>Đang tải thông tin giáo viên...</span>
+        </div>
+      </section>
+    );
+  }
+
+  if (error && teachers.length === 0) {
+    return (
+      <section style={{
+        padding: '80px 20px',
+        textAlign: 'center',
+        minHeight: '400px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        background: 'linear-gradient(135deg, #fef3c7 0%, #fde68a 50%, #fcd34d 100%)'
+      }}>
+        <div style={{ color: '#dc2626' }}>{error}</div>
+      </section>
+    );
+  }
+
+  // Dữ liệu giảng viên DMT 
+  const teacherReviews = teachers.map((teacher, index) => {
+    const bgColors = ['#E5E7EB', '#FDE2E7', '#fcfcfcff', '#E5E7EB', '#FDE2E7', '#fcfcfcff', '#E5E7EB', '#FDE2E7'];
+    const quotes = [
+      'Giáo dục không phải là việc đổ đầy một cái thùng, mà là thắp sáng ngọn lửa tri thức.',
+      'Thành công đến từ sự kiên trì và đam mê không ngừng nghỉ.',
+      'Học tập là hành trình không có điểm kết thúc, chỉ có những cột mốc.',
+      'Giáo viên giỏi là người biết cách thắp lên ngọn lửa học tập trong mỗi học sinh.',
+      'Mỗi học sinh đều có tiềm năng vô hạn, nhiệm vụ của tôi là giúp họ khám phá ra điều đó.',
+      'Tri thức là chìa khóa mở cửa tương lai.',
+      'Sự kiên nhẫn và tận tâm là nền tảng của giảng dạy hiệu quả.',
+      'Mỗi học sinh là một ngôi sao sáng, nhiệm vụ của tôi là giúp họ tỏa sáng.'
+    ];
+
+    return {
+      id: teacher.id,
+      name: teacher.users?.full_name || 'Giáo viên',
+      position: quotes[index % quotes.length],
+      avatar: teacher.users?.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(teacher.users?.full_name || 'Teacher')}&size=300&background=random`,
+      score: `Giáo viên ${teacher.subjects?.name || teacher.specialization || 'DMT'}`,
+      scoreType: `${teacher.years_experience || 0}+ năm kinh nghiệm`,
+      bgColor: bgColors[index % bgColors.length]
+    };
+  });
 
   return (
     <section 
       id="teachers"
+      ref={reviewsRef}
       style={{
         padding: '80px 0',
         background: 'linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%)',

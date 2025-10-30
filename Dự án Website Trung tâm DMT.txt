@@ -177,19 +177,33 @@ Compliance:
 
 Tech Stack:
 - Frontend: React.js + TypeScript + Tailwind CSS
-- Backend: Node.js/Python Django + REST API
+- Backend: Node.js/Python Django + REST API or Next.js(FE, BE, API)
 - Database: SQLserver + Redis cache
-- File Storage: Cloud storage with CDN
+- File Storage: Cloud storage with CDN, AWS S3
+- Deployment: AWS + Vercel
 - Real-time: WebSocket/Socket.io
 - Monitoring: Application insights
 
 Performance:
-- CDN for static assets
+- CDN for static assets *****
 - Database indexing
 - API caching
 - Image optimization
 - Lazy loading
 - Code splitting
+- Load balancing
 
 
 material icon
+mp4 -> HLS
+
+
+nguyenhuuthang@MacbucProfZero Backend % cat .env.local | grep -E "DB_|PORT"
+PORT=3001
+DB_SERVER=localhost
+DB_DATABASE=dmt_education_system
+DB_USER=sa
+DB_PASSWORD=YourStrong@Passw0rd
+DB_PORT=1433
+DB_ENCRYPT=false
+DB_TRUST_CERT=true

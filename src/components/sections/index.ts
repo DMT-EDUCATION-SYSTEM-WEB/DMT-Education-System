@@ -1,7 +1,7 @@
 // Section Components Exports - Only actively used components
 export { default as HeaderComponent } from './HeaderComponent';
 export { default as AnnouncementBanner } from './AnnouncementBanner';
-export { default as Hero } from './Hero_New';
+export { default as Hero } from './Hero';
 export { default as Footer } from './Footer';
 
 // Main page sections

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Target, Trophy, Star } from 'lucide-react';
 
 const AboutSection: React.FC = () => {
   return (
@@ -64,7 +65,7 @@ const AboutSection: React.FC = () => {
               color: 'white',
               fontSize: '1.5rem'
             }}>
-              🎯
+              <Target size={24} />
             </div>
             <h3 style={{
               fontSize: '1.25rem',
@@ -106,7 +107,7 @@ const AboutSection: React.FC = () => {
               color: 'white',
               fontSize: '1.5rem'
             }}>
-              🏆
+              <Trophy size={24} />
             </div>
             <h3 style={{
               fontSize: '1.25rem',
@@ -148,7 +149,7 @@ const AboutSection: React.FC = () => {
               color: 'white',
               fontSize: '1.5rem'
             }}>
-              ⭐
+              <Star size={24} fill="currentColor" />
             </div>
             <h3 style={{
               fontSize: '1.25rem',

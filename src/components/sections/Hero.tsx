@@ -1,5 +1,6 @@
 import React from 'react';
 import { COLORS } from '../../constants';
+import { BookOpen, GraduationCap, Target, Trophy } from 'lucide-react';
 
 const Hero: React.FC = () => {
   return (
@@ -143,7 +144,7 @@ const Hero: React.FC = () => {
               margin: '0 auto 20px',
               fontSize: '24px'
             }}>
-              📚
+              <BookOpen size={24} />
             </div>
             <h4 style={{
               fontWeight: '700',
@@ -185,7 +186,7 @@ const Hero: React.FC = () => {
               margin: '0 auto 20px',
               fontSize: '24px'
             }}>
-              👨‍🏫
+              <GraduationCap size={24} />
             </div>
             <h4 style={{
               fontWeight: '700',
@@ -227,7 +228,7 @@ const Hero: React.FC = () => {
               margin: '0 auto 20px',
               fontSize: '24px'
             }}>
-              🎯
+              <Target size={24} />
             </div>
             <h4 style={{
               fontWeight: '700',
@@ -269,7 +270,7 @@ const Hero: React.FC = () => {
               margin: '0 auto 20px',
               fontSize: '24px'
             }}>
-              🏆
+              <Trophy size={24} />
             </div>
             <h4 style={{
               fontWeight: '700',

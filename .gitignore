@@ -24,3 +24,4 @@ coverage
 *.tmp
 *.temp
 *.cache
+.env*

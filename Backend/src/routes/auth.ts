@@ -1,6 +1,6 @@
 import { FastifyInstance } from 'fastify';
 import { z } from 'zod';
-import { supabase } from '../server';
+import { query } from '../utils/database';
 import bcrypt from 'bcryptjs';
 
 export async function authRoutes(app: FastifyInstance) {
@@ -17,13 +17,14 @@ export async function authRoutes(app: FastifyInstance) {
     const { email, password } = parsed.data;
 
     // Fetch user by email
-    const { data: user, error } = await supabase
-      .from('users')
-      .select('*')
-      .eq('email', email)
-      .single();
-    if (error || !user)
+    const sql = `SELECT * FROM users WHERE email = @p1`;
+    const result = await query(sql, [email]);
+    
+    if (result.rows.length === 0) {
       return reply.code(401).send({ error: 'Invalid credentials' });
+    }
+
+    const user = result.rows[0];
 
     // Verify password
     const ok = await bcrypt.compare(password, user.password_hash);
@@ -51,15 +52,20 @@ export async function authRoutes(app: FastifyInstance) {
   app.get(
     '/auth/me',
     { preValidation: [app.authenticate] },
-    async (req: any) => {
-      const userId = Number(req.user?.sub);
-      const { data, error } = await supabase
-        .from('users')
-        .select('id, email, full_name, role_id, status, created_at')
-        .eq('id', userId)
-        .single();
-      if (error) throw error;
-      return { user: data };
+    async (req: any, reply: any) => {
+      try {
+        const userId = Number(req.user?.sub);
+        const sql = `SELECT id, email, full_name, role_id, status, created_at FROM users WHERE id = @p1`;
+        const result = await query(sql, [userId]);
+        
+        if (result.rows.length === 0) {
+          return reply.code(404).send({ error: 'User not found' });
+        }
+        
+        return { user: result.rows[0] };
+      } catch (error: any) {
+        return reply.code(500).send({ error: error.message });
+      }
     }
   );
 }

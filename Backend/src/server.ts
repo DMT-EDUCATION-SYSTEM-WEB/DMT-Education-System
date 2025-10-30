@@ -1,19 +1,27 @@
 import Fastify from 'fastify';
 import cors from '@fastify/cors';
 import * as dotenv from 'dotenv';
-import { createClient } from '@supabase/supabase-js';
-import authPlugin from './plugins/auth';
+import authPlugin from './plugins/auth.js';
+import registerRoutes from './plugins/routes.js';
+import { errorHandler } from './utils/errorHandler.js';
+import { initializeDatabase, closePool } from './utils/database.js';
 
-dotenv.config();
+dotenv.config({ path: '.env.local' });
 
-const app = Fastify({ logger: true });
+const app = Fastify({ 
+  logger: true,
+});
+
+// Global error handler
+app.setErrorHandler(errorHandler);
 
 // CORS
 const corsOrigins = (process.env.CORS_ORIGINS || '')
   .split(',')
   .map(s => s.trim())
   .filter(Boolean);
-await app.register(cors, {
+
+app.register(cors, {
   origin: (origin, cb) => {
     if (!origin) return cb(null, true);
     if (corsOrigins.length === 0 || corsOrigins.includes(origin))
@@ -24,59 +32,60 @@ await app.register(cors, {
 });
 
 // JWT/auth plugin
-await app.register(authPlugin);
+app.register(authPlugin);
 
-// Supabase client (service role for backend)
-const supabaseUrl = process.env.SUPABASE_URL || '';
-const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
-if (!supabaseUrl || !supabaseServiceRoleKey) {
-  app.log.warn('Missing SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY');
-}
-export const supabase = createClient(supabaseUrl, supabaseServiceRoleKey, {
-  auth: { persistSession: false },
-});
+// Database connection pool - will be initialized in start()
+let db: any = null;
 
-app.get('/health', async () => ({ status: 'ok' }));
+// Export db for use in routes (backward compatibility with 'supabase' name)
+export { db as supabase };
+export { db };
 
-// Register modular routes
-import registerRoutes from './plugins/routes';
-await registerRoutes(app);
+// Health check
+app.get('/health', async () => ({ 
+  status: 'ok', 
+  timestamp: new Date().toISOString(),
+  version: '1.0.0',
+  database: db ? 'connected' : 'not connected'
+}));
 
-// Example: list subjects
-app.get('/subjects', async (req, reply) => {
-  const { data, error } = await supabase
-    .from('subjects')
-    .select('*')
-    .order('id');
-  if (error) return reply.code(500).send({ error: error.message });
-  return { data };
-});
+// Register API routes
+app.register(registerRoutes);
 
-// Example: list courses
-app.get('/courses', async (req, reply) => {
-  const { data, error } = await supabase
-    .from('courses')
-    .select('*')
-    .order('id');
-  if (error) return reply.code(500).send({ error: error.message });
-  return { data };
-});
+const port = Number(process.env.PORT || 3001);
 
-// Example: classes with joins
-app.get('/classes', async (req, reply) => {
-  const { data, error } = await supabase
-    .from('classes')
-    .select('*, courses(name, code)')
-    .order('id');
-  if (error) return reply.code(500).send({ error: error.message });
-  return { data };
-});
+// Graceful shutdown
+const gracefulShutdown = async () => {
+  app.log.info('🛑 Shutting down gracefully...');
+  await closePool();
+  await app.close();
+  process.exit(0);
+};
 
-const port = Number(process.env.PORT || 4000);
-app
-  .listen({ port, host: '0.0.0.0' })
-  .then(() => app.log.info(`API listening on :${port}`))
-  .catch(err => {
+process.on('SIGTERM', gracefulShutdown);
+process.on('SIGINT', gracefulShutdown);
+
+// Start server
+const start = async () => {
+  try {
+    // Initialize SQL Server database connection
+    db = await initializeDatabase();
+    
+    if (!db) {
+      app.log.error('❌ Failed to initialize database connection');
+      app.log.warn('⚠️  Server will run but database operations will fail');
+    } else {
+      app.log.info('✅ SQL Server database connected successfully');
+    }
+    
+    await app.listen({ port, host: '0.0.0.0' });
+    app.log.info(`🚀 DMT Education API Server running on http://localhost:${port}`);
+    app.log.info(`📋 Health check: http://localhost:${port}/health`);
+    app.log.info(`🗄️  Database: ${db ? 'Connected' : 'Not connected'}`);
+  } catch (err) {
     app.log.error(err);
     process.exit(1);
-  });
+  }
+};
+
+start();

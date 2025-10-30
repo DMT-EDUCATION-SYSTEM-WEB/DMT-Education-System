@@ -1,4 +1,5 @@
 import React from 'react';
+import { AlertCircle } from 'lucide-react';
 
 interface ErrorBoundaryState {
   hasError: boolean;
@@ -46,8 +47,8 @@ const DefaultErrorFallback: React.FC<{ error?: Error; resetError: () => void }> 
     <div style={{
       padding: '40px 20px',
       textAlign: 'center',
-      backgroundColor: '#fef2f2',
-      border: '2px solid #fecaca',
+      backgroundColor: '#ff5e5eff',
+      border: '2px solid #ffffffff',
       borderRadius: '15px',
       margin: '20px',
       maxWidth: '600px',
@@ -55,10 +56,12 @@ const DefaultErrorFallback: React.FC<{ error?: Error; resetError: () => void }> 
       marginRight: 'auto'
     }}>
       <div style={{
-        fontSize: '48px',
-        marginBottom: '20px'
+        marginBottom: '20px',
+        display: 'flex',
+        justifyContent: 'center',
+        color: '#dc2626'
       }}>
-        😅
+        <AlertCircle size={64} strokeWidth={1.5} />
       </div>
       
       <h2 style={{

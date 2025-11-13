@@ -36,9 +36,8 @@ const CourseQuerySchema = PaginationSchema.extend({
 });
 
 export async function coursesRoutes(app: FastifyInstance) {
-  // GET /courses - List courses with filters
+  // GET /courses - List courses with filters (PUBLIC - no auth required)
   app.get('/courses', {
-    preValidation: [authenticateToken],
     preHandler: [validateQuery(CourseQuerySchema)]
   }, async (req: any, reply: any) => {
     try {
@@ -84,27 +83,41 @@ export async function coursesRoutes(app: FastifyInstance) {
       const countResult = await query(countQuery, params);
       const total = parseInt(countResult.rows[0].total);
 
-      // Data query
+      // Data query (SQL Server syntax with OFFSET/FETCH)
       const dataQuery = `
         SELECT 
-          c.*,
-          json_build_object(
-            'id', s.id,
-            'name', s.name,
-            'code', s.code,
-            'description', s.description
-          ) as subjects
+          c.id, c.subject_id, c.code, c.name, c.description,
+          c.duration_weeks, c.total_sessions, c.price, c.level,
+          c.is_active, c.created_at, c.thumbnail_url, c.students_count,
+          s.id as subject_id_ref,
+          s.name as subject_name,
+          s.code as subject_code,
+          s.description as subject_description
         FROM courses c
         INNER JOIN subjects s ON c.subject_id = s.id
         ${whereClause}
         ORDER BY c.created_at DESC
-        LIMIT $${paramIndex} OFFSET $${paramIndex + 1}
+        OFFSET $${paramIndex} ROWS
+        FETCH NEXT $${paramIndex + 1} ROWS ONLY
       `;
-      const dataResult = await query(dataQuery, [...params, limit, offset]);
+      const dataResult = await query(dataQuery, [...params, offset, limit]);
+      
+      // Transform to match expected structure
+      const transformedData = dataResult.rows.map((row: any) => ({
+        ...row,
+        thumbnail: row.thumbnail_url,
+        students: row.students_count,
+        subjects: {
+          id: row.subject_id_ref,
+          name: row.subject_name,
+          code: row.subject_code,
+          description: row.subject_description
+        }
+      }));
 
       return ResponseHelper.successWithPagination(
         reply,
-        dataResult.rows,
+        transformedData,
         { page, limit, total }
       );
     } catch (error: any) {
@@ -112,22 +125,21 @@ export async function coursesRoutes(app: FastifyInstance) {
     }
   });
 
-  // GET /courses/:id - Get course details
+  // GET /courses/:id - Get course details (PUBLIC - no auth required)
   app.get('/courses/:id', {
-    preValidation: [authenticateToken],
     preHandler: [validateParams(IdParamSchema)]
   }, async (req: any, reply: any) => {
     try {
       const { id } = req.params;
       const sql = `
         SELECT 
-          c.*,
-          json_build_object(
-            'id', s.id,
-            'name', s.name,
-            'code', s.code,
-            'description', s.description
-          ) as subjects
+          c.id, c.subject_id, c.code, c.name, c.description,
+          c.duration_weeks, c.total_sessions, c.price, c.level,
+          c.is_active, c.created_at, c.thumbnail_url, c.students_count,
+          s.id as subject_id_ref,
+          s.name as subject_name,
+          s.code as subject_code,
+          s.description as subject_description
         FROM courses c
         INNER JOIN subjects s ON c.subject_id = s.id
         WHERE c.id = $1
@@ -138,7 +150,19 @@ export async function coursesRoutes(app: FastifyInstance) {
         return ResponseHelper.notFound(reply, 'Course');
       }
 
-      return ResponseHelper.success(reply, result.rows[0]);
+      const course = {
+        ...result.rows[0],
+        thumbnail: result.rows[0].thumbnail_url,
+        students: result.rows[0].students_count,
+        subjects: {
+          id: result.rows[0].subject_id_ref,
+          name: result.rows[0].subject_name,
+          code: result.rows[0].subject_code,
+          description: result.rows[0].subject_description
+        }
+      };
+
+      return ResponseHelper.success(reply, course);
     } catch (error: any) {
       return ResponseHelper.serverError(reply, error.message);
     }

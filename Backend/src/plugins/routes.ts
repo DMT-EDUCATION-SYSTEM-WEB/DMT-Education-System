@@ -15,35 +15,49 @@ import { paymentsRoutes } from '../routes/payments';
 import { surveysRoutes } from '../routes/surveys';
 import { staffRoutes } from '../routes/staff';
 import { newsRoutes } from '../routes/news';
+import { reportsRoutes } from '../routes/reports';
+import { notificationsRoutes } from '../routes/notifications';
+import { statisticsRoutes } from '../routes/statistics';
+import { activityLogsRoutes } from '../routes/activity-logs';
+import { systemSettingsRoutes } from '../routes/system-settings';
+import { backupRoutes } from '../routes/backup';
 
 export default async function registerRoutes(app: FastifyInstance) {
-  // Core authentication routes
+  // Core authentication routes - UPDATED WITH STORED PROCEDURES
   await authRoutes(app);
   
   // News routes - ACTIVE FOR SQL SERVER
   await newsRoutes(app);
   
-  // User management routes - TEMPORARILY COMMENTED FOR SQL SERVER MIGRATION
-  // await usersRoutes(app);
-  // await rolesRoutes(app);
+  // Academic entity routes - UPDATED WITH STORED PROCEDURES
+  await enrollmentsRoutes(app);  // Uses sp_EnrollStudent, sp_DropEnrollment
+  await attendanceRoutes(app);   // Uses sp_BulkMarkAttendance
+  await paymentsRoutes(app);     // Uses sp_ProcessPayment, sp_RefundPayment
+  await reportsRoutes(app);      // Uses sp_GetSystemOverview, sp_GetStudentReport, sp_GetClassReport
   
-  // Academic entity routes - TEMPORARILY COMMENTED FOR SQL SERVER MIGRATION
-  // await studentsRoutes(app);
-  // await teachersRoutes(app);
-  // await staffRoutes(app);
-  // await subjectsRoutes(app);
-  // await coursesRoutes(app);
-  // await classesRoutes(app);
-  // await enrollmentsRoutes(app);
+  // New advanced routes - ACTIVE FOR SQL SERVER
+  await notificationsRoutes(app);   // Notification management
+  await statisticsRoutes(app);      // Uses database functions (fn_GetAttendanceRate, fn_GetAverageGrade, etc.)
+  await activityLogsRoutes(app);    // Activity logging and tracking
+  await systemSettingsRoutes(app);  // System settings management (Admin)
+  await backupRoutes(app);          // Database backup/restore (Admin)
   
-  // Academic operations routes - TEMPORARILY COMMENTED FOR SQL SERVER MIGRATION
-  // await attendanceRoutes(app);
-  // await assignmentsRoutes(app);
-  // await materialsRoutes(app);
+  // User management routes - ACTIVE FOR SQL SERVER
+  await usersRoutes(app);
+  await rolesRoutes(app);
   
-  // Financial routes - TEMPORARILY COMMENTED FOR SQL SERVER MIGRATION
-  // await paymentsRoutes(app);
+  // Entity management routes - ACTIVE FOR SQL SERVER
+  await studentsRoutes(app);
+  await teachersRoutes(app);    // Teachers management - ACTIVE
+  await staffRoutes(app);
+  await subjectsRoutes(app);
+  await coursesRoutes(app);
+  await classesRoutes(app);
   
-  // Survey routes - TEMPORARILY COMMENTED FOR SQL SERVER MIGRATION
-  // await surveysRoutes(app);
+  // Learning resources routes - ACTIVE FOR SQL SERVER
+  await assignmentsRoutes(app);
+  await materialsRoutes(app);
+  
+  // Survey routes - ACTIVE FOR SQL SERVER
+  await surveysRoutes(app);
 }

@@ -2,6 +2,7 @@ import { FastifyInstance } from 'fastify';
 import { z } from 'zod';
 import bcrypt from 'bcryptjs';
 import { supabase } from '../server';
+import { query } from '../utils/database';
 import { ResponseHelper } from '../utils/response';
 import { authenticateToken, requireRole, ROLES } from '../middleware/auth';
 import { validateBody, validateParams, validateQuery, PaginationSchema, IdParamSchema } from '../middleware/validation';
@@ -46,80 +47,129 @@ const TeacherQuerySchema = PaginationSchema.extend({
 });
 
 export async function teachersRoutes(app: FastifyInstance) {
-  // GET /teachers - List teachers with filters
+  // GET /teachers - List teachers with filters (PUBLIC - no auth required)
   app.get('/teachers', {
-    preValidation: [authenticateToken, requireRole([ROLES.ADMIN, ROLES.STAFF])],
     preHandler: [validateQuery(TeacherQuerySchema)]
   }, async (req: any, reply: any) => {
     try {
       const { page, limit, search, main_subject_id, status } = req.query;
       const offset = (page - 1) * limit;
 
-      let query = supabase
-        .from('teachers')
-        .select(`
-          *,
-          users!inner(
-            id, email, full_name, phone, address, birth_date, status, created_at
-          ),
-          subjects(
-            id, name, code
-          )
-        `, { count: 'exact' })
-        .range(offset, offset + limit - 1)
-        .order('id');
+      let conditions: string[] = [];
+      let params: any[] = [];
+      let paramIndex = 1;
 
       if (search) {
-        query = query.or(`users.full_name.ilike.%${search}%,users.email.ilike.%${search}%,teacher_code.ilike.%${search}%`);
+        conditions.push(`(u.full_name LIKE @search OR u.email LIKE @search OR t.teacher_code LIKE @search)`);
+        params.push({ name: 'search', value: `%${search}%` });
       }
 
       if (main_subject_id) {
-        query = query.eq('main_subject_id', main_subject_id);
+        conditions.push(`t.main_subject_id = @main_subject_id`);
+        params.push({ name: 'main_subject_id', value: main_subject_id });
       }
 
       if (status !== undefined) {
-        query = query.eq('users.status', status);
+        conditions.push(`u.status = @status`);
+        params.push({ name: 'status', value: status });
       }
 
-      const { data, error, count } = await query;
-      if (error) throw error;
+      const whereClause = conditions.length > 0 ? `WHERE ${conditions.join(' AND ')}` : '';
+
+      // Count query
+      const countQuery = `
+        SELECT COUNT(*) as total
+        FROM teachers t
+        INNER JOIN users u ON t.user_id = u.id
+        ${whereClause}
+      `;
+      const countResult = await query(countQuery, params);
+      const total = parseInt(countResult.rows[0].total);
+
+      // Data query (SQL Server syntax) - Return flat structure matching PublicTeacher
+      const dataQuery = `
+        SELECT 
+          t.id, t.teacher_code, t.main_subject_id,
+          t.years_experience, t.degree, t.specialization,
+          t.created_at,
+          u.full_name, u.phone, u.address, u.birth_date,
+          NULL as bio, NULL as avatar_url, u.status as is_active
+        FROM teachers t
+        INNER JOIN users u ON t.user_id = u.id
+        ${whereClause}
+        ORDER BY t.id
+        OFFSET $${paramIndex} ROWS
+        FETCH NEXT $${paramIndex + 1} ROWS ONLY
+      `;
+      const dataResult = await query(dataQuery, [...params, offset, limit]);
+
+      // Transform to match PublicTeacher interface
+      const transformedData = dataResult.rows.map((row: any) => ({
+        id: row.id,
+        teacher_code: row.teacher_code,
+        full_name: row.full_name,
+        phone: row.phone,
+        address: row.address,
+        birth_date: row.birth_date,
+        degree: row.degree,
+        specialization: row.specialization,
+        years_of_experience: row.years_experience,
+        bio: row.bio,
+        avatar_url: row.avatar_url,
+        is_active: row.is_active,
+        created_at: row.created_at
+      }));
 
       return ResponseHelper.successWithPagination(
         reply,
-        data,
-        { page, limit, total: count || 0 }
+        transformedData,
+        { page, limit, total }
       );
     } catch (error: any) {
       return ResponseHelper.serverError(reply, error.message);
     }
   });
 
-  // GET /teachers/:id - Get teacher details
+  // GET /teachers/:id - Get teacher details (PUBLIC - no auth required)
   app.get('/teachers/:id', {
-    preValidation: [authenticateToken],
     preHandler: [validateParams(IdParamSchema)]
   }, async (req: any, reply: any) => {
     try {
       const { id } = req.params;
-      const { data, error } = await supabase
-        .from('teachers')
-        .select(`
-          *,
-          users!inner(
-            id, email, full_name, phone, address, birth_date, status, created_at
-          ),
-          subjects(
-            id, name, code, description
-          )
-        `)
-        .eq('id', id)
-        .single();
+      const sql = `
+        SELECT 
+          t.id, t.teacher_code, t.main_subject_id,
+          t.years_experience, t.degree, t.specialization,
+          t.created_at,
+          u.full_name, u.phone, u.address, u.birth_date,
+          NULL as bio, NULL as avatar_url, u.status as is_active
+        FROM teachers t
+        INNER JOIN users u ON t.user_id = u.id
+        WHERE t.id = $1
+      `;
+      const result = await query(sql, [id]);
 
-      if (error || !data) {
+      if (result.rows.length === 0) {
         return ResponseHelper.notFound(reply, 'Teacher');
       }
 
-      return ResponseHelper.success(reply, data);
+      const teacher = {
+        id: result.rows[0].id,
+        teacher_code: result.rows[0].teacher_code,
+        full_name: result.rows[0].full_name,
+        phone: result.rows[0].phone,
+        address: result.rows[0].address,
+        birth_date: result.rows[0].birth_date,
+        degree: result.rows[0].degree,
+        specialization: result.rows[0].specialization,
+        years_of_experience: result.rows[0].years_experience,
+        bio: result.rows[0].bio,
+        avatar_url: result.rows[0].avatar_url,
+        is_active: result.rows[0].is_active,
+        created_at: result.rows[0].created_at
+      };
+
+      return ResponseHelper.success(reply, teacher);
     } catch (error: any) {
       return ResponseHelper.serverError(reply, error.message);
     }

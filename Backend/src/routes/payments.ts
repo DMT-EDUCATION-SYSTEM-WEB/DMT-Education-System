@@ -1,349 +1,378 @@
 import { FastifyInstance } from 'fastify';
 import { z } from 'zod';
-import { supabase } from '../server';
-import { ResponseHelper } from '../utils/response';
+import { executeProcedure, sql, query } from '../utils/database';
 import { authenticateToken, requireRole, ROLES } from '../middleware/auth';
-import { validateBody, validateParams, validateQuery, PaginationSchema, IdParamSchema } from '../middleware/validation';
 
-const CreatePaymentSchema = z.object({
+const ProcessPaymentSchema = z.object({
   enrollment_id: z.number().int().positive(),
   amount: z.number().positive(),
-  payment_method: z.enum(['cash', 'bank_transfer', 'online']).default('cash'),
-  payment_date: z.string().optional(),
-  receipt_number: z.string().max(100).optional(),
+  payment_method: z.enum(['CASH', 'BANK_TRANSFER', 'CREDIT_CARD', 'E_WALLET']),
+  transaction_id: z.string().optional(),
+  processed_by: z.number().int().positive(),
   notes: z.string().optional(),
+});
+
+const RefundPaymentSchema = z.object({
+  payment_id: z.number().int().positive(),
+  refund_amount: z.number().positive(),
+  reason: z.string(),
   processed_by: z.number().int().positive(),
 });
 
-const UpdatePaymentSchema = z.object({
-  amount: z.number().positive().optional(),
-  payment_method: z.enum(['cash', 'bank_transfer', 'online']).optional(),
-  payment_date: z.string().optional(),
-  receipt_number: z.string().max(100).optional(),
-  notes: z.string().optional(),
-});
-
-const PaymentQuerySchema = PaginationSchema.extend({
-  enrollment_id: z.coerce.number().int().positive().optional(),
-  payment_method: z.enum(['cash', 'bank_transfer', 'online']).optional(),
-  start_date: z.string().optional(),
-  end_date: z.string().optional(),
-});
-
 export async function paymentsRoutes(app: FastifyInstance) {
-  // GET /payments - List payments with filters
-  app.get('/payments', {
-    preValidation: [authenticateToken, requireRole([ROLES.ADMIN, ROLES.STAFF])],
-    preHandler: [validateQuery(PaymentQuerySchema)]
-  }, async (req: any, reply: any) => {
+  // POST /payments - Process a payment
+  app.post('/payments', {
+    preValidation: [authenticateToken, requireRole([ROLES.ADMIN, ROLES.STAFF])]
+  }, async (req: any, reply) => {
+    const schema = ProcessPaymentSchema;
+    const parsed = schema.safeParse(req.body);
+    
+    if (!parsed.success) {
+      return reply.code(400).send({ error: parsed.error.flatten() });
+    }
+
+    const data = parsed.data;
+
     try {
-      const { page, limit, search, enrollment_id, payment_method, start_date, end_date } = req.query;
-      const offset = (page - 1) * limit;
+      const result = await executeProcedure('sp_ProcessPayment', {
+        input: {
+          enrollment_id: data.enrollment_id,
+          amount: data.amount,
+          payment_method: data.payment_method,
+          transaction_id: data.transaction_id || null,
+          processed_by: data.processed_by,
+          notes: data.notes || null,
+        },
+        output: {
+          payment_id: sql.Int,
+          new_paid_amount: sql.Decimal(15, 2),
+          new_payment_status: sql.VarChar(50),
+          error_message: sql.NVarChar(500),
+        },
+      });
 
-      let query = supabase
-        .from('payments')
-        .select(`
-          *,
-          enrollments!inner(
-            id, total_fee, paid_amount,
-            classes!inner(
-              id, name, code,
-              courses(id, name)
-            ),
-            students!inner(
-              id, student_code,
-              users!inner(
-                id, full_name, email, phone
-              )
-            )
-          )
-        `, { count: 'exact' })
-        .range(offset, offset + limit - 1)
-        .order('payment_date', { ascending: false });
-
-      if (search) {
-        query = query.or(`receipt_number.ilike.%${search}%,notes.ilike.%${search}%`);
+      if (result.returnValue === 0) {
+        return reply.code(201).send({
+          success: true,
+          message: 'Payment processed successfully',
+          data: {
+            payment_id: result.output.payment_id,
+            new_paid_amount: result.output.new_paid_amount,
+            new_payment_status: result.output.new_payment_status,
+          },
+        });
+      } else {
+        return reply.code(400).send({
+          success: false,
+          error: result.output.error_message || 'Payment processing failed',
+        });
       }
+    } catch (error: any) {
+      console.error('Process payment error:', error);
+      return reply.code(500).send({
+        success: false,
+        error: error.message || 'Internal server error',
+      });
+    }
+  });
 
-      if (enrollment_id) {
-        query = query.eq('enrollment_id', enrollment_id);
+  // POST /payments/refund - Refund a payment
+  app.post('/payments/refund', {
+    preValidation: [authenticateToken, requireRole([ROLES.ADMIN])]
+  }, async (req: any, reply) => {
+    const schema = RefundPaymentSchema;
+    const parsed = schema.safeParse(req.body);
+    
+    if (!parsed.success) {
+      return reply.code(400).send({ error: parsed.error.flatten() });
+    }
+
+    const data = parsed.data;
+
+    try {
+      const result = await executeProcedure('sp_RefundPayment', {
+        input: {
+          payment_id: data.payment_id,
+          refund_amount: data.refund_amount,
+          reason: data.reason,
+          processed_by: data.processed_by,
+        },
+        output: {
+          refund_id: sql.Int,
+          new_paid_amount: sql.Decimal(15, 2),
+          new_payment_status: sql.VarChar(50),
+          error_message: sql.NVarChar(500),
+        },
+      });
+
+      if (result.returnValue === 0) {
+        return reply.send({
+          success: true,
+          message: 'Payment refunded successfully',
+          data: {
+            refund_id: result.output.refund_id,
+            new_paid_amount: result.output.new_paid_amount,
+            new_payment_status: result.output.new_payment_status,
+          },
+        });
+      } else {
+        return reply.code(400).send({
+          success: false,
+          error: result.output.error_message || 'Refund processing failed',
+        });
       }
+    } catch (error: any) {
+      console.error('Refund payment error:', error);
+      return reply.code(500).send({
+        success: false,
+        error: error.message || 'Internal server error',
+      });
+    }
+  });
+
+  // GET /payments/enrollment/:enrollmentId - Get payment history for an enrollment
+  app.get('/payments/enrollment/:enrollmentId', {
+    preValidation: [authenticateToken]
+  }, async (req: any, reply) => {
+    const schema = z.object({
+      enrollmentId: z.string().transform(Number),
+    });
+
+    const parsed = schema.safeParse(req.params);
+    if (!parsed.success) {
+      return reply.code(400).send({ error: parsed.error.flatten() });
+    }
+
+    const { enrollmentId } = parsed.data;
+
+    try {
+      const result = await query(`
+        SELECT 
+          p.*,
+          u.full_name as processed_by_name
+        FROM PAYMENTS p
+        LEFT JOIN USERS u ON p.processed_by = u.id
+        WHERE p.enrollment_id = @p1
+        ORDER BY p.payment_date DESC
+      `, [enrollmentId]);
+
+      return {
+        success: true,
+        data: result.rows,
+      };
+    } catch (error: any) {
+      console.error('Get enrollment payments error:', error);
+      return reply.code(500).send({
+        success: false,
+        error: error.message || 'Internal server error',
+      });
+    }
+  });
+
+  // GET /payments/student/:studentId - Get all payments for a student
+  app.get('/payments/student/:studentId', {
+    preValidation: [authenticateToken]
+  }, async (req: any, reply) => {
+    const schema = z.object({
+      studentId: z.string().transform(Number),
+    });
+
+    const parsed = schema.safeParse(req.params);
+    if (!parsed.success) {
+      return reply.code(400).send({ error: parsed.error.flatten() });
+    }
+
+    const { studentId } = parsed.data;
+
+    try {
+      const result = await query(`
+        SELECT 
+          p.*,
+          e.total_fee,
+          e.paid_amount as enrollment_paid_amount,
+          e.payment_status as enrollment_payment_status,
+          c.name as class_name,
+          c.code as class_code,
+          co.name as course_name,
+          u.full_name as processed_by_name
+        FROM PAYMENTS p
+        JOIN ENROLLMENTS e ON p.enrollment_id = e.id
+        JOIN CLASSES c ON e.class_id = c.id
+        JOIN COURSES co ON c.course_id = co.id
+        LEFT JOIN USERS u ON p.processed_by = u.id
+        WHERE e.student_id = @p1
+        ORDER BY p.payment_date DESC
+      `, [studentId]);
+
+      return {
+        success: true,
+        data: result.rows,
+      };
+    } catch (error: any) {
+      console.error('Get student payments error:', error);
+      return reply.code(500).send({
+        success: false,
+        error: error.message || 'Internal server error',
+      });
+    }
+  });
+
+  // GET /payments - Get all payments with pagination
+  app.get('/payments', {
+    preValidation: [authenticateToken, requireRole([ROLES.ADMIN, ROLES.STAFF])]
+  }, async (req: any, reply) => {
+    const schema = z.object({
+      page: z.string().optional().default('1').transform(Number),
+      limit: z.string().optional().default('20').transform(Number),
+      payment_method: z.enum(['CASH', 'BANK_TRANSFER', 'CREDIT_CARD', 'E_WALLET']).optional(),
+      status: z.enum(['COMPLETED', 'PENDING', 'REFUNDED', 'FAILED']).optional(),
+      from_date: z.string().optional(),
+      to_date: z.string().optional(),
+    });
+
+    const parsed = schema.safeParse(req.query);
+    if (!parsed.success) {
+      return reply.code(400).send({ error: parsed.error.flatten() });
+    }
+
+    const { page, limit, payment_method, status, from_date, to_date } = parsed.data;
+    const offset = (page - 1) * limit;
+
+    try {
+      let whereClause = 'WHERE 1=1';
+      const params: any[] = [];
+      let paramIndex = 1;
 
       if (payment_method) {
-        query = query.eq('payment_method', payment_method);
+        whereClause += ` AND p.payment_method = @p${paramIndex}`;
+        params.push(payment_method);
+        paramIndex++;
       }
 
-      if (start_date) {
-        query = query.gte('payment_date', start_date);
+      if (status) {
+        whereClause += ` AND p.status = @p${paramIndex}`;
+        params.push(status);
+        paramIndex++;
       }
 
-      if (end_date) {
-        query = query.lte('payment_date', end_date);
+      if (from_date) {
+        whereClause += ` AND p.payment_date >= @p${paramIndex}`;
+        params.push(new Date(from_date));
+        paramIndex++;
       }
 
-      const { data, error, count } = await query;
-      if (error) throw error;
+      if (to_date) {
+        whereClause += ` AND p.payment_date <= @p${paramIndex}`;
+        params.push(new Date(to_date));
+        paramIndex++;
+      }
 
-      return ResponseHelper.successWithPagination(
-        reply,
-        data,
-        { page, limit, total: count || 0 }
-      );
+      const result = await query(`
+        SELECT 
+          p.*,
+          e.student_id,
+          s.student_code,
+          u_student.full_name as student_name,
+          c.name as class_name,
+          c.code as class_code,
+          u_processor.full_name as processed_by_name
+        FROM PAYMENTS p
+        JOIN ENROLLMENTS e ON p.enrollment_id = e.id
+        JOIN STUDENTS s ON e.student_id = s.id
+        JOIN USERS u_student ON s.user_id = u_student.id
+        JOIN CLASSES c ON e.class_id = c.id
+        LEFT JOIN USERS u_processor ON p.processed_by = u_processor.id
+        ${whereClause}
+        ORDER BY p.payment_date DESC
+        OFFSET @p${paramIndex} ROWS
+        FETCH NEXT @p${paramIndex + 1} ROWS ONLY
+      `, [...params, offset, limit]);
+
+      const countResult = await query(`
+        SELECT COUNT(*) as total
+        FROM PAYMENTS p
+        JOIN ENROLLMENTS e ON p.enrollment_id = e.id
+        ${whereClause}
+      `, params);
+
+      const total = countResult.rows[0]?.total || 0;
+
+      return {
+        success: true,
+        data: result.rows,
+        pagination: {
+          page,
+          limit,
+          total,
+          totalPages: Math.ceil(total / limit),
+        },
+      };
     } catch (error: any) {
-      return ResponseHelper.serverError(reply, error.message);
+      console.error('Get payments error:', error);
+      return reply.code(500).send({
+        success: false,
+        error: error.message || 'Internal server error',
+      });
     }
   });
 
   // GET /payments/:id - Get payment details
   app.get('/payments/:id', {
-    preValidation: [authenticateToken, requireRole([ROLES.ADMIN, ROLES.STAFF])],
-    preHandler: [validateParams(IdParamSchema)]
-  }, async (req: any, reply: any) => {
-    try {
-      const { id } = req.params;
+    preValidation: [authenticateToken]
+  }, async (req: any, reply) => {
+    const schema = z.object({
+      id: z.string().transform(Number),
+    });
 
-      const { data, error } = await supabase
-        .from('payments')
-        .select(`
-          *,
-          enrollments!inner(
-            id, total_fee, paid_amount, discount_percent, payment_status,
-            classes!inner(
-              id, name, code,
-              courses(id, name, price)
-            ),
-            students!inner(
-              id, student_code,
-              users!inner(
-                id, full_name, email, phone, address
-              )
-            )
-          )
-        `)
-        .eq('id', id)
-        .single();
-
-      if (error) throw error;
-      if (!data) {
-        return ResponseHelper.notFound(reply, 'Payment not found');
-      }
-
-      return ResponseHelper.success(reply, data);
-    } catch (error: any) {
-      return ResponseHelper.serverError(reply, error.message);
+    const parsed = schema.safeParse(req.params);
+    if (!parsed.success) {
+      return reply.code(400).send({ error: parsed.error.flatten() });
     }
-  });
 
-  // POST /payments - Create new payment
-  app.post('/payments', {
-    preValidation: [authenticateToken, requireRole([ROLES.ADMIN, ROLES.STAFF])],
-    preHandler: [validateBody(CreatePaymentSchema)]
-  }, async (req: any, reply: any) => {
+    const { id } = parsed.data;
+
     try {
-      const paymentData = req.body;
+      const result = await query(`
+        SELECT 
+          p.*,
+          e.student_id,
+          e.total_fee,
+          e.paid_amount as enrollment_paid_amount,
+          e.payment_status as enrollment_payment_status,
+          s.student_code,
+          u_student.full_name as student_name,
+          u_student.email as student_email,
+          c.name as class_name,
+          c.code as class_code,
+          co.name as course_name,
+          u_processor.full_name as processed_by_name
+        FROM PAYMENTS p
+        JOIN ENROLLMENTS e ON p.enrollment_id = e.id
+        JOIN STUDENTS s ON e.student_id = s.id
+        JOIN USERS u_student ON s.user_id = u_student.id
+        JOIN CLASSES c ON e.class_id = c.id
+        JOIN COURSES co ON c.course_id = co.id
+        LEFT JOIN USERS u_processor ON p.processed_by = u_processor.id
+        WHERE p.id = @p1
+      `, [id]);
 
-      // Get enrollment info
-      const { data: enrollment, error: enrollmentError } = await supabase
-        .from('enrollments')
-        .select('id, total_fee, paid_amount, payment_status')
-        .eq('id', paymentData.enrollment_id)
-        .single();
-
-      if (enrollmentError || !enrollment) {
-        return ResponseHelper.badRequest(reply, 'Enrollment not found');
+      if (result.rows.length === 0) {
+        return reply.code(404).send({
+          success: false,
+          error: 'Payment not found',
+        });
       }
 
-      // Check if payment amount is valid
-      const remainingAmount = enrollment.total_fee - enrollment.paid_amount;
-      if (paymentData.amount > remainingAmount) {
-        return ResponseHelper.badRequest(reply, `Payment amount exceeds remaining balance (${remainingAmount})`);
-      }
-
-      // Create payment
-      const { data, error } = await supabase
-        .from('payments')
-        .insert([paymentData])
-        .select()
-        .single();
-
-      if (error) throw error;
-
-      // Update enrollment paid_amount and payment_status
-      const newPaidAmount = enrollment.paid_amount + paymentData.amount;
-      const newPaymentStatus = newPaidAmount >= enrollment.total_fee ? 'paid' : 
-                               newPaidAmount > 0 ? 'partial' : 'pending';
-
-      await supabase
-        .from('enrollments')
-        .update({ 
-          paid_amount: newPaidAmount,
-          payment_status: newPaymentStatus
-        })
-        .eq('id', paymentData.enrollment_id);
-
-      return ResponseHelper.created(reply, data);
+      return {
+        success: true,
+        data: result.rows[0],
+      };
     } catch (error: any) {
-      return ResponseHelper.serverError(reply, error.message);
-    }
-  });
-
-  // PUT /payments/:id - Update payment
-  app.put('/payments/:id', {
-    preValidation: [authenticateToken, requireRole([ROLES.ADMIN, ROLES.STAFF])],
-    preHandler: [validateParams(IdParamSchema), validateBody(UpdatePaymentSchema)]
-  }, async (req: any, reply: any) => {
-    try {
-      const { id } = req.params;
-      const updateData = req.body;
-
-      // Get current payment
-      const { data: currentPayment } = await supabase
-        .from('payments')
-        .select('*, enrollments!inner(id, total_fee, paid_amount)')
-        .eq('id', id)
-        .single();
-
-      if (!currentPayment) {
-        return ResponseHelper.notFound(reply, 'Payment not found');
-      }
-
-      // Update payment
-      const { data, error } = await supabase
-        .from('payments')
-        .update(updateData)
-        .eq('id', id)
-        .select()
-        .single();
-
-      if (error) throw error;
-
-      // If amount changed, recalculate enrollment paid_amount
-      if (updateData.amount && updateData.amount !== currentPayment.amount) {
-        const amountDiff = updateData.amount - currentPayment.amount;
-        const newPaidAmount = currentPayment.enrollments.paid_amount + amountDiff;
-        const newPaymentStatus = newPaidAmount >= currentPayment.enrollments.total_fee ? 'paid' : 
-                                 newPaidAmount > 0 ? 'partial' : 'pending';
-
-        await supabase
-          .from('enrollments')
-          .update({ 
-            paid_amount: newPaidAmount,
-            payment_status: newPaymentStatus
-          })
-          .eq('id', currentPayment.enrollment_id);
-      }
-
-      return ResponseHelper.success(reply, data);
-    } catch (error: any) {
-      return ResponseHelper.serverError(reply, error.message);
-    }
-  });
-
-  // DELETE /payments/:id - Delete payment
-  app.delete('/payments/:id', {
-    preValidation: [authenticateToken, requireRole([ROLES.ADMIN])],
-    preHandler: [validateParams(IdParamSchema)]
-  }, async (req: any, reply: any) => {
-    try {
-      const { id } = req.params;
-
-      // Get payment info
-      const { data: payment } = await supabase
-        .from('payments')
-        .select('*, enrollments!inner(id, paid_amount, total_fee)')
-        .eq('id', id)
-        .single();
-
-      if (!payment) {
-        return ResponseHelper.notFound(reply, 'Payment not found');
-      }
-
-      // Delete payment
-      const { error } = await supabase
-        .from('payments')
-        .delete()
-        .eq('id', id);
-
-      if (error) throw error;
-
-      // Update enrollment paid_amount
-      const newPaidAmount = payment.enrollments.paid_amount - payment.amount;
-      const newPaymentStatus = newPaidAmount >= payment.enrollments.total_fee ? 'paid' : 
-                               newPaidAmount > 0 ? 'partial' : 'pending';
-
-      await supabase
-        .from('enrollments')
-        .update({ 
-          paid_amount: Math.max(0, newPaidAmount),
-          payment_status: newPaymentStatus
-        })
-        .eq('id', payment.enrollment_id);
-
-      return ResponseHelper.success(reply, { message: 'Payment deleted successfully' });
-    } catch (error: any) {
-      return ResponseHelper.serverError(reply, error.message);
-    }
-  });
-
-  // GET /enrollments/:id/payments - Get payments for an enrollment
-  app.get('/enrollments/:id/payments', {
-    preValidation: [authenticateToken],
-    preHandler: [validateParams(IdParamSchema)]
-  }, async (req: any, reply: any) => {
-    try {
-      const { id } = req.params;
-
-      const { data, error } = await supabase
-        .from('payments')
-        .select('*')
-        .eq('enrollment_id', id)
-        .order('payment_date', { ascending: false });
-
-      if (error) throw error;
-
-      return ResponseHelper.success(reply, data);
-    } catch (error: any) {
-      return ResponseHelper.serverError(reply, error.message);
-    }
-  });
-
-  // GET /payments/summary - Get payment summary statistics
-  app.get('/payments/summary', {
-    preValidation: [authenticateToken, requireRole([ROLES.ADMIN, ROLES.STAFF])],
-  }, async (req: any, reply: any) => {
-    try {
-      const { start_date, end_date } = req.query;
-
-      let query = supabase
-        .from('payments')
-        .select('amount, payment_method, payment_date');
-
-      if (start_date) {
-        query = query.gte('payment_date', start_date);
-      }
-
-      if (end_date) {
-        query = query.lte('payment_date', end_date);
-      }
-
-      const { data, error } = await query;
-      if (error) throw error;
-
-      // Calculate summary
-      const totalAmount = data?.reduce((sum: number, p: any) => sum + Number(p.amount), 0) || 0;
-      const byMethod = data?.reduce((acc: any, p: any) => {
-        acc[p.payment_method] = (acc[p.payment_method] || 0) + Number(p.amount);
-        return acc;
-      }, {}) || {};
-
-      return ResponseHelper.success(reply, {
-        totalAmount,
-        totalPayments: data?.length || 0,
-        byMethod,
-        period: { start_date, end_date }
+      console.error('Get payment details error:', error);
+      return reply.code(500).send({
+        success: false,
+        error: error.message || 'Internal server error',
       });
-    } catch (error: any) {
-      return ResponseHelper.serverError(reply, error.message);
     }
   });
 }

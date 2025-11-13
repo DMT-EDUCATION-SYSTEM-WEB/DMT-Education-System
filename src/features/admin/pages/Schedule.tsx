@@ -74,7 +74,7 @@ const eventColors = [
   'bg-blue-100 border-blue-300 text-blue-800',
   'bg-green-100 border-green-300 text-green-800',
   'bg-yellow-100 border-yellow-300 text-yellow-800',
-  'bg-purple-100 border-purple-300 text-purple-800',
+  'bg-red-100 border-red-300 text-red-800',
   'bg-pink-100 border-pink-300 text-pink-800',
   'bg-indigo-100 border-indigo-300 text-indigo-800'
 ];
@@ -618,7 +618,7 @@ const SchedulePage: React.FC = () => {
         roomId: 'room4',
         roomName: 'P.202',
         studentCount: 15,
-        color: 'bg-purple-100 border-purple-300 text-purple-800',
+        color: 'bg-red-100 border-red-300 text-red-800',
         type: 'class',
         status: 'scheduled'
       },

@@ -95,7 +95,7 @@ const AdminDashboard: React.FC = () => {
           { name: 'TOEIC', value: 25, color: '#10B981' },
           { name: 'Giao tiếp', value: 20, color: '#F59E0B' },
           { name: 'Business English', value: 15, color: '#EF4444' },
-          { name: 'Khác', value: 5, color: '#8B5CF6' }
+          { name: 'Khác', value: 5, color: '#dc2626' }
         ]
       });
     } finally {
@@ -119,25 +119,30 @@ const AdminDashboard: React.FC = () => {
   }
 
   return (
-    <div className="p-6 space-y-6 bg-gray-50 min-h-screen">
+    <div className="space-y-8">
       {/* Header */}
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Dashboard Quản Lý</h1>
-          <p className="text-gray-600 mt-1">Tổng quan hoạt động trung tâm DMT</p>
+          <h1 className="text-4xl font-bold bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent">
+            Dashboard Quản Lý
+          </h1>
+          <p className="text-gray-600 mt-2 flex items-center">
+            <span className="w-2 h-2 bg-green-500 rounded-full mr-2 animate-pulse"></span>
+            Tổng quan hoạt động trung tâm DMT
+          </p>
         </div>
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center space-x-3">
           <select
             value={selectedPeriod}
             onChange={(e) => setSelectedPeriod(e.target.value)}
-            className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="px-4 py-2.5 bg-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent shadow-sm hover:border-gray-300 transition-colors"
           >
-            <option value="week">7 ngày qua</option>
-            <option value="month">30 ngày qua</option>
-            <option value="quarter">3 tháng qua</option>
-            <option value="year">12 tháng qua</option>
+            <option value="week">📅 7 ngày qua</option>
+            <option value="month">📅 30 ngày qua</option>
+            <option value="quarter">📅 3 tháng qua</option>
+            <option value="year">📅 12 tháng qua</option>
           </select>
-          <button className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+          <button className="flex items-center px-5 py-2.5 bg-gradient-to-r from-red-600 to-red-500 text-white rounded-xl hover:shadow-lg hover:scale-105 transition-all shadow-md">
             <Settings className="w-4 h-4 mr-2" />
             Cài đặt
           </button>
@@ -145,10 +150,12 @@ const AdminDashboard: React.FC = () => {
       </div>
 
       {/* Stats Cards */}
-      <DashboardStats data={dashboardData} formatCurrency={formatCurrency} />
+      <div className="stagger-children">
+        <DashboardStats data={dashboardData} formatCurrency={formatCurrency} />
+      </div>
 
       {/* Charts Section */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 animate-fade-in">
         <DashboardCharts 
           studentTrends={dashboardData.studentTrends}
           revenueTrends={dashboardData.revenueTrends}
@@ -164,39 +171,59 @@ const AdminDashboard: React.FC = () => {
       </div>
 
       {/* Alerts & Notifications */}
-      <div className="bg-white rounded-lg shadow-sm p-6">
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold text-gray-900 flex items-center">
-            <Bell className="w-5 h-5 mr-2 text-yellow-500" />
+      <div className="bg-white rounded-2xl shadow-sm p-6 border border-gray-100">
+        <div className="flex items-center justify-between mb-6">
+          <h3 className="text-xl font-bold text-gray-900 flex items-center">
+            <div className="w-10 h-10 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-xl flex items-center justify-center mr-3">
+              <Bell className="w-5 h-5 text-white" />
+            </div>
             Thông báo quan trọng
           </h3>
-          <button className="text-blue-600 hover:text-blue-800 text-sm font-medium">
-            Xem tất cả
+          <button className="px-4 py-2 text-blue-600 hover:bg-blue-50 rounded-lg text-sm font-semibold transition-colors">
+            Xem tất cả →
           </button>
         </div>
-        <div className="space-y-3">
-          <div className="flex items-start p-3 bg-yellow-50 border-l-4 border-yellow-400 rounded">
-            <div className="flex-1">
-              <p className="text-sm font-medium text-yellow-800">
+        <div className="space-y-4">
+          <div className="flex items-start p-4 bg-gradient-to-r from-yellow-50 to-orange-50 border-l-4 border-yellow-400 rounded-xl hover:shadow-md transition-shadow">
+            <div className="flex-shrink-0 w-10 h-10 bg-yellow-400 rounded-lg flex items-center justify-center">
+              <span className="text-white text-lg">⚠️</span>
+            </div>
+            <div className="flex-1 ml-4">
+              <p className="text-sm font-semibold text-gray-900">
                 Lớp IELTS 6.5 - Sáng thứ 2 có 3 học viên vắng mặt liên tiếp
               </p>
-              <p className="text-xs text-yellow-600 mt-1">2 giờ trước</p>
+              <p className="text-xs text-gray-500 mt-1 flex items-center">
+                <span className="w-1.5 h-1.5 bg-yellow-500 rounded-full mr-2"></span>
+                2 giờ trước
+              </p>
             </div>
           </div>
-          <div className="flex items-start p-3 bg-blue-50 border-l-4 border-blue-400 rounded">
-            <div className="flex-1">
-              <p className="text-sm font-medium text-blue-800">
+          <div className="flex items-start p-4 bg-gradient-to-r from-blue-50 to-indigo-50 border-l-4 border-blue-400 rounded-xl hover:shadow-md transition-shadow">
+            <div className="flex-shrink-0 w-10 h-10 bg-blue-400 rounded-lg flex items-center justify-center">
+              <span className="text-white text-lg">📝</span>
+            </div>
+            <div className="flex-1 ml-4">
+              <p className="text-sm font-semibold text-gray-900">
                 Có 5 đơn đăng ký khóa học mới cần duyệt
               </p>
-              <p className="text-xs text-blue-600 mt-1">4 giờ trước</p>
+              <p className="text-xs text-gray-500 mt-1 flex items-center">
+                <span className="w-1.5 h-1.5 bg-blue-500 rounded-full mr-2"></span>
+                4 giờ trước
+              </p>
             </div>
           </div>
-          <div className="flex items-start p-3 bg-green-50 border-l-4 border-green-400 rounded">
-            <div className="flex-1">
-              <p className="text-sm font-medium text-green-800">
+          <div className="flex items-start p-4 bg-gradient-to-r from-green-50 to-emerald-50 border-l-4 border-green-400 rounded-xl hover:shadow-md transition-shadow">
+            <div className="flex-shrink-0 w-10 h-10 bg-green-400 rounded-lg flex items-center justify-center">
+              <span className="text-white text-lg">🎉</span>
+            </div>
+            <div className="flex-1 ml-4">
+              <p className="text-sm font-semibold text-gray-900">
                 Doanh thu tháng này đã vượt mục tiêu 15%
               </p>
-              <p className="text-xs text-green-600 mt-1">1 ngày trước</p>
+              <p className="text-xs text-gray-500 mt-1 flex items-center">
+                <span className="w-1.5 h-1.5 bg-green-500 rounded-full mr-2"></span>
+                1 ngày trước
+              </p>
             </div>
           </div>
         </div>

@@ -262,7 +262,7 @@ const Analytics: React.FC = () => {
           value={`${data.courseStats.completionRate}%`}
           change={2.1}
           icon={<Target size={32} />}
-          color="text-purple-500"
+          color="text-red-500"
         />
       </div>
 
@@ -306,7 +306,7 @@ const Analytics: React.FC = () => {
               <div className="flex items-center gap-2">
                 <div className="w-32 bg-gray-200 rounded-full h-2">
                   <div 
-                    className="bg-purple-500 h-2 rounded-full" 
+                    className="bg-red-500 h-2 rounded-full" 
                     style={{ width: `${(data.userStats.staffCount / data.userStats.totalUsers) * 100}%` }}
                   />
                 </div>
@@ -371,11 +371,11 @@ const Analytics: React.FC = () => {
             <div className="text-sm text-gray-600">Thời gian phản hồi</div>
           </div>
           <div className="text-center">
-            <div className="text-2xl font-bold text-purple-600">{data.systemStats.serverLoad}%</div>
+            <div className="text-2xl font-bold text-red-600">{data.systemStats.serverLoad}%</div>
             <div className="text-sm text-gray-600">Tải máy chủ</div>
           </div>
           <div className="text-center">
-            <div className="text-2xl font-bold text-red-600">{data.systemStats.errorRate}%</div>
+            <div className="text-2xl font-bold text-red-700">{data.systemStats.errorRate}%</div>
             <div className="text-sm text-gray-600">Tỷ lệ lỗi</div>
           </div>
           <div className="text-center">

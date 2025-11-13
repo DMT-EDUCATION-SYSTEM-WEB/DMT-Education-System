@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Star, Pencil, Upload, Download, Trash2 } from 'lucide-react';
 import { newsApi, News, CreateNewsData, UpdateNewsData } from '../../../services/news';
 
 const NewsManagement: React.FC = () => {
@@ -306,9 +307,13 @@ const NewsManagement: React.FC = () => {
                         borderRadius: '12px',
                         background: '#fef3c7',
                         color: '#92400e',
-                        fontWeight: '600'
+                        fontWeight: '600',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '4px'
                       }}>
-                        ⭐ Nổi bật
+                        <Star className="w-3 h-3" fill="currentColor" />
+                        Nổi bật
                       </span>
                     )}
                   </div>
@@ -358,10 +363,14 @@ const NewsManagement: React.FC = () => {
                         fontSize: '13px',
                         fontWeight: '600',
                         cursor: 'pointer',
-                        color: '#374151'
+                        color: '#374151',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '4px'
                       }}
                     >
-                      ✏️ Sửa
+                      <Pencil className="w-4 h-4" />
+                      Sửa
                     </button>
 
                     {item.status === 'draft' ? (
@@ -375,10 +384,14 @@ const NewsManagement: React.FC = () => {
                           fontSize: '13px',
                           fontWeight: '600',
                           cursor: 'pointer',
-                          color: 'white'
+                          color: 'white',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '4px'
                         }}
                       >
-                        📤 Xuất bản
+                        <Upload className="w-4 h-4" />
+                        Xuất bản
                       </button>
                     ) : (
                       <button
@@ -391,10 +404,14 @@ const NewsManagement: React.FC = () => {
                           fontSize: '13px',
                           fontWeight: '600',
                           cursor: 'pointer',
-                          color: 'white'
+                          color: 'white',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '4px'
                         }}
                       >
-                        📥 Hủy xuất bản
+                        <Download className="w-4 h-4" />
+                        Hủy xuất bản
                       </button>
                     )}
 
@@ -408,10 +425,14 @@ const NewsManagement: React.FC = () => {
                         fontSize: '13px',
                         fontWeight: '600',
                         cursor: 'pointer',
-                        color: item.is_featured ? 'white' : '#92400e'
+                        color: item.is_featured ? 'white' : '#92400e',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '4px'
                       }}
                     >
-                      {item.is_featured ? '⭐ Bỏ nổi bật' : '☆ Đánh dấu nổi bật'}
+                      <Star className="w-4 h-4" fill={item.is_featured ? 'currentColor' : 'none'} />
+                      {item.is_featured ? 'Bỏ nổi bật' : 'Đánh dấu nổi bật'}
                     </button>
 
                     <button
@@ -424,10 +445,14 @@ const NewsManagement: React.FC = () => {
                         fontSize: '13px',
                         fontWeight: '600',
                         cursor: 'pointer',
-                        color: '#ef4444'
+                        color: '#ef4444',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '4px'
                       }}
                     >
-                      🗑️ Xóa
+                      <Trash2 className="w-4 h-4" />
+                      Xóa
                     </button>
                   </div>
                 </div>

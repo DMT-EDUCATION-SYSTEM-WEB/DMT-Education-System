@@ -21,7 +21,7 @@ const QuickActions: React.FC = () => {
       title: 'Lên lịch',
       description: 'Lịch học mới',
       icon: Calendar,
-      color: 'bg-purple-500 hover:bg-purple-600',
+      color: 'bg-red-500 hover:bg-red-600',
       action: () => console.log('Schedule class')
     },
     {

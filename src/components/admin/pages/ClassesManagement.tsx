@@ -238,8 +238,8 @@ const ClassesManagement: React.FC = () => {
           </div>
           <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
             <div className="flex items-center">
-              <div className="p-2 bg-purple-100 rounded-lg">
-                <UserCheck className="w-6 h-6 text-purple-600" />
+              <div className="p-2 bg-red-100 rounded-lg">
+                <UserCheck className="w-6 h-6 text-red-600" />
               </div>
               <div className="ml-4">
                 <p className="text-sm font-medium text-gray-600">Tổng học viên</p>

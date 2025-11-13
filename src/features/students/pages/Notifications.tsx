@@ -136,7 +136,7 @@ const Notifications: React.FC = () => {
       case 'system':
         return 'bg-gray-50';
       default:
-        return 'bg-purple-50';
+        return 'bg-red-50';
     }
   };
 

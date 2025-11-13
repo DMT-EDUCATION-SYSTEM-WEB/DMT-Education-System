@@ -57,7 +57,7 @@ const RoleModal: React.FC<RoleModalProps> = ({
     { value: 'blue', label: 'Xanh dương', class: 'bg-blue-500' },
     { value: 'green', label: 'Xanh lá', class: 'bg-green-500' },
     { value: 'yellow', label: 'Vàng', class: 'bg-yellow-500' },
-    { value: 'purple', label: 'Tím', class: 'bg-purple-500' },
+    { value: 'red', label: 'Đỏ', class: 'bg-red-500' },
     { value: 'gray', label: 'Xám', class: 'bg-gray-500' }
   ];
 

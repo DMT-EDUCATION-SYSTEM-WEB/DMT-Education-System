@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { adminService } from '../../../services/admin';
 import Spinner from '../../../components/common/Spinner';
+import { reportsAPI } from '../../../services/dmtAPI';
 import { 
   BarChart3, 
   Users, 
@@ -14,6 +15,19 @@ import {
   AlertCircle,
   Bell
 } from 'lucide-react';
+import { 
+  BarChart as RechartsBarChart, 
+  Bar, 
+  XAxis, 
+  YAxis, 
+  CartesianGrid, 
+  Tooltip, 
+  Legend, 
+  ResponsiveContainer,
+  PieChart,
+  Pie,
+  Cell
+} from 'recharts';
 
 interface StatCardProps { 
   title: string; 
@@ -50,7 +64,7 @@ const StatCard: React.FC<StatCardProps> = ({ title, value, icon, change, sub }) 
         </div>
         <div className={`p-3 rounded-lg ${
           title.includes('Học sinh') ? 'bg-blue-50 text-blue-600' : 
-          title.includes('Giáo viên') ? 'bg-purple-50 text-purple-600' : 
+          title.includes('Giáo viên') ? 'bg-red-50 text-red-600' : 
           title.includes('Khóa học') ? 'bg-amber-50 text-amber-600' : 
           title.includes('Doanh thu') ? 'bg-emerald-50 text-emerald-600' :
           'bg-gray-50 text-gray-600'
@@ -220,6 +234,7 @@ const ActivityCard: React.FC<{ activity: ActivityItem }> = ({ activity }) => {
 
 const AdminDashboard: React.FC = () => {
   const [stats, setStats] = useState<any>(null);
+  const [revenueData, setRevenueData] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -228,52 +243,68 @@ const AdminDashboard: React.FC = () => {
       setLoading(true); 
       setError(null);
       try {
-        // Normally we would call API here
-        // const res = await adminService.dashboardStats();
+        // PHASE A: Call getSystemOverview() API
+        const overviewData = await reportsAPI.getSystemOverview();
         
-        // For demo, use mock data
-        setTimeout(() => {
-          setStats({
-            totalStudents: 846,
-            studentChange: 12.5,
-            totalTeachers: 48,
-            teacherChange: 8.3,
-            totalCourses: 95,
-            courseChange: 15.2,
-            monthRevenue: '485,720,000đ',
-            revenueChange: 23.4,
-            completionRate: 91,
-            weekSignups: [18, 24, 16, 29, 32, 26, 35],
-            weekLabels: ['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN'],
-            revenueTrend: [18, 24, 32, 28, 42, 38, 48, 56],
-            revenueLabels: ['T1', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'T8'],
-            attendanceRate: 95.2,
-            courseCompletionRate: 88.7,
-            recentActivities: [
-              { id: 1, text: 'Học sinh Nguyễn Minh Anh đăng ký khóa học Toán 10 Nâng cao', time: '15 phút trước', type: 'success' },
-              { id: 2, text: 'Giáo viên Trần Quốc Bảo đã upload tài liệu cho lớp Toán 11A1', time: '32 phút trước', type: 'info' },
-              { id: 3, text: 'Lớp học Tiếng Anh IELTS 7.0 được lên lịch vào 19h tối nay', time: '1 giờ trước', type: 'info' },
-              { id: 4, text: 'Học sinh Lê Thị Bình đã hoàn thành thanh toán khóa học Hóa 12', time: '2 giờ trước', type: 'success' },
-              { id: 5, text: 'Hệ thống phát hiện xung đột lịch phòng học P204 vào ngày 25/08', time: '3 giờ trước', type: 'warning' },
-              { id: 6, text: 'Nhân viên Vũ Thị Hương đã tạo báo cáo doanh thu Quý 3/2025', time: '5 giờ trước', type: 'info' },
-            ],
-            newEnrollments: [
-              { course: 'Toán 12 Nâng cao', count: 28 },
-              { course: 'Luyện thi IELTS', count: 24 },
-              { course: 'Lý 11 Cơ bản', count: 19 },
-              { course: 'Hóa 10 Nâng cao', count: 16 },
-              { course: 'Tiếng Anh Giao tiếp', count: 15 },
-            ],
-            upcomingEvents: [
-              { title: 'Họp phụ huynh Toán 9A', time: '24/08 - 18:00', location: 'Phòng 305' },
-              { title: 'Workshop Kỹ năng học tập', time: '25/08 - 14:30', location: 'Phòng Đa năng' },
-              { title: 'Thi thử Tiếng Anh', time: '26/08 - 08:00', location: 'Phòng 201-204' },
-              { title: 'Khai giảng lớp Lý 12', time: '27/08 - 19:00', location: 'Phòng 102' },
-            ]
-          });
-          setLoading(false);
-        }, 1200);
+        // PHASE B: Call getRevenue(2025) API
+        const revenue2025 = await reportsAPI.getRevenue(2025);
+        
+        // Format revenue data for Recharts
+        const monthNames = ['T1', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'T8', 'T9', 'T10', 'T11', 'T12'];
+        const formattedRevenue = revenue2025.monthly_revenue.map((item) => ({
+          month: monthNames[item.month - 1],
+          revenue: item.revenue,
+          revenueFormatted: new Intl.NumberFormat('vi-VN', {
+            style: 'currency',
+            currency: 'VND'
+          }).format(item.revenue)
+        }));
+        
+        setRevenueData(formattedRevenue);
+        
+        // Map API data to state
+        setStats({
+          totalStudents: overviewData.total_students || 0,
+          totalTeachers: overviewData.total_teachers || 0,
+          totalCourses: overviewData.active_classes || 0, // Using active_classes as courses
+          monthRevenue: new Intl.NumberFormat('vi-VN', {
+            style: 'currency',
+            currency: 'VND'
+          }).format(overviewData.revenue_this_month || overviewData.revenue_this_year || 0),
+          pendingPayments: overviewData.pending_payments || 0,
+          attendanceRate: 95.2, // Will add this to stored procedure later
+          // Mock data for features not yet in stored procedure
+          studentChange: 12.5,
+          teacherChange: 8.3,
+          courseChange: 15.2,
+          revenueChange: 23.4,
+          weekSignups: [18, 24, 16, 29, 32, 26, 35],
+          weekLabels: ['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN'],
+          recentActivities: [
+            { id: 1, text: 'Học sinh Nguyễn Minh Anh đăng ký khóa học Toán 10 Nâng cao', time: '15 phút trước', type: 'success' },
+            { id: 2, text: 'Giáo viên Trần Quốc Bảo đã upload tài liệu cho lớp Toán 11A1', time: '32 phút trước', type: 'info' },
+            { id: 3, text: 'Lớp học Tiếng Anh IELTS 7.0 được lên lịch vào 19h tối nay', time: '1 giờ trước', type: 'info' },
+            { id: 4, text: 'Học sinh Lê Thị Bình đã hoàn thành thanh toán khóa học Hóa 12', time: '2 giờ trước', type: 'success' },
+            { id: 5, text: 'Hệ thống phát hiện xung đột lịch phòng học P204 vào ngày 25/08', time: '3 giờ trước', type: 'warning' },
+            { id: 6, text: 'Nhân viên Vũ Thị Hương đã tạo báo cáo doanh thu Quý 3/2025', time: '5 giờ trước', type: 'info' },
+          ],
+          newEnrollments: [
+            { course: 'Toán 12 Nâng cao', count: 28 },
+            { course: 'Luyện thi IELTS', count: 24 },
+            { course: 'Lý 11 Cơ bản', count: 19 },
+            { course: 'Hóa 10 Nâng cao', count: 16 },
+            { course: 'Tiếng Anh Giao tiếp', count: 15 },
+          ],
+          upcomingEvents: [
+            { title: 'Họp phụ huynh Toán 9A', time: '24/08 - 18:00', location: 'Phòng 305' },
+            { title: 'Workshop Kỹ năng học tập', time: '25/08 - 14:30', location: 'Phòng Đa năng' },
+            { title: 'Thi thử Tiếng Anh', time: '26/08 - 08:00', location: 'Phòng 201-204' },
+            { title: 'Khai giảng lớp Lý 12', time: '27/08 - 19:00', location: 'Phòng 102' },
+          ]
+        });
+        setLoading(false);
       } catch (e: any) {
+        console.error('Error loading admin dashboard:', e);
         setError(e?.message || 'Không thể tải dữ liệu');
         setLoading(false);
       }
@@ -359,11 +390,40 @@ const AdminDashboard: React.FC = () => {
           />
         </ChartCard>
         
-        <ChartCard title="Xu hướng doanh thu (8 tháng gần đây)">
-          <LineChart 
-            data={s.revenueTrend || [0, 0, 0, 0, 0, 0, 0, 0]} 
-            labels={s.revenueLabels || ['', '', '', '', '', '', '', '']} 
-          />
+        <ChartCard title="Doanh thu năm 2025 (theo tháng)">
+          <ResponsiveContainer width="100%" height={200}>
+            <RechartsBarChart data={revenueData}>
+              <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+              <XAxis 
+                dataKey="month" 
+                tick={{ fill: '#666', fontSize: 12 }}
+                tickLine={false}
+              />
+              <YAxis 
+                tick={{ fill: '#666', fontSize: 12 }}
+                tickLine={false}
+                tickFormatter={(value) => `${(value / 1000000).toFixed(0)}M`}
+              />
+              <Tooltip 
+                formatter={(value: any) => new Intl.NumberFormat('vi-VN', {
+                  style: 'currency',
+                  currency: 'VND'
+                }).format(value)}
+                contentStyle={{
+                  backgroundColor: '#fff',
+                  border: '1px solid #e5e7eb',
+                  borderRadius: '8px',
+                  boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)'
+                }}
+              />
+              <Bar 
+                dataKey="revenue" 
+                fill="#3b82f6" 
+                radius={[8, 8, 0, 0]}
+                name="Doanh thu"
+              />
+            </RechartsBarChart>
+          </ResponsiveContainer>
         </ChartCard>
       </div>
 

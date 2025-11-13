@@ -80,8 +80,8 @@ const MethodBadge: React.FC<{ method: PaymentMethod }> = ({ method }) => {
     switch (method) {
       case 'cash':
         return {
-          bg: 'bg-purple-100',
-          text: 'text-purple-800',
+          bg: 'bg-red-100',
+          text: 'text-red-800',
           icon: <DollarSign className="w-4 h-4 mr-1" />,
           label: 'Tiền mặt'
         };

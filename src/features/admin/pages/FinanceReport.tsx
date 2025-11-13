@@ -110,7 +110,7 @@ const BarChart: React.FC<{ data: MonthlyRevenue[] }> = ({ data }) => {
   
   const maxRevenue = Math.max(...totalRevenueByMonth);
   const categories = ['Học phí', 'Sách giáo khoa', 'Phí thi', 'Thu nhập khác'];
-  const colors = ['#3b82f6', '#10b981', '#f59e0b', '#8b5cf6'];
+  const colors = ['#3b82f6', '#10b981', '#f59e0b', '#dc2626'];
   
   return (
     <div className="w-full overflow-x-auto">
@@ -121,7 +121,7 @@ const BarChart: React.FC<{ data: MonthlyRevenue[] }> = ({ data }) => {
               <div className="w-full flex flex-col-reverse h-56">
                 {/* Other Income */}
                 <div 
-                  className="w-full bg-purple-500" 
+                  className="w-full bg-red-500" 
                   style={{ 
                     height: `${(item.otherIncome / maxRevenue) * 100}%`,
                     transition: 'height 1s ease'
@@ -444,7 +444,7 @@ const FinanceReport: React.FC = () => {
                           className="w-3 h-3 rounded-full mr-2"
                           style={{ 
                             backgroundColor: [
-                              '#3b82f6', '#10b981', '#f59e0b', '#8b5cf6',
+                              '#3b82f6', '#10b981', '#f59e0b', '#dc2626',
                               '#ef4444', '#ec4899', '#14b8a6', '#6366f1'
                             ][idx % 8]
                           }}

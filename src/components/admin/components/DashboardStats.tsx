@@ -37,7 +37,7 @@ const DashboardStats: React.FC<DashboardStatsProps> = ({ data, formatCurrency })
       title: 'Khóa học',
       value: data.totalCourses,
       icon: BookOpen,
-      color: 'bg-purple-500',
+      color: 'bg-red-500',
       trend: '+1',
       trendColor: 'text-green-600'
     },
@@ -91,25 +91,30 @@ const DashboardStats: React.FC<DashboardStatsProps> = ({ data, formatCurrency })
         return (
           <div
             key={index}
-            className={`bg-white rounded-lg shadow-sm p-6 border border-gray-200 hover:shadow-md transition-shadow ${
+            className={`group bg-white rounded-2xl shadow-sm p-6 border border-gray-100 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 ${
               stat.isLarge ? 'md:col-span-2' : ''
             }`}
           >
-            <div className="flex items-center justify-between">
+            <div className="flex items-start justify-between">
               <div className="flex-1">
-                <p className="text-sm font-medium text-gray-600 mb-1">{stat.title}</p>
-                <p className={`font-bold text-gray-900 ${stat.isLarge ? 'text-2xl' : 'text-xl'}`}>
+                <p className="text-sm font-semibold text-gray-500 mb-3 uppercase tracking-wide">{stat.title}</p>
+                <p className={`font-bold bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent ${stat.isLarge ? 'text-3xl' : 'text-2xl'}`}>
                   {stat.value}
                 </p>
-                <div className="flex items-center mt-2">
-                  <span className={`text-sm font-medium ${stat.trendColor}`}>
-                    {stat.trend}
-                  </span>
-                  <span className="text-sm text-gray-500 ml-1">từ tháng trước</span>
+                <div className="flex items-center mt-3 space-x-2">
+                  <div className="flex items-center px-2 py-1 bg-green-50 rounded-lg">
+                    <svg className="w-3 h-3 text-green-600 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M5.293 9.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L11 7.414V15a1 1 0 11-2 0V7.414L6.707 9.707a1 1 0 01-1.414 0z" clipRule="evenodd" />
+                    </svg>
+                    <span className={`text-xs font-bold ${stat.trendColor}`}>
+                      {stat.trend}
+                    </span>
+                  </div>
+                  <span className="text-xs text-gray-500">từ tháng trước</span>
                 </div>
               </div>
-              <div className={`p-3 rounded-full ${stat.color}`}>
-                <IconComponent className="w-6 h-6 text-white" />
+              <div className={`p-4 rounded-2xl ${stat.color} shadow-lg group-hover:scale-110 transition-transform duration-300`}>
+                <IconComponent className="w-7 h-7 text-white" />
               </div>
             </div>
           </div>

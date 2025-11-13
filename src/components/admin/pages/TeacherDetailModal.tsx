@@ -87,7 +87,7 @@ const TeacherDetailModal: React.FC<TeacherDetailModalProps> = ({
   const getLevelColor = (level: string) => {
     switch (level) {
       case 'junior': return 'bg-blue-100 text-blue-800';
-      case 'senior': return 'bg-purple-100 text-purple-800';
+      case 'senior': return 'bg-red-100 text-red-800';
       case 'expert': return 'bg-red-100 text-red-800';
       default: return 'bg-gray-100 text-gray-800';
     }
@@ -124,7 +124,7 @@ const TeacherDetailModal: React.FC<TeacherDetailModalProps> = ({
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-gray-200">
           <div className="flex items-center">
-            <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold text-xl mr-4">
+            <div className="w-16 h-16 bg-gradient-to-r from-red-500 to-red-600 rounded-full flex items-center justify-center text-white font-bold text-xl mr-4">
               {teacher.name.split(' ').pop()?.charAt(0)}
             </div>
             <div>
@@ -440,12 +440,12 @@ const TeacherDetailModal: React.FC<TeacherDetailModalProps> = ({
                     </div>
                   </div>
                 </div>
-                <div className="bg-purple-50 p-4 rounded-lg">
+                <div className="bg-red-50 p-4 rounded-lg">
                   <div className="flex items-center">
-                    <Clock className="w-6 h-6 text-purple-600 mr-2" />
+                    <Clock className="w-6 h-6 text-red-600 mr-2" />
                     <div>
-                      <p className="text-sm text-purple-600">Giờ dạy</p>
-                      <p className="text-xl font-bold text-purple-900">{teacher.hoursThisMonth}h</p>
+                      <p className="text-sm text-red-600">Giờ dạy</p>
+                      <p className="text-xl font-bold text-red-900">{teacher.hoursThisMonth}h</p>
                     </div>
                   </div>
                 </div>

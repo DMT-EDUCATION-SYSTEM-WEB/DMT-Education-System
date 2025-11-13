@@ -174,17 +174,28 @@ const Login: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    const loginStartTime = performance.now();
+    console.log('🔐 Login attempt:', { email, password: '***' });
     setIsLoading(true);
     setError(null);
 
     try {
+      console.log('📡 [1/4] Calling authService.login...');
+      const apiStartTime = performance.now();
       const data = await authService.login({ email, password });
+      const apiEndTime = performance.now();
+      console.log(`✅ [2/4] API responded in ${(apiEndTime - apiStartTime).toFixed(0)}ms`, { 
+        token: data.token ? 'exists' : 'missing', 
+        user: data.user?.full_name 
+      });
 
       // Save token to localStorage
+      const storageStartTime = performance.now();
       if (data.token) {
         localStorage.setItem('token', data.token);
         localStorage.setItem('user', JSON.stringify(data.user));
       }
+      console.log(`✅ [3/4] LocalStorage saved in ${(performance.now() - storageStartTime).toFixed(0)}ms`);
 
       // Map role_id to Role enum
       let userRole: Role;
@@ -206,19 +217,29 @@ const Login: React.FC = () => {
       }
 
       // Dispatch login action to Redux store
+      const reduxStartTime = performance.now();
       dispatch(loginAction({
         id: data.user.id.toString(),
         name: data.user.full_name,
         email: data.user.email,
         role: userRole,
         status: 'active',
-        lastLogin: new Date().toISOString()
+        lastLogin: new Date().toISOString(),
+        student_id: data.user.student_id,
+        student_code: data.user.student_code,
+        teacher_id: data.user.teacher_id,
+        teacher_code: data.user.teacher_code,
       }));
+      console.log(`✅ [4/4] Redux updated in ${(performance.now() - reduxStartTime).toFixed(0)}ms`);
+
+      const totalTime = performance.now() - loginStartTime;
+      console.log(`🎉 Total login time: ${totalTime.toFixed(0)}ms`);
 
       setSuccess(true);
 
-      // Redirect based on user role
+      // Redirect based on user role - reduced delay for faster UX
       setTimeout(() => {
+        console.log('🎯 Navigating to dashboard...');
         switch (data.user.role_id) {
           case 1: // Admin
             navigate('/admin/dashboard');
@@ -235,15 +256,22 @@ const Login: React.FC = () => {
           default:
             navigate('/');
         }
-      }, 1500);
+      }, 300);
     } catch (err: any) {
-      console.error('Login error:', err);
+      const errorTime = performance.now() - loginStartTime;
+      console.error(`❌ Login failed after ${errorTime.toFixed(0)}ms`, err);
+      console.error('Error details:', {
+        message: err.message,
+        response: err.response?.data,
+        status: err.response?.status
+      });
       setError(
         err.response?.data?.error ||
           err.message ||
           'Đăng nhập thất bại. Vui lòng thử lại.'
       );
     } finally {
+      console.log('🏁 Login process completed, isLoading:', false);
       setIsLoading(false);
     }
   };
@@ -563,13 +591,13 @@ const Login: React.FC = () => {
         >
           <div
             style={{
-              background: 'rgba(255, 255, 255, 0.98)',
-              backdropFilter: 'blur(25px) saturate(180%)',
+              background: 'rgba(255, 255, 255, 0.75)',
+              backdropFilter: 'blur(40px) saturate(180%)',
               borderRadius: BORDERS.radius['3xl'],
               boxShadow:
-                '0 25px 50px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(255, 255, 255, 0.5)',
+                '0 25px 50px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(255, 255, 255, 0.3)',
               padding: SPACING['4xl'],
-              border: `1px solid rgba(255, 255, 255, 0.6)`,
+              border: `1px solid rgba(255, 255, 255, 0.4)`,
               position: 'relative',
               overflow: 'hidden',
             }}
@@ -675,8 +703,9 @@ const Login: React.FC = () => {
               {/* Success Message */}
               {success && (
                 <motion.div
-                  initial={{ opacity: 0, scale: 0.9 }}
+                  initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.15 }}
                   style={{
                     background: 'linear-gradient(135deg, #d1fae5, #a7f3d0)',
                     color: '#059669',
@@ -692,7 +721,7 @@ const Login: React.FC = () => {
                   }}
                 >
                   <CheckCircle size={20} />
-                  Đăng nhập thành công! Đang chuyển hướng...
+                  Đăng nhập thành công!
                 </motion.div>
               )}
               {/* Email Input */}
@@ -906,26 +935,26 @@ const Login: React.FC = () => {
               {/* Sign In Button */}
               <motion.button
                 type="submit"
-                disabled={isLoading}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
+                disabled={isLoading || success}
+                whileHover={!isLoading && !success ? { scale: 1.02 } : {}}
+                whileTap={!isLoading && !success ? { scale: 0.98 } : {}}
                 style={{
                   width: '100%',
-                  background: COLORS.primary.gradient,
+                  background: success ? 'linear-gradient(135deg, #10b981, #059669)' : COLORS.primary.gradient,
                   color: COLORS.neutral.white,
                   padding: `${SPACING.md} ${SPACING.lg}`,
                   borderRadius: BORDERS.radius.lg,
                   border: 'none',
                   fontSize: TYPOGRAPHY.fontSize.lg,
                   fontWeight: TYPOGRAPHY.fontWeight.semibold,
-                  cursor: isLoading ? 'not-allowed' : 'pointer',
+                  cursor: isLoading || success ? 'not-allowed' : 'pointer',
                   boxShadow: SHADOWS.primary,
                   transition: EFFECTS.transition.normal,
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                   gap: SPACING.sm,
-                  opacity: isLoading ? 0.5 : 1,
+                  opacity: isLoading || success ? 0.7 : 1,
                 }}
               >
                 {isLoading ? (
@@ -937,10 +966,14 @@ const Login: React.FC = () => {
                         border: `2px solid ${COLORS.neutral.white}`,
                         borderTop: '2px solid transparent',
                         borderRadius: '50%',
-                        animation: 'spin 1s linear infinite',
+                        animation: 'spin 0.8s linear infinite',
                       }}
                     ></div>
-                    Đang đăng nhập...
+                    Đang xác thực...
+                  </>
+                ) : success ? (
+                  <>
+                    ✓ Thành công
                   </>
                 ) : (
                   'Đăng nhập'
@@ -977,26 +1010,26 @@ const Login: React.FC = () => {
                   {
                     role: 'Admin',
                     email: 'admin@dmt.edu.vn',
-                    password: 'password',
+                    password: 'Admin@123',
                     color: COLORS.primary.main,
                   },
                   {
                     role: 'Giáo viên',
-                    email: 'teacher@dmt.edu.vn',
-                    password: 'teacher123',
+                    email: 'teacher.math@dmt.edu.vn',
+                    password: 'Teacher@123',
                     color: COLORS.secondary.blue,
                   },
                   {
                     role: 'Học viên',
-                    email: 'student@dmt.edu.vn',
-                    password: 'student123',
+                    email: 'student001@gmail.com',
+                    password: 'Student@123',
                     color: COLORS.secondary.green,
                   },
                   {
-                    role: 'Phụ huynh',
-                    email: 'parent@dmt.edu.vn',
-                    password: 'parent123',
-                    color: COLORS.secondary.purple,
+                    role: 'Nhân viên',
+                    email: 'staff1@dmt.edu.vn',
+                    password: 'Staff@123',
+                    color: COLORS.primary.main,
                   },
                 ].map((demo, index) => (
                   <motion.button

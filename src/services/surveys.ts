@@ -27,18 +27,26 @@ interface ApiResponse<T> {
 // ============ SURVEYS ============
 export interface Survey {
   id: number;
-  class_id?: number;
   title: string;
   description?: string;
+  target_type?: 'student' | 'teacher' | 'parent' | 'all';
+  class_id?: number;
+  course_id?: number;
+  start_date?: string;
+  end_date?: string;
   is_active: boolean;
   created_by: number;
   created_at: string;
 }
 
 export interface CreateSurveyData {
-  class_id?: number;
   title: string;
   description?: string;
+  target_type?: 'student' | 'teacher' | 'parent' | 'all';
+  class_id?: number;
+  course_id?: number;
+  start_date?: string;
+  end_date?: string;
   is_active?: boolean;
   created_by: number;
 }
@@ -90,19 +98,20 @@ export interface SurveyQuestion {
   id: number;
   survey_id: number;
   question_text: string;
-  question_type: 'text' | 'rating' | 'multiple_choice';
+  question_type: 'multiple_choice' | 'text' | 'rating' | 'yes_no';
   options?: string;
   is_required: boolean;
-  order_number: number;
+  question_order: number;
+  created_at: string;
 }
 
 export interface CreateQuestionData {
   survey_id: number;
   question_text: string;
-  question_type?: 'text' | 'rating' | 'multiple_choice';
+  question_type?: 'multiple_choice' | 'text' | 'rating' | 'yes_no';
   options?: string;
   is_required?: boolean;
-  order_number?: number;
+  question_order?: number;
 }
 
 export const surveyQuestionsApi = {
@@ -124,11 +133,13 @@ export const surveyQuestionsApi = {
 
 // ============ SURVEY RESPONSES ============
 export interface SurveyResponse {
+  id?: number;
   survey_id: number;
-  student_id: number;
   question_id: number;
+  respondent_id: number;
   answer_text?: string;
   answer_rating?: number;
+  submitted_at?: string;
 }
 
 export const surveyResponsesApi = {

@@ -84,17 +84,24 @@ export interface Submission {
   id: number;
   assignment_id: number;
   student_id: number;
+  submission_date: string;
   content?: string;
-  file_url?: string;
-  submitted_at: string;
-  is_late: boolean;
+  attachment_url?: string;
+  score?: number;
+  feedback?: string;
+  graded_by?: number;
+  graded_at?: string;
+  status: 'submitted' | 'graded' | 'late' | 'missing';
+  created_at: string;
 }
 
 export interface CreateSubmissionData {
   assignment_id: number;
   student_id: number;
+  submission_date?: string;
   content?: string;
-  file_url?: string;
+  attachment_url?: string;
+  status?: 'submitted' | 'graded' | 'late' | 'missing';
 }
 
 export const submissionsApi = {
@@ -112,17 +119,24 @@ export const submissionsApi = {
 // ============ GRADES ============
 export interface Grade {
   id: number;
-  submission_id: number;
+  enrollment_id: number;
+  grade_type: 'midterm' | 'final' | 'assignment' | 'overall';
   score: number;
-  feedback?: string;
+  max_score: number;
+  weight?: number;
+  notes?: string;
   graded_by: number;
   graded_at: string;
+  created_at: string;
 }
 
 export interface CreateGradeData {
-  submission_id: number;
+  enrollment_id: number;
+  grade_type: 'midterm' | 'final' | 'assignment' | 'overall';
   score: number;
-  feedback?: string;
+  max_score?: number;
+  weight?: number;
+  notes?: string;
   graded_by: number;
 }
 

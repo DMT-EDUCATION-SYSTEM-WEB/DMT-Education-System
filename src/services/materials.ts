@@ -33,7 +33,7 @@ export interface Material {
   file_url?: string;
   file_type?: string;
   file_size?: number;
-  is_downloadable: boolean;
+  is_public: boolean;
   uploaded_by: number;
   created_at: string;
 }
@@ -45,7 +45,7 @@ export interface CreateMaterialData {
   file_url?: string;
   file_type?: string;
   file_size?: number;
-  is_downloadable?: boolean;
+  is_public?: boolean;
   uploaded_by: number;
 }
 
@@ -77,68 +77,6 @@ export const materialsApi = {
 
   delete: async (id: number): Promise<ApiResponse<any>> => {
     const response = await apiClient.delete(`/materials/${id}`);
-    return response.data;
-  },
-};
-
-// ============ PAYMENTS ============
-export interface Payment {
-  id: number;
-  enrollment_id: number;
-  amount: number;
-  payment_method: 'cash' | 'bank_transfer' | 'online';
-  payment_date: string;
-  receipt_number?: string;
-  notes?: string;
-  processed_by: number;
-  created_at: string;
-}
-
-export interface CreatePaymentData {
-  enrollment_id: number;
-  amount: number;
-  payment_method?: 'cash' | 'bank_transfer' | 'online';
-  payment_date?: string;
-  receipt_number?: string;
-  notes?: string;
-  processed_by: number;
-}
-
-interface PaymentQueryParams extends PaginationParams {
-  enrollment_id?: number;
-  payment_method?: 'cash' | 'bank_transfer' | 'online';
-  start_date?: string;
-  end_date?: string;
-}
-
-export const paymentsApi = {
-  getAll: async (params: PaymentQueryParams = {}): Promise<PaginatedResponse<Payment>> => {
-    const response = await apiClient.get('/payments', { params });
-    return response.data;
-  },
-
-  getById: async (id: number): Promise<ApiResponse<Payment>> => {
-    const response = await apiClient.get(`/payments/${id}`);
-    return response.data;
-  },
-
-  create: async (data: CreatePaymentData): Promise<ApiResponse<Payment>> => {
-    const response = await apiClient.post('/payments', data);
-    return response.data;
-  },
-
-  update: async (id: number, data: Partial<CreatePaymentData>): Promise<ApiResponse<Payment>> => {
-    const response = await apiClient.put(`/payments/${id}`, data);
-    return response.data;
-  },
-
-  delete: async (id: number): Promise<ApiResponse<any>> => {
-    const response = await apiClient.delete(`/payments/${id}`);
-    return response.data;
-  },
-
-  getSummary: async (params: { start_date?: string; end_date?: string }): Promise<ApiResponse<any>> => {
-    const response = await apiClient.get('/payments/summary', { params });
     return response.data;
   },
 };

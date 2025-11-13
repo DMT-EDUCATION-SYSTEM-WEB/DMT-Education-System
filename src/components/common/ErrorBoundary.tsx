@@ -32,6 +32,16 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
   render() {
     if (this.state.hasError) {
       const FallbackComponent = this.props.fallback || DefaultErrorFallback;
+
+      // Always log detailed error info to console to assist debugging
+      if (this.state.error) {
+        console.error('ErrorBoundary render detected error:', this.state.error);
+        if ((this.state.error as any).stack) {
+          console.error((this.state.error as any).stack);
+        }
+      }
+
+      // In development show detailed fallback with error details; in production still show fallback
       return <FallbackComponent error={this.state.error} resetError={this.resetError} />;
     }
 
@@ -82,7 +92,7 @@ const DefaultErrorFallback: React.FC<{ error?: Error; resetError: () => void }> 
         Đã xảy ra lỗi không mong muốn. Đừng lo lắng, chúng tôi đã ghi nhận và sẽ khắc phục sớm.
       </p>
 
-      {process.env.NODE_ENV === 'development' && error && (
+  {import.meta.env.DEV && error && (
         <details style={{
           marginBottom: '20px',
           padding: '15px',

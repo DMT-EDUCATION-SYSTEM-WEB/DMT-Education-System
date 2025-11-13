@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { AlertTriangle, Star } from 'lucide-react';
 import { Icons } from '../common/Icons';
 import { useOptimizedAnimation } from '../../hooks/useOptimizedAnimation';
 import { newsApi, News } from '../../services/news';
@@ -165,7 +166,10 @@ const NewsSection: React.FC = () => {
             borderRadius: '16px',
             border: '1px solid rgba(239, 68, 68, 0.3)'
           }}>
-            <p style={{ color: '#dc2626', fontSize: '16px', marginBottom: '10px' }}>⚠️ {error}</p>
+            <p style={{ color: '#dc2626', fontSize: '16px', marginBottom: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
+              <AlertTriangle className="w-5 h-5" />
+              {error}
+            </p>
             <button 
               onClick={() => window.location.reload()}
               style={{
@@ -276,7 +280,8 @@ const NewsSection: React.FC = () => {
                         alignItems: 'center',
                         gap: '4px'
                       }}>
-                        ⭐ Nổi bật
+                        <Star className="w-3 h-3" fill="currentColor" />
+                        Nổi bật
                       </div>
                     )}
                   </div>

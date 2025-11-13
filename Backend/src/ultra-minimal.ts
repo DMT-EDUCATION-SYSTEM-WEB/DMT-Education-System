@@ -47,13 +47,13 @@ const start = async () => {
       throw new Error('Failed to initialize database connection');
     }
     
-    console.log('✅ Database connected');
+    console.log('Database connected');
     
     await app.listen({ port: 3001, host: '0.0.0.0' });
-    console.log('🚀 Server with authRoutes on http://localhost:3001');
+    console.log('Server with authRoutes on http://localhost:3001');
     console.log('🔐 Test login: POST http://localhost:3001/auth/login');
   } catch (err) {
-    console.error('❌ Startup error:', err);
+    console.error('Startup error:', err);
     process.exit(1);
   }
 };

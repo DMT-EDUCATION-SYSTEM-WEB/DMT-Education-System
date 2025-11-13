@@ -98,7 +98,7 @@ const port = Number(process.env.PORT || 3001);
 
 // Graceful shutdown
 const gracefulShutdown = async () => {
-  app.log.info('🛑 Shutting down...');
+  app.log.info('Shutting down...');
   await closePool();
   await app.close();
   process.exit(0);
@@ -111,11 +111,11 @@ process.on('SIGINT', gracefulShutdown);
 const start = async () => {
   try {
     await initializeDatabase();
-    app.log.info('✅ Database connected');
+    app.log.info('Database connected');
 
     await app.listen({ port, host: '0.0.0.0' });
-    app.log.info(`🚀 Minimal server running on http://localhost:${port}`);
-    app.log.info(`📋 Test: curl http://localhost:${port}/health`);
+    app.log.info(`Minimal server running on http://localhost:${port}`);
+    app.log.info(`Test: curl http://localhost:${port}/health`);
     app.log.info(`🔐 Login: POST http://localhost:${port}/api/auth/login`);
   } catch (err) {
     app.log.error(err);

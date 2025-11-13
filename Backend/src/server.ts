@@ -6,7 +6,8 @@ import registerRoutes from './plugins/routes.js';
 import { errorHandler } from './utils/errorHandler.js';
 import { initializeDatabase, closePool } from './utils/database.js';
 
-dotenv.config({ path: '.env.local' });
+// Load .env file FIRST
+dotenv.config();
 
 const app = Fastify({ 
   logger: true,
@@ -15,20 +16,19 @@ const app = Fastify({
 // Global error handler
 app.setErrorHandler(errorHandler);
 
-// CORS
-const corsOrigins = (process.env.CORS_ORIGINS || '')
+// CORS - optimized for development
+const corsOrigins = (process.env.CORS_ORIGINS || 'http://localhost:5173,http://localhost:3000')
   .split(',')
   .map(s => s.trim())
   .filter(Boolean);
 
 app.register(cors, {
-  origin: (origin, cb) => {
-    if (!origin) return cb(null, true);
-    if (corsOrigins.length === 0 || corsOrigins.includes(origin))
-      return cb(null, true);
-    return cb(new Error('Not allowed'), false);
-  },
+  origin: corsOrigins,
   credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  preflightContinue: false,
+  optionsSuccessStatus: 204,
 });
 
 // JWT/auth plugin
@@ -56,7 +56,7 @@ const port = Number(process.env.PORT || 3001);
 
 // Graceful shutdown
 const gracefulShutdown = async () => {
-  app.log.info('🛑 Shutting down gracefully...');
+  app.log.info('Shutting down gracefully...');
   await closePool();
   await app.close();
   process.exit(0);
@@ -72,16 +72,16 @@ const start = async () => {
     db = await initializeDatabase();
     
     if (!db) {
-      app.log.error('❌ Failed to initialize database connection');
-      app.log.warn('⚠️  Server will run but database operations will fail');
+      app.log.error('Failed to initialize database connection');
+      app.log.warn('Server will run but database operations will fail');
     } else {
-      app.log.info('✅ SQL Server database connected successfully');
+      app.log.info('SQL Server database connected successfully');
     }
     
     await app.listen({ port, host: '0.0.0.0' });
-    app.log.info(`🚀 DMT Education API Server running on http://localhost:${port}`);
-    app.log.info(`📋 Health check: http://localhost:${port}/health`);
-    app.log.info(`🗄️  Database: ${db ? 'Connected' : 'Not connected'}`);
+    app.log.info(`DMT Education API Server running on http://localhost:${port}`);
+    app.log.info(`Health check: http://localhost:${port}/health`);
+    app.log.info(`Database: ${db ? 'Connected' : 'Not connected'}`);
   } catch (err) {
     app.log.error(err);
     process.exit(1);

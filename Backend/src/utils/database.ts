@@ -1,7 +1,7 @@
 import sql from 'mssql';
 import * as dotenv from 'dotenv';
 
-dotenv.config({ path: '.env.local' });
+dotenv.config();
 
 // Database connection pool
 let pool: sql.ConnectionPool | null = null;
@@ -156,6 +156,67 @@ export async function closePool() {
     await pool.close();
     console.log('SQL Server pool closed');
     pool = null;
+  }
+}
+
+// Helper function to execute stored procedures
+export interface ProcedureParams {
+  input?: Record<string, any>;
+  output?: Record<string, any>; // { paramName: sqlType }
+}
+
+export interface ProcedureResult {
+  returnValue: number;
+  output: Record<string, any>;
+  recordsets: any[][];
+  recordset: any[];
+}
+
+export async function executeProcedure(
+  procedureName: string,
+  params: ProcedureParams = {}
+): Promise<ProcedureResult> {
+  if (!pool) {
+    throw new Error('Database pool not initialized');
+  }
+
+  const start = Date.now();
+  try {
+    const request = pool.request();
+
+    // Add input parameters
+    if (params.input) {
+      Object.entries(params.input).forEach(([key, value]) => {
+        request.input(key, value);
+      });
+    }
+
+    // Add output parameters
+    if (params.output) {
+      Object.entries(params.output).forEach(([key, sqlType]) => {
+        request.output(key, sqlType);
+      });
+    }
+
+    const result = await request.execute(procedureName);
+    const duration = Date.now() - start;
+
+    console.log('Executed procedure', {
+      name: procedureName,
+      duration,
+      returnValue: result.returnValue,
+      rowCount: result.recordset?.length || 0,
+    });
+
+    return {
+      returnValue: result.returnValue,
+      output: result.output,
+      recordsets: Array.isArray(result.recordsets) ? result.recordsets : [result.recordset || []],
+      recordset: result.recordset || [],
+    };
+  } catch (error) {
+    console.error('Stored procedure error:', { procedureName, error });
+    throw error;
   }
 }
 

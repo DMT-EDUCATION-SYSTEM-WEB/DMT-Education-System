@@ -35,7 +35,6 @@ interface CourseCardData {
     level: 'beginner' | 'intermediate' | 'advanced';
     price: number;
     thumbnail?: string;
-    rating?: number;
     studentsCount?: number;
 }
 
@@ -49,7 +48,6 @@ const transformCourse = (course: Course): CourseCardData => {
         level: course.level,
         price: course.price || 0,
         thumbnail: undefined,
-        rating: undefined,
         studentsCount: undefined
     };
 };

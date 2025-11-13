@@ -1,5 +1,5 @@
 import React from 'react';
-import { GraduationCap, Clock, Users, Star } from 'lucide-react';
+import { GraduationCap, Clock, Users } from 'lucide-react';
 
 interface CourseCardProps {
   course: {
@@ -11,7 +11,6 @@ interface CourseCardProps {
     level: 'beginner' | 'intermediate' | 'advanced';
     price: number;
     thumbnail?: string;
-    rating?: number;
     studentsCount?: number;
   };
   onClick?: () => void;
@@ -132,16 +131,11 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, onClick }) => {
               <Clock size={16} /> {course.duration}
             </div>
           </div>
-          {course.rating && (
+          {course.studentsCount && (
             <div style={{ textAlign: 'right' }}>
-              <div style={{ marginBottom: '0.25rem', display: 'flex', alignItems: 'center', gap: '0.5rem', justifyContent: 'flex-end' }}>
-                <Star size={16} fill="#F59E0B" color="#F59E0B" /> {course.rating}/5
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', justifyContent: 'flex-end' }}>
+                <Users size={16} /> {course.studentsCount} học viên
               </div>
-              {course.studentsCount && (
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', justifyContent: 'flex-end' }}>
-                  <Users size={16} /> {course.studentsCount} học viên
-                </div>
-              )}
             </div>
           )}
         </div>

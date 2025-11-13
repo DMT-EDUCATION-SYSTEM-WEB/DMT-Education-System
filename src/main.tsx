@@ -6,7 +6,7 @@ import AppRoutes from './routes';
 import store from './store';
 import './styles/global.css';
 
-console.log('🚀 Loading DMT Education App...');
+console.log('Loading DMT Education App...');
 
 const rootElement = document.getElementById('root');
 if (rootElement) {

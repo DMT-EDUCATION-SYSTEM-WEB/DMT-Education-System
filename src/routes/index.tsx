@@ -3,8 +3,11 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import HomePage from '../pages/HomePage';
 import CoursesPage from '../pages/CoursesPage';
 import TeachersPage from '../pages/TeachersPage';
+import TeachersListPage from '../pages/TeachersListPage';
+import TeacherDetailPage from '../pages/TeacherDetailPage';
 import SchedulePage from '../pages/SchedulePage';
 import AnnouncementPage from '../pages/AnnouncementPage';
+import AboutPage from '../pages/AboutPage';
 import Login from '../features/auth/pages/Login';
 import UnauthorizedPage from '../pages/UnauthorizedPage';
 
@@ -54,6 +57,9 @@ import Settings from '../features/admin/pages/Settings';
 import Notifications from '../features/admin/pages/Notifications';
 import FinanceReport from '../features/admin/pages/FinanceReport';
 
+// New notification page
+import NotificationsPage from '../pages/NotificationsPage';
+
 const AppRoutes = () => {
   return (
     <Routes>
@@ -61,8 +67,12 @@ const AppRoutes = () => {
       <Route path="/home" element={<HomePage />} />
       <Route path="/courses" element={<CoursesPage />} />
       <Route path="/teachers" element={<TeachersPage />} />
+      <Route path="/teachers/list" element={<TeachersListPage />} />
+      <Route path="/teachers/:id" element={<TeacherDetailPage />} />
       <Route path="/schedule" element={<SchedulePage />} />
-      <Route path="/announcement" element={<AnnouncementPage />} />
+      <Route path="/announcements" element={<AnnouncementPage />} />
+      <Route path="/about" element={<AboutPage />} />
+      <Route path="/login" element={<Login />} />
       <Route path="/auth/login" element={<Login />} />
 
       {/* Student Routes - Protected */}
@@ -126,7 +136,7 @@ const AppRoutes = () => {
         <Route path="reports/attendance" element={<AttendanceReport />} />
         <Route path="reports/performance" element={<PerformanceReport />} />
         <Route path="reports/finance" element={<FinanceReport />} />
-        <Route path="notifications" element={<Notifications />} />
+        <Route path="notifications" element={<NotificationsPage />} />
         <Route path="surveys" element={<div>Quản lý khảo sát</div>} />
         <Route path="analytics" element={<Analytics />} />
         <Route path="roles" element={<Roles />} />

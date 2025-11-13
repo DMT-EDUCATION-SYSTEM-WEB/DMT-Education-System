@@ -207,3 +207,10 @@ DB_PASSWORD=YourStrong@Passw0rd
 DB_PORT=1433
 DB_ENCRYPT=false
 DB_TRUST_CERT=true
+
+
+Script	Chức năng
+start-dev.sh	Start tất cả services (SQL Server + Backend + Frontend)
+stop-dev.sh	Dừng tất cả development servers
+status-dev.sh	Kiểm tra trạng thái services
+CREDENTIALS.md	Danh sách đầy đủ tài khoản demo

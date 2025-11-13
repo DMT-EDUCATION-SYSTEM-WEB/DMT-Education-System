@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Card from '../../../components/common/Card';
 import Button from '../../../components/common/Button';
 import Spinner from '../../../components/common/Spinner';
+import { Users, TrendingUp, DollarSign, Target, FileSpreadsheet, FileText } from 'lucide-react';
 
 interface AnalyticsData {
   userStats: {
@@ -41,7 +42,7 @@ const StatCard: React.FC<{
   title: string;
   value: string | number;
   change?: number;
-  icon: string;
+  icon: React.ReactNode;
   color: string;
 }> = ({ title, value, change, icon, color }) => {
   return (
@@ -56,7 +57,7 @@ const StatCard: React.FC<{
             </p>
           )}
         </div>
-        <div className={`text-3xl ${color}`}>
+        <div className={color}>
           {icon}
         </div>
       </div>
@@ -239,29 +240,29 @@ const Analytics: React.FC = () => {
           title="Tổng người dùng"
           value={data.userStats.totalUsers.toLocaleString()}
           change={8.2}
-          icon="👥"
+          icon={<Users size={32} />}
           color="text-blue-500"
         />
         <StatCard
           title="Người dùng hoạt động"
           value={data.userStats.activeUsers.toLocaleString()}
           change={5.7}
-          icon="📈"
+          icon={<TrendingUp size={32} />}
           color="text-green-500"
         />
         <StatCard
           title="Doanh thu tháng"
           value={formatCurrency(data.revenueStats.monthlyRevenue)}
           change={data.revenueStats.revenueGrowth}
-          icon="💰"
+          icon={<DollarSign size={32} />}
           color="text-yellow-500"
         />
         <StatCard
           title="Tỷ lệ hoàn thành"
           value={`${data.courseStats.completionRate}%`}
           change={2.1}
-          icon="🎯"
-          color="text-purple-500"
+          icon={<Target size={32} />}
+          color="text-red-500"
         />
       </div>
 
@@ -305,7 +306,7 @@ const Analytics: React.FC = () => {
               <div className="flex items-center gap-2">
                 <div className="w-32 bg-gray-200 rounded-full h-2">
                   <div 
-                    className="bg-purple-500 h-2 rounded-full" 
+                    className="bg-red-500 h-2 rounded-full" 
                     style={{ width: `${(data.userStats.staffCount / data.userStats.totalUsers) * 100}%` }}
                   />
                 </div>
@@ -370,11 +371,11 @@ const Analytics: React.FC = () => {
             <div className="text-sm text-gray-600">Thời gian phản hồi</div>
           </div>
           <div className="text-center">
-            <div className="text-2xl font-bold text-purple-600">{data.systemStats.serverLoad}%</div>
+            <div className="text-2xl font-bold text-red-600">{data.systemStats.serverLoad}%</div>
             <div className="text-sm text-gray-600">Tải máy chủ</div>
           </div>
           <div className="text-center">
-            <div className="text-2xl font-bold text-red-600">{data.systemStats.errorRate}%</div>
+            <div className="text-2xl font-bold text-red-700">{data.systemStats.errorRate}%</div>
             <div className="text-sm text-gray-600">Tỷ lệ lỗi</div>
           </div>
           <div className="text-center">
@@ -393,13 +394,15 @@ const Analytics: React.FC = () => {
           </div>
           <div className="flex gap-2">
             <Button variant="outline">
-              📊 Xuất Excel
+              <FileSpreadsheet size={16} className="inline mr-2" />
+              Xuất Excel
             </Button>
             <Button variant="outline">
-              📄 Xuất PDF
+              <FileText size={16} className="inline mr-2" />
+              Xuất PDF
             </Button>
             <Button variant="primary">
-              📈 Báo cáo đầy đủ
+              Báo cáo đầy đủ
             </Button>
           </div>
         </div>

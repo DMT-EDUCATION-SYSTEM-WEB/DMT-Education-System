@@ -4,6 +4,7 @@ import Card from '../../../components/common/Card';
 import Button from '../../../components/common/Button';
 import Spinner from '../../../components/common/Spinner';
 import Modal from '../../../components/common/Modal';
+import { Paperclip } from 'lucide-react';
 
 interface StudentSubmission {
   id: string;
@@ -95,8 +96,8 @@ const SubmissionCard: React.FC<{
         <p className="text-xs font-medium text-gray-700 mb-2">File đính kèm:</p>
         <div className="flex gap-2">
           {submission.files.map((file, index) => (
-            <span key={index} className="text-xs bg-gray-100 px-2 py-1 rounded">
-              📎 {file}
+            <span key={index} className="text-xs bg-gray-100 px-2 py-1 rounded flex items-center gap-1">
+              <Paperclip size={12} /> {file}
             </span>
           ))}
         </div>
@@ -173,7 +174,7 @@ const GradingModal: React.FC<{
             <div className="space-y-1">
               {submission.files.map((file, index) => (
                 <div key={index} className="flex items-center gap-2 text-sm text-gray-600">
-                  <span>📎</span>
+                  <Paperclip size={14} />
                   <span>{file}</span>
                   <Button size="sm" variant="outline">Xem</Button>
                 </div>

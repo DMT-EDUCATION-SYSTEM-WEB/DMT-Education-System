@@ -40,7 +40,7 @@ export const COLORS = {
     header: 'rgba(255, 255, 255, 0.95)',
     card: 'linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.9))',
     footer: '#1f2937',
-    announcement: 'linear-gradient(90deg, #fee2e2, #fecaca)',
+    announcement: '#ffffff',
     section: '#ffffff',
     pattern: 'radial-gradient(circle at 20% 80%, rgba(220, 38, 38, 0.05) 0%, transparent 50%), radial-gradient(circle at 80% 20%, rgba(220, 38, 38, 0.03) 0%, transparent 50%)'
   },
@@ -226,9 +226,9 @@ export const LAYOUT = {
 export const CONTENT = {
   // Website URLs and links
   links: {
-    facebook: 'https://facebook.com/dmteducation',
-    youtube: 'https://youtube.com/@dmteducation',
-    tiktok: 'https://tiktok.com/@dmteducation'
+    facebook: 'https://facebook.com',
+    youtube: 'https://youtube.com',
+    tiktok: 'https://tiktok.com'
   },
   
   // Contact information
@@ -241,16 +241,16 @@ export const CONTENT = {
   company: {
     name: 'DMT Education',
     tagline: 'Vững nguồn tri thức, tiếp bước tương lai',
-    established: '2009',
-    experience: '15+'
+    established: '2015',
+    experience: '8+'
   },
   
   // Statistics
   stats: {
-    students: '5,000+',
+    students: '1000+',
     passRate: '98%',
     awards: '150+',
-    experience: '15+'
+    experience: '8+'
   }
 };
 

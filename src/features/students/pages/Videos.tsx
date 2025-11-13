@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { getStudentVideos } from '../api';
 import Card from '../../../components/common/Card';
 import Spinner from '../../../components/common/Spinner';
+import { Video as VideoIcon, Lightbulb, CheckCircle } from 'lucide-react';
 
 interface Video {
   id: string;
@@ -21,7 +22,7 @@ const VideoCard: React.FC<{ video: Video }> = ({ video }) => (
         <img src={video.thumbnail} alt={video.title} className="w-full h-full object-cover" />
       ) : (
         <div className="w-full h-full flex items-center justify-center text-gray-400">
-          <span className="text-4xl">🎥</span>
+          <VideoIcon size={40} className="text-blue-600" />
         </div>
       )}
       <div className="absolute bottom-2 right-2 bg-black/70 text-white text-xs px-2 py-1 rounded">
@@ -29,7 +30,7 @@ const VideoCard: React.FC<{ video: Video }> = ({ video }) => (
       </div>
       {video.isCompleted && (
         <div className="absolute top-2 right-2 bg-green-500 text-white rounded-full p-1">
-          <span className="text-xs">✓</span>
+          <CheckCircle size={12} className="text-green-600" />
         </div>
       )}
     </div>
@@ -172,7 +173,9 @@ const Videos: React.FC = () => {
 
       <Card>
         <div className="text-center py-4">
-          <p className="text-sm text-gray-600">💡 Video được bảo vệ bản quyền - không thể tải xuống</p>
+          <p className="text-sm text-gray-600 flex items-center gap-1">
+            <Lightbulb size={14} /> Video được bảo vệ bản quyền - không thể tải xuống
+          </p>
           <p className="text-xs text-gray-500">Tối đa 3 thiết bị có thể xem cùng lúc</p>
         </div>
       </Card>

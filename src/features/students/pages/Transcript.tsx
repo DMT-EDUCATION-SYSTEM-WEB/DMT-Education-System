@@ -273,7 +273,7 @@ const Transcript: React.FC = () => {
 
       <Card>
         <div className="space-y-2 text-sm text-gray-600">
-          <p className="font-medium">📈 Thống kê và phân tích:</p>
+          <p className="font-medium">Thống kê và phân tích:</p>
           <ul className="list-disc list-inside space-y-1 text-xs">
             <li>Điểm được cập nhật ngay sau khi giáo viên chấm</li>
             <li>Nhận thông báo khi có điểm mới</li>

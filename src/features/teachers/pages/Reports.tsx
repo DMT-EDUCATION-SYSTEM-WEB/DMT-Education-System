@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { SEOHead } from '../../../components/common';
 import TeacherLayout from '../../../components/layout/TeacherLayout';
+import { BarChart3, School, Users, CheckCircle, ClipboardList, GraduationCap, Target, FileSpreadsheet } from 'lucide-react';
 
 interface TeachingReport {
   id: string;
@@ -191,8 +192,7 @@ const Reports: React.FC = () => {
         keywords="báo cáo, thống kê, kết quả học tập"
       />
       
-      <TeacherLayout>
-        <div style={{ padding: '24px' }}>
+      <div style={{ padding: '24px' }}>
           {/* Header */}
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
             <div>
@@ -202,7 +202,7 @@ const Reports: React.FC = () => {
                 color: '#1e293b',
                 marginBottom: '4px'
               }}>
-                📈 Báo cáo & Thống kê
+                Báo cáo & Thống kê
               </h1>
               <p style={{ color: '#64748b', fontSize: '14px' }}>
                 Tổng hợp kết quả giảng dạy và học tập
@@ -238,10 +238,13 @@ const Reports: React.FC = () => {
                   border: 'none',
                   fontSize: '14px',
                   fontWeight: '500',
-                  cursor: 'pointer'
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px'
                 }}
               >
-                📊 Xuất báo cáo
+                <FileSpreadsheet size={16} /> Xuất báo cáo
               </button>
             </div>
           </div>
@@ -272,7 +275,7 @@ const Reports: React.FC = () => {
                     {currentReport.totalHours} giờ học
                   </p>
                 </div>
-                <div style={{ fontSize: '32px' }}>🏫</div>
+                <div style={{ color: '#3b82f6' }}><School size={32} /></div>
               </div>
             </div>
 
@@ -295,7 +298,7 @@ const Reports: React.FC = () => {
                     Có mặt: {currentReport.avgAttendance}%
                   </p>
                 </div>
-                <div style={{ fontSize: '32px' }}>👥</div>
+                <div style={{ color: '#10b981' }}><Users size={32} /></div>
               </div>
             </div>
 
@@ -318,7 +321,7 @@ const Reports: React.FC = () => {
                     {currentReport.assignmentsGiven} bài tập
                   </p>
                 </div>
-                <div style={{ fontSize: '32px' }}>📊</div>
+                <div style={{ color: '#f59e0b' }}><BarChart3 size={32} /></div>
               </div>
             </div>
 
@@ -341,7 +344,7 @@ const Reports: React.FC = () => {
                     Tháng này
                   </p>
                 </div>
-                <div style={{ fontSize: '32px' }}>✅</div>
+                <div style={{ color: '#22c55e' }}><CheckCircle size={32} /></div>
               </div>
             </div>
           </div>
@@ -368,7 +371,8 @@ const Reports: React.FC = () => {
                 cursor: 'pointer'
               }}
             >
-              📋 Tổng quan
+              <ClipboardList size={16} style={{ display: 'inline', marginRight: '0.5rem' }} />
+              Tổng quan
             </button>
             <button
               onClick={() => setActiveTab('students')}
@@ -384,7 +388,8 @@ const Reports: React.FC = () => {
                 cursor: 'pointer'
               }}
             >
-              👨‍🎓 Học sinh
+              <GraduationCap size={16} style={{ display: 'inline', marginRight: '0.5rem' }} />
+              Học sinh
             </button>
             <button
               onClick={() => setActiveTab('classes')}
@@ -400,7 +405,8 @@ const Reports: React.FC = () => {
                 cursor: 'pointer'
               }}
             >
-              🏫 Lớp học
+              <School size={16} style={{ display: 'inline', marginRight: '0.5rem' }} />
+              Lớp học
             </button>
           </div>
 
@@ -426,7 +432,7 @@ const Reports: React.FC = () => {
                   {/* Monthly Trend */}
                   <div>
                     <h3 style={{ fontSize: '16px', fontWeight: '600', color: '#1e293b', marginBottom: '16px' }}>
-                      📈 Xu hướng 3 tháng
+                      Xu hướng 3 tháng
                     </h3>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                       {monthlyReports.slice(0, 3).map((report) => (
@@ -460,8 +466,8 @@ const Reports: React.FC = () => {
 
                   {/* Performance Summary */}
                   <div>
-                    <h3 style={{ fontSize: '16px', fontWeight: '600', color: '#1e293b', marginBottom: '16px' }}>
-                      🎯 Hiệu suất giảng dạy
+                    <h3 style={{ fontSize: '16px', fontWeight: '600', color: '#1e293b', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                      <Target size={18} /> Hiệu suất giảng dạy
                     </h3>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                       <div style={{
@@ -693,9 +699,8 @@ const Reports: React.FC = () => {
                 </div>
               </div>
             </div>
-          )}
+            )}
         </div>
-      </TeacherLayout>
     </>
   );
 };

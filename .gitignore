@@ -24,3 +24,5 @@ coverage
 *.tmp
 *.temp
 *.cache
+.env
+.env.localdmt-education-*.json

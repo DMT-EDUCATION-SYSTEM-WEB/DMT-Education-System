@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { getStudentSchedule } from '../api';
 import Card from '../../../components/common/Card';
 import Spinner from '../../../components/common/Spinner';
+import { Calendar } from 'lucide-react';
 
 interface ScheduleItem {
   id: string;
@@ -202,7 +203,7 @@ const Schedule: React.FC = () => {
 
       <Card>
         <div className="space-y-2 text-sm text-gray-600">
-          <p className="font-medium">📅 Tính năng hỗ trợ:</p>
+          <p className="font-medium flex items-center gap-2"><Calendar size={16} /> Tính năng hỗ trợ:</p>
           <ul className="list-disc list-inside space-y-1 text-xs">
             <li>Nhận thông báo nhắc nhở qua email/SMS</li>
             <li>Đồng bộ với Google Calendar</li>

@@ -6,11 +6,12 @@ import AppRoutes from './routes';
 import store from './store';
 import './styles/global.css';
 
-console.log('🚀 Loading DMT Education App...');
+console.log('Loading DMT Education App...');
 
 const rootElement = document.getElementById('root');
 if (rootElement) {
   console.log('Root element found, rendering App...');
+  console.log('BASE_URL:', import.meta.env.BASE_URL);
   ReactDOM.render(
     <React.StrictMode>
       <Provider store={store}>

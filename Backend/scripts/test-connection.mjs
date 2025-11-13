@@ -33,7 +33,7 @@ const config = {
 async function testConnection() {
   console.log('🔌 Testing SQL Server Connection');
   console.log('='.repeat(60));
-  console.log('\n📋 Configuration:');
+  console.log('\nConfiguration:');
   console.log(`   Server:   ${config.server}:${config.port}`);
   console.log(`   Database: ${config.database}`);
   console.log(`   User:     ${config.user}`);
@@ -47,7 +47,7 @@ async function testConnection() {
   try {
     console.log('⏳ Connecting...');
     pool = await sql.connect(config);
-    console.log('✅ Connected successfully!\n');
+    console.log('Connected successfully!\n');
 
     // Get SQL Server version
     console.log('📊 Server Information:');
@@ -106,12 +106,12 @@ async function testConnection() {
     await pool.close();
 
     console.log('='.repeat(60));
-    console.log('✅ Connection test passed!');
+    console.log('Connection test passed!');
     console.log('='.repeat(60));
     console.log('');
 
   } catch (err) {
-    console.error('\n❌ Connection failed!');
+    console.error('\nConnection failed!');
     console.error('Error:', err.message);
     
     if (err.code === 'ELOGIN') {

@@ -45,7 +45,7 @@ async function createDatabase() {
     console.log(`   User: ${config.user}`);
     
     pool = await sql.connect(config);
-    console.log('✅ Connected to SQL Server\n');
+    console.log('Connected to SQL Server\n');
 
     // Check if database exists
     console.log(`📊 Checking if database '${DATABASE_NAME}' exists...`);
@@ -54,7 +54,7 @@ async function createDatabase() {
     `);
 
     if (checkDb.recordset.length > 0) {
-      console.log(`⚠️  Database '${DATABASE_NAME}' already exists`);
+      console.log(`Database '${DATABASE_NAME}' already exists`);
       const readline = await import('readline');
       const rl = readline.createInterface({
         input: process.stdin,
@@ -72,9 +72,9 @@ async function createDatabase() {
           ALTER DATABASE ${DATABASE_NAME} SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
           DROP DATABASE ${DATABASE_NAME};
         `);
-        console.log('✅ Database dropped\n');
+        console.log('Database dropped\n');
       } else {
-        console.log('❌ Operation cancelled');
+        console.log('Operation cancelled');
         process.exit(0);
       }
     }
@@ -82,7 +82,7 @@ async function createDatabase() {
     // Create database
     console.log(`📊 Creating database '${DATABASE_NAME}'...`);
     await pool.request().query(`CREATE DATABASE ${DATABASE_NAME}`);
-    console.log(`✅ Database '${DATABASE_NAME}' created successfully\n`);
+    console.log(`Database '${DATABASE_NAME}' created successfully\n`);
 
     // Close master connection
     await pool.close();
@@ -91,7 +91,7 @@ async function createDatabase() {
     console.log(`🔌 Connecting to '${DATABASE_NAME}'...`);
     config.database = DATABASE_NAME;
     pool = await sql.connect(config);
-    console.log('✅ Connected to new database\n');
+    console.log('Connected to new database\n');
 
     // Read and execute schema file
     console.log('📝 Reading schema file...');
@@ -100,7 +100,7 @@ async function createDatabase() {
     }
 
     const schemaSQL = fs.readFileSync(SCHEMA_FILE, 'utf8');
-    console.log(`✅ Schema file loaded (${schemaSQL.length} characters)\n`);
+    console.log(`Schema file loaded (${schemaSQL.length} characters)\n`);
 
     // Split by GO statements (SQL Server batch separator)
     console.log('⚙️  Executing schema...');
@@ -121,12 +121,12 @@ async function createDatabase() {
         process.stdout.write(`\r   Progress: ${i + 1}/${batches.length} batches executed`);
       } catch (err) {
         errorCount++;
-        console.error(`\n   ⚠️  Error in batch ${i + 1}:`, err.message);
+        console.error(`\n   Error in batch ${i + 1}:`, err.message);
       }
     }
 
     console.log('\n');
-    console.log('✅ Schema execution completed');
+    console.log('Schema execution completed');
     console.log(`   Success: ${successCount} batches`);
     if (errorCount > 0) {
       console.log(`   Errors: ${errorCount} batches (see above for details)`);
@@ -141,7 +141,7 @@ async function createDatabase() {
       ORDER BY TABLE_NAME
     `);
 
-    console.log(`✅ Found ${tables.recordset.length} tables:`);
+    console.log(`Found ${tables.recordset.length} tables:`);
     tables.recordset.forEach((table, index) => {
       console.log(`   ${index + 1}. ${table.TABLE_NAME}`);
     });
@@ -158,7 +158,7 @@ async function createDatabase() {
     console.log('');
 
   } catch (err) {
-    console.error('\n❌ Error:', err.message);
+    console.error('\nError:', err.message);
     console.error('\nFull error:', err);
     process.exit(1);
   } finally {

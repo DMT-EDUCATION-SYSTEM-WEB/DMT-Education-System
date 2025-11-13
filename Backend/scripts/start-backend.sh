@@ -8,13 +8,13 @@ set -e
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 BACKEND_DIR="$(dirname "$SCRIPT_DIR")"
 
-echo "🚀 Starting DMT Education Backend"
+echo "Starting DMT Education Backend"
 echo "=================================="
 echo ""
 
 # Check if .env.local exists
 if [ ! -f "$BACKEND_DIR/.env.local" ]; then
-    echo "❌ Error: .env.local file not found"
+    echo "Error: .env.local file not found"
     echo "Please create .env.local file with database configuration"
     exit 1
 fi
@@ -22,7 +22,7 @@ fi
 # Load environment variables
 export $(cat "$BACKEND_DIR/.env.local" | grep -v '^#' | xargs)
 
-echo "📋 Configuration:"
+echo "Configuration:"
 echo "   Database: $DB_DATABASE"
 echo "   Server: $DB_SERVER:$DB_PORT"
 echo "   User: $DB_USER"
@@ -32,7 +32,7 @@ echo ""
 echo "🔍 Checking database connection..."
 node "$SCRIPT_DIR/test-connection.mjs" || {
     echo ""
-    echo "❌ Database connection failed!"
+    echo "Database connection failed!"
     echo ""
     echo "💡 Quick fix options:"
     echo "   1. Run: node scripts/create-database.mjs"
@@ -43,7 +43,7 @@ node "$SCRIPT_DIR/test-connection.mjs" || {
 }
 
 echo ""
-echo "✅ Database connection successful"
+echo "Database connection successful"
 echo ""
 
 # Kill any existing process on port 3001

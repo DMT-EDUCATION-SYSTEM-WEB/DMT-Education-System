@@ -8,7 +8,7 @@ set -e
 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-echo "⚠️  WARNING: Database Reset"
+echo "WARNING: Database Reset"
 echo "=================================="
 echo ""
 echo "This will:"
@@ -23,7 +23,7 @@ read -p "Are you sure? Type 'yes' to continue: " -r
 echo ""
 
 if [[ ! $REPLY =~ ^[Yy][Ee][Ss]$ ]]; then
-    echo "❌ Operation cancelled"
+    echo "Operation cancelled"
     exit 0
 fi
 
@@ -33,20 +33,20 @@ echo ""
 # Step 1: Create database and import schema
 echo "Step 1/2: Creating database and importing schema..."
 node "$SCRIPT_DIR/create-database.mjs" || {
-    echo "❌ Failed to create database"
+    echo "Failed to create database"
     exit 1
 }
 
 echo ""
 echo "Step 2/2: Seeding sample data..."
 node "$SCRIPT_DIR/seed-data.mjs" || {
-    echo "❌ Failed to seed data"
+    echo "Failed to seed data"
     exit 1
 }
 
 echo ""
 echo "=================================="
-echo "✅ Database reset completed!"
+echo "Database reset completed!"
 echo "=================================="
 echo ""
 echo "You can now start the backend server"

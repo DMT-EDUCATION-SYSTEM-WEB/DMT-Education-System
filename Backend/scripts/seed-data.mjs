@@ -39,12 +39,12 @@ async function seedData() {
     console.log(`   Database: ${config.database}\n`);
 
     pool = await sql.connect(config);
-    console.log('✅ Connected to database\n');
+    console.log('Connected to database\n');
 
     // Check if roles already exist
     const rolesCheck = await pool.request().query('SELECT COUNT(*) as count FROM roles');
     if (rolesCheck.recordset[0].count > 0) {
-      console.log('⚠️  Data already exists. Skipping roles...\n');
+      console.log('Data already exists. Skipping roles...\n');
     } else {
       // Insert roles
       console.log('📝 Inserting roles...');
@@ -57,7 +57,7 @@ async function seedData() {
         (4, 'STUDENT', N'Học sinh', N'Học viên tham gia khóa học');
         SET IDENTITY_INSERT roles OFF;
       `);
-      console.log('   ✅ Roles inserted (4 records)\n');
+      console.log('   Roles inserted (4 records)\n');
     }
 
     // Hash passwords
@@ -66,7 +66,7 @@ async function seedData() {
     const staffPassword = await bcrypt.hash('staff123', 12);
     const teacherPassword = await bcrypt.hash('teacher123', 12);
     const studentPassword = await bcrypt.hash('student123', 12);
-    console.log('   ✅ Passwords hashed\n');
+    console.log('   Passwords hashed\n');
 
     // Insert users
     console.log('👥 Inserting users...');
@@ -83,7 +83,7 @@ async function seedData() {
         INSERT INTO users (role_id, email, password_hash, full_name, phone, status)
         VALUES (@role_id, @email, @password_hash, @full_name, @phone, 1)
       `);
-    console.log('   ✅ Admin user created (admin@dmt.edu.vn / admin123)');
+    console.log('   Admin user created (admin@dmt.edu.vn / admin123)');
 
     // Staff
     await pool.request()
@@ -97,7 +97,7 @@ async function seedData() {
         INSERT INTO users (role_id, email, password_hash, full_name, phone, status)
         VALUES (@role_id, @email, @password_hash, @full_name, @phone, 1)
       `);
-    console.log('   ✅ Staff user created (staff@dmt.edu.vn / staff123)');
+    console.log('   Staff user created (staff@dmt.edu.vn / staff123)');
 
     // Teacher
     const teacherResult = await pool.request()
@@ -116,7 +116,7 @@ async function seedData() {
         ELSE
           SELECT id FROM users WHERE email = @email
       `);
-    console.log('   ✅ Teacher user created (teacher@dmt.edu.vn / teacher123)');
+    console.log('   Teacher user created (teacher@dmt.edu.vn / teacher123)');
 
     // Student
     const studentResult = await pool.request()
@@ -135,7 +135,7 @@ async function seedData() {
         ELSE
           SELECT id FROM users WHERE email = @email
       `);
-    console.log('   ✅ Student user created (student@dmt.edu.vn / student123)\n');
+    console.log('   Student user created (student@dmt.edu.vn / student123)\n');
 
     // Insert subjects
     console.log('📚 Inserting subjects...');
@@ -152,7 +152,7 @@ async function seedData() {
       INSERT INTO subjects (name, code, description, is_active) VALUES
       (N'Lập trình', 'PROG', N'Môn Lập trình', 1);
     `);
-    console.log('   ✅ Subjects inserted (3 subjects)\n');
+    console.log('   Subjects inserted (3 subjects)\n');
 
     // Insert courses
     console.log('📖 Inserting courses...');
@@ -174,7 +174,7 @@ async function seedData() {
       INSERT INTO courses (subject_id, code, name, description, duration_weeks, total_sessions, price, level, is_active)
       VALUES (@prog_id, 'PROG-01', N'Lập trình Python cơ bản', N'Khóa học lập trình Python cho người mới bắt đầu', 20, 40, 3000000, 'beginner', 1);
     `);
-    console.log('   ✅ Courses inserted (3 courses)\n');
+    console.log('   Courses inserted (3 courses)\n');
 
     await pool.close();
 
@@ -186,11 +186,11 @@ async function seedData() {
     console.log('   Staff:   staff@dmt.edu.vn    / staff123');
     console.log('   Teacher: teacher@dmt.edu.vn  / teacher123');
     console.log('   Student: student@dmt.edu.vn  / student123');
-    console.log('\n🚀 You can now start the backend server: npm run dev');
+    console.log('\nYou can now start the backend server: npm run dev');
     console.log('');
 
   } catch (err) {
-    console.error('\n❌ Error:', err.message);
+    console.error('\nError:', err.message);
     console.error('Full error:', err);
     process.exit(1);
   } finally {

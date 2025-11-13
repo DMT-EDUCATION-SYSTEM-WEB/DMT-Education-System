@@ -7,7 +7,7 @@
 
 set -e  # Exit on error
 
-echo "🚀 DMT Education System - SQL Server Setup"
+echo "DMT Education System - SQL Server Setup"
 echo "=========================================="
 echo ""
 
@@ -25,16 +25,16 @@ DATABASE_NAME="dmt_education_system"
 
 # Check if Docker is installed
 if ! command -v docker &> /dev/null; then
-    echo -e "${RED}❌ Docker is not installed!${NC}"
+    echo -e "${RED}Docker is not installed!${NC}"
     echo "Please install Docker Desktop from: https://www.docker.com/products/docker-desktop"
     exit 1
 fi
 
-echo -e "${GREEN}✅ Docker is installed${NC}"
+echo -e "${GREEN}Docker is installed${NC}"
 
 # Check if container already exists
 if docker ps -a --format '{{.Names}}' | grep -q "^${CONTAINER_NAME}$"; then
-    echo -e "${YELLOW}⚠️  Container ${CONTAINER_NAME} already exists${NC}"
+    echo -e "${YELLOW}Container ${CONTAINER_NAME} already exists${NC}"
     read -p "Do you want to remove it and create a new one? (y/n) " -n 1 -r
     echo
     if [[ $REPLY =~ ^[Yy]$ ]]; then
@@ -69,12 +69,12 @@ sleep 15
 
 # Check if container is running
 if ! docker ps --format '{{.Names}}' | grep -q "^${CONTAINER_NAME}$"; then
-    echo -e "${RED}❌ Failed to start SQL Server container${NC}"
+    echo -e "${RED}Failed to start SQL Server container${NC}"
     echo "Check logs with: docker logs ${CONTAINER_NAME}"
     exit 1
 fi
 
-echo -e "${GREEN}✅ SQL Server is running${NC}"
+echo -e "${GREEN}SQL Server is running${NC}"
 
 # Create database
 echo ""
@@ -98,9 +98,9 @@ if [ -f "$SQL_FILE" ]; then
         -S localhost -U sa -P "${SA_PASSWORD}" \
         -d ${DATABASE_NAME} -i /tmp/schema.sql
     
-    echo -e "${GREEN}✅ Database schema imported successfully${NC}"
+    echo -e "${GREEN}Database schema imported successfully${NC}"
 else
-    echo -e "${YELLOW}⚠️  SQL file not found: ${SQL_FILE}${NC}"
+    echo -e "${YELLOW}SQL file not found: ${SQL_FILE}${NC}"
     echo "Please run the SQL script manually"
 fi
 
@@ -120,9 +120,9 @@ if [ -f "$ENV_FILE" ]; then
     sed -i '' "s/^DB_PASSWORD=.*/DB_PASSWORD=${SA_PASSWORD}/" "$ENV_FILE"
     sed -i '' "s/^DB_PORT=.*/DB_PORT=${SQL_PORT}/" "$ENV_FILE"
     
-    echo -e "${GREEN}✅ Configuration file updated${NC}"
+    echo -e "${GREEN}Configuration file updated${NC}"
 else
-    echo -e "${YELLOW}⚠️  .env.local not found, please create it manually${NC}"
+    echo -e "${YELLOW}.env.local not found, please create it manually${NC}"
 fi
 
 # Print summary
@@ -144,7 +144,7 @@ echo "   Stop container:   docker stop ${CONTAINER_NAME}"
 echo "   View logs:        docker logs ${CONTAINER_NAME}"
 echo "   Connect to SQL:   docker exec -it ${CONTAINER_NAME} /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P '${SA_PASSWORD}'"
 echo ""
-echo "🚀 Next Steps:"
+echo "Next Steps:"
 echo "   1. cd Backend && npm run dev"
 echo "   2. Test API: curl http://localhost:3001/health"
 echo ""

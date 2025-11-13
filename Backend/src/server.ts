@@ -16,14 +16,16 @@ const app = Fastify({
 // Global error handler
 app.setErrorHandler(errorHandler);
 
-// CORS - optimized for development
-const corsOrigins = (process.env.CORS_ORIGINS || 'http://localhost:5173,http://localhost:3000')
+// CORS - optimized for development and production
+const corsOrigins = (process.env.CORS_ORIGINS || 'http://localhost:5173,http://localhost:3000,https://dmt-edu-aoj76ohlc-infinityzero3000s-projects.vercel.app')
   .split(',')
   .map(s => s.trim())
   .filter(Boolean);
 
 app.register(cors, {
-  origin: corsOrigins,
+  origin: process.env.NODE_ENV === 'production' 
+    ? corsOrigins 
+    : true, // Allow all origins in development
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],

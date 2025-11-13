@@ -1,0 +1,27 @@
+services:
+  - type: web
+    name: dmt-education-backend
+    env: node
+    region: oregon
+    plan: free
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3001
+      - key: DB_SERVER
+        sync: false
+      - key: DB_PORT
+        value: 1433
+      - key: DB_DATABASE
+        value: DMT_EDUCATION_SYSTEM
+      - key: DB_USER
+        sync: false
+      - key: DB_PASSWORD
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: CORS_ORIGIN
+        value: https://dmt-edu-aoj76ohlc-infinityzero3000s-projects.vercel.app

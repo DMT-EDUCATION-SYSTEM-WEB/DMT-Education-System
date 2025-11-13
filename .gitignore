@@ -24,4 +24,5 @@ coverage
 *.tmp
 *.temp
 *.cache
-.env*
+.env
+.env.local

@@ -26,3 +26,4 @@ coverage
 *.cache
 .env
 .env.localdmt-education-*.json
+.vercel

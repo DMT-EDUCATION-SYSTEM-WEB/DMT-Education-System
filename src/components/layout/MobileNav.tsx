@@ -43,7 +43,7 @@ export const MobileNav: React.FC<MobileNavProps> = ({ isOpen, onToggle, onClose 
       {/* Mobile Menu Button */}
       <button
         onClick={onToggle}
-        className="md:hidden fixed top-4 right-4 z-50 p-3 rounded-full bg-white shadow-lg hover:shadow-xl transition-all duration-300"
+        className="md:hidden fixed top-4 right-4 z-[110] p-3 rounded-full bg-white shadow-lg hover:shadow-xl transition-all duration-300"
         style={{
           background: isScrolled ? 'rgba(255, 255, 255, 0.95)' : 'white',
           backdropFilter: isScrolled ? 'blur(10px)' : 'none'
@@ -56,14 +56,14 @@ export const MobileNav: React.FC<MobileNavProps> = ({ isOpen, onToggle, onClose 
       {/* Mobile Navigation Overlay */}
       {isOpen && (
         <div 
-          className="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden"
+          className="fixed inset-0 bg-black bg-opacity-50 z-[105] md:hidden"
           onClick={onClose}
         />
       )}
 
       {/* Mobile Navigation Menu */}
       <div
-        className={`fixed top-0 right-0 h-full w-80 bg-white shadow-2xl z-40 transform transition-transform duration-300 ease-in-out md:hidden ${
+        className={`fixed top-0 right-0 h-full w-80 bg-white shadow-2xl z-[106] transform transition-transform duration-300 ease-in-out md:hidden ${
           isOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
         style={{

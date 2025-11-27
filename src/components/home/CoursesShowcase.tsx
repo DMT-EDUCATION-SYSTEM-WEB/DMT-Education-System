@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
+import { useNavigate } from 'react-router-dom';
 import {
   ClockIcon,
   UserGroupIcon,
@@ -124,6 +125,7 @@ const courses: Course[] = [
 ];
 
 const CoursesShowcase: React.FC = () => {
+  const navigate = useNavigate();
   const [ref, inView] = useInView({
     threshold: 0.1,
     triggerOnce: true
@@ -134,6 +136,11 @@ const CoursesShowcase: React.FC = () => {
       style: 'currency',
       currency: 'VND'
     }).format(price);
+  };
+
+  const handleEnrollClick = (courseId: number) => {
+    // Navigate to courses page with selected course
+    navigate('/courses', { state: { selectedCourseId: courseId } });
   };
 
   return (
@@ -263,6 +270,7 @@ const CoursesShowcase: React.FC = () => {
 
                     {/* CTA Button */}
                     <motion.button
+                      onClick={() => handleEnrollClick(course.id)}
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                       className="w-full py-3 bg-gradient-to-r from-red-600 to-rose-600 text-white rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all flex items-center justify-center group-hover:from-rose-600 group-hover:to-red-600"

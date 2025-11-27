@@ -538,18 +538,41 @@ const EnhancedCoursesPage: React.FC = () => {
                   transition={{ delay: index * 0.1 }}
                   className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all group"
                 >
-                  <div className="h-48 bg-gradient-to-br from-blue-500 to-blue-600 relative overflow-hidden">
-                    <div className="absolute inset-0 bg-black/10" />
+                  <div className="h-48 relative overflow-hidden">
+                    <img
+                      src={course.thumbnail || getCourseImage(course.name)}
+                      alt={course.name}
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
                     <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full">
-                      <span className="text-blue-600 font-bold text-sm">{formatPrice(course.price)}</span>
+                      <span className="text-red-600 font-bold text-sm">{formatPrice(course.price)}</span>
+                    </div>
+                    <div className="absolute top-4 left-4 bg-blue-500/90 backdrop-blur-sm px-3 py-1 rounded-full">
+                      <span className="text-white font-bold text-xs uppercase">{course.level}</span>
                     </div>
                   </div>
                   <div className="p-6">
                     <div className="text-xs font-semibold text-blue-600 uppercase mb-2">{course.subjects?.name}</div>
-                    <h3 className="text-xl font-bold text-gray-900 mb-2 line-clamp-2 group-hover:text-blue-600 transition-colors">
+                    <h3 className="text-xl font-bold text-gray-900 mb-2 line-clamp-2 group-hover:text-red-600 transition-colors">
                       {course.name}
                     </h3>
                     <p className="text-gray-600 text-sm mb-4 line-clamp-2">{course.description}</p>
+                    
+                    {/* Instructor */}
+                    {course.instructor && (
+                      <div className="flex items-center mb-3 pb-3 border-b border-gray-100">
+                        <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center mr-2">
+                          <span className="text-xs font-semibold text-gray-600">
+                            {course.instructor.split(' ').slice(-2).join(' ').substring(0, 2).toUpperCase()}
+                          </span>
+                        </div>
+                        <span className="text-sm text-gray-700 font-medium">
+                          {course.instructor}
+                        </span>
+                      </div>
+                    )}
+                    
                     <div className="flex items-center justify-between text-sm text-gray-500 mb-4">
                       <span className="flex items-center">
                         <ClockIcon className="w-4 h-4 mr-1" />

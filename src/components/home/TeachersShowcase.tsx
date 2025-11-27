@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import {
@@ -12,6 +12,7 @@ import {
 } from '@heroicons/react/24/solid';
 import { ImageGenerator, IllustrationGenerator } from '../../utils/imageGenerator';
 import { staggerContainer, staggerItem, cardHover } from '../../utils/animations';
+import { publicTeachersApi, PublicTeacher } from '../../services/publicApi';
 
 interface Teacher {
   id: number;
@@ -28,7 +29,7 @@ interface Teacher {
   bio: string;
 }
 
-const teachers: Teacher[] = [
+const originalTeachers: Teacher[] = [
   {
     id: 1,
     name: 'Thầy Nguyễn Văn Hùng',
@@ -149,7 +150,49 @@ const TeachersShowcase: React.FC = () => {
     triggerOnce: true
   });
 
-  const [flippedCards, setFlippedCards] = React.useState<Set<number>>(new Set());
+  const [flippedCards, setFlippedCards] = useState<Set<number>>(new Set());
+  const [teachers, setTeachers] = useState<Teacher[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  // Load teachers from API
+  useEffect(() => {
+    const fetchTeachers = async () => {
+      try {
+        setLoading(true);
+        const response = await publicTeachersApi.getAll({ 
+          page: 1, 
+          limit: 8,
+          is_active: true 
+        });
+        
+        // Transform API data to match Teacher interface
+        const transformedTeachers: Teacher[] = response.data.map((teacher: PublicTeacher, index: number) => ({
+          id: teacher.id,
+          name: teacher.full_name,
+          role: 'teacher' as const,
+          title: `Giáo viên ${teacher.main_subject?.name || 'DMT'}`,
+          subject: teacher.main_subject?.name || 'Đa môn',
+          experience: `${teacher.years_experience || 5} năm`,
+          students: Math.floor(Math.random() * 300) + 50, // Mock for now
+          courses: Math.floor(Math.random() * 10) + 5, // Mock for now
+          specialties: teacher.specialization?.split(',').map(s => s.trim()) || ['Giảng dạy'],
+          email: `teacher${teacher.id}@dmt.edu.vn`, // Mock email
+          phone: teacher.phone || '0123 456 789',
+          bio: teacher.bio || `${teacher.full_name} - ${teacher.degree || 'Giáo viên'} với ${teacher.years_experience || 5} năm kinh nghiệm giảng dạy${teacher.specialization ? `, chuyên về ${teacher.specialization}` : ''}`
+        }));
+        
+        setTeachers(transformedTeachers);
+      } catch (err: any) {
+        console.warn('API error, using original mock data:', err.message);
+        // Fallback to original mock data
+        setTeachers(originalTeachers);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTeachers();
+  }, []);
 
   const toggleFlip = (id: number) => {
     setFlippedCards(prev => {
@@ -192,7 +235,19 @@ const TeachersShowcase: React.FC = () => {
           animate={inView ? "visible" : "hidden"}
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8"
         >
-          {teachers.map((teacher) => {
+          {loading ? (
+            // Show loading skeleton
+            Array.from({ length: 8 }).map((_, i) => (
+              <div key={`skeleton-${i}`} className="bg-white rounded-2xl shadow-lg overflow-hidden animate-pulse">
+                <div className="p-6">
+                  <div className="w-24 h-24 rounded-full bg-gray-200 mx-auto mb-4" />
+                  <div className="h-4 bg-gray-200 rounded w-3/4 mx-auto mb-2" />
+                  <div className="h-3 bg-gray-200 rounded w-1/2 mx-auto mb-4" />
+                  <div className="h-10 bg-gray-200 rounded" />
+                </div>
+              </div>
+            ))
+          ) : teachers.map((teacher) => {
             const isFlipped = flippedCards.has(teacher.id);
             const characterIllustration = IllustrationGenerator.generateCharacter(teacher.role, 200);
             

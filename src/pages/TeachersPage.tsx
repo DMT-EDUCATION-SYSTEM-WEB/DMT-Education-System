@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { SEOHead } from '../components/common';
 import Layout from '../components/layout/Layout';
-import { teachersApi, Teacher } from '../services/academic';
+import { publicTeachersApi, PublicTeacher } from '../services/publicApi';
 import {
   Award,
   BookOpen,
@@ -19,6 +19,19 @@ import {
   Phone,
 } from 'lucide-react';
 
+// Internal Teacher interface for UI
+interface Teacher {
+  id: number;
+  teacher_code: string;
+  full_name: string;
+  email: string;
+  phone?: string;
+  main_subject?: string;
+  years_experience: number;
+  degree?: string;
+  specialization?: string;
+}
+
 const TeachersPage: React.FC = () => {
   const navigate = useNavigate();
   const [teachers, setTeachers] = useState<Teacher[]>([]);
@@ -30,20 +43,32 @@ const TeachersPage: React.FC = () => {
     const fetchTeachers = async () => {
       try {
         setLoading(true);
-        const response = await teachersApi.getAll({ 
-          status: true,
+        const response = await publicTeachersApi.getAll({ 
           page: 1,
-          limit: 12
+          limit: 50, // Get more teachers
+          is_active: true
         });
         
         if (response.success && response.data && response.data.length > 0) {
-          setTeachers(response.data);
+          // Transform PublicTeacher to our Teacher interface
+          const transformedTeachers: Teacher[] = response.data.map((t: PublicTeacher) => ({
+            id: t.id,
+            teacher_code: t.teacher_code,
+            full_name: t.full_name,
+            email: `teacher${t.id}@dmt.edu.vn`, // Mock email for now
+            phone: t.phone,
+            main_subject: t.main_subject?.name,
+            years_experience: t.years_experience || 0,
+            degree: t.degree,
+            specialization: t.specialization
+          }));
+          setTeachers(transformedTeachers);
         } else {
-          setTeachers(getMockTeachers());
+          setTeachers([]);
         }
       } catch (err: any) {
         console.error('Error fetching teachers:', err);
-        setTeachers(getMockTeachers());
+        setTeachers([]);
       } finally {
         setLoading(false);
       }
@@ -51,75 +76,6 @@ const TeachersPage: React.FC = () => {
 
     fetchTeachers();
   }, []);
-
-  const getMockTeachers = (): Teacher[] => [
-    {
-      id: 1, user_id: 101, teacher_code: 'GV001', main_subject_id: 1,
-      years_experience: 10, degree: 'Thạc sĩ Toán học', specialization: 'Toán học',
-      created_at: new Date().toISOString(),
-      users: {
-        id: 101, email: 'thanh@dmt.edu.vn', full_name: 'Trần Giang Thanh',
-        phone: '0901234567', avatar: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=300&h=300&fit=crop&crop=face',
-        address: 'TP.HCM', role: 'teacher', birth_date: '1985-01-15', status: true, created_at: new Date().toISOString()
-      },
-      subjects: { id: 1, name: 'Toán học', code: 'MATH', description: 'Môn Toán' }
-    },
-    {
-      id: 2, user_id: 102, teacher_code: 'GV002', main_subject_id: 2,
-      years_experience: 8, degree: 'Thạc sĩ Ngữ văn', specialization: 'Ngữ văn',
-      created_at: new Date().toISOString(),
-      users: {
-        id: 102, email: 'quynh@dmt.edu.vn', full_name: 'Hà Đăng Như Quỳnh',
-        phone: '0902234567', avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=300&h=300&fit=crop&crop=face',
-        address: 'TP.HCM', role: 'teacher', birth_date: '1987-03-20', status: true, created_at: new Date().toISOString()
-      },
-      subjects: { id: 2, name: 'Ngữ văn', code: 'LIT', description: 'Môn Văn' }
-    },
-    {
-      id: 3, user_id: 103, teacher_code: 'GV003', main_subject_id: 3,
-      years_experience: 12, degree: 'Cử nhân Tiếng Anh', specialization: 'Tiếng Anh',
-      created_at: new Date().toISOString(),
-      users: {
-        id: 103, email: 'khoa@dmt.edu.vn', full_name: 'Trần Anh Khoa',
-        phone: '0903234567', avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=300&h=300&fit=crop&crop=face',
-        address: 'TP.HCM', role: 'teacher', birth_date: '1983-07-10', status: true, created_at: new Date().toISOString()
-      },
-      subjects: { id: 3, name: 'Tiếng Anh', code: 'ENG', description: 'Môn Anh' }
-    },
-    {
-      id: 4, user_id: 104, teacher_code: 'GV004', main_subject_id: 4,
-      years_experience: 15, degree: 'Tiến sĩ Vật lý', specialization: 'Vật lý',
-      created_at: new Date().toISOString(),
-      users: {
-        id: 104, email: 'tho@dmt.edu.vn', full_name: 'Nguyễn Bá Thọ',
-        phone: '0904234567', avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=300&h=300&fit=crop&crop=face',
-        address: 'TP.HCM', role: 'teacher', birth_date: '1980-05-25', status: true, created_at: new Date().toISOString()
-      },
-      subjects: { id: 4, name: 'Vật lý', code: 'PHY', description: 'Môn Lý' }
-    },
-    {
-      id: 5, user_id: 105, teacher_code: 'GV005', main_subject_id: 5,
-      years_experience: 9, degree: 'Thạc sĩ Hóa học', specialization: 'Hóa học',
-      created_at: new Date().toISOString(),
-      users: {
-        id: 105, email: 'loan@dmt.edu.vn', full_name: 'Từ Kim Loan',
-        phone: '0905234567', avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=300&h=300&fit=crop&crop=face',
-        address: 'TP.HCM', role: 'teacher', birth_date: '1986-11-30', status: true, created_at: new Date().toISOString()
-      },
-      subjects: { id: 5, name: 'Hóa học', code: 'CHEM', description: 'Môn Hóa' }
-    },
-    {
-      id: 6, user_id: 106, teacher_code: 'GV006', main_subject_id: 6,
-      years_experience: 7, degree: 'Thạc sĩ Sinh học', specialization: 'Sinh học',
-      created_at: new Date().toISOString(),
-      users: {
-        id: 106, email: 'minh@dmt.edu.vn', full_name: 'Lê Văn Minh',
-        phone: '0906234567', avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=300&fit=crop&crop=face',
-        address: 'TP.HCM', role: 'teacher', birth_date: '1988-08-12', status: true, created_at: new Date().toISOString()
-      },
-      subjects: { id: 6, name: 'Sinh học', code: 'BIO', description: 'Môn Sinh' }
-    }
-  ];
 
   const categories = [
     { id: 'all', name: 'Tất cả', icon: Users },
@@ -129,11 +85,11 @@ const TeachersPage: React.FC = () => {
   ];
 
   const filteredTeachers = teachers.filter(teacher => {
-    const matchesSearch = teacher.users.full_name.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesSearch = teacher.full_name.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesCategory = selectedCategory === 'all' || 
-      (selectedCategory === 'math' && teacher.subjects?.name?.includes('Toán')) ||
-      (selectedCategory === 'language' && (teacher.subjects?.name?.includes('Văn') || teacher.subjects?.name?.includes('Anh'))) ||
-      (selectedCategory === 'science' && (teacher.subjects?.name?.includes('Lý') || teacher.subjects?.name?.includes('Hóa') || teacher.subjects?.name?.includes('Sinh')));
+      (selectedCategory === 'math' && teacher.main_subject?.includes('Toán')) ||
+      (selectedCategory === 'language' && (teacher.main_subject?.includes('Văn') || teacher.main_subject?.includes('Anh'))) ||
+      (selectedCategory === 'science' && (teacher.main_subject?.includes('Lý') || teacher.main_subject?.includes('Hóa') || teacher.main_subject?.includes('Sinh')));
     return matchesSearch && matchesCategory;
   });
 
@@ -395,7 +351,7 @@ const TeachersPage: React.FC = () => {
                           fontWeight: '700',
                           backdropFilter: 'blur(10px)',
                         }}>
-                          {teacher.users.full_name.charAt(0).toUpperCase()}
+                          {teacher.full_name.charAt(0).toUpperCase()}
                         </div>
                         
                         {/* Overlay gradient */}
@@ -437,9 +393,9 @@ const TeachersPage: React.FC = () => {
                         }}
                         className="quick-actions"
                         >
-                          {teacher.users.email && (
+                          {teacher.email && (
                             <a
-                              href={`mailto:${teacher.users.email}`}
+                              href={`mailto:${teacher.email}`}
                               onClick={(e) => e.stopPropagation()}
                               style={{
                                 padding: '8px',
@@ -454,9 +410,9 @@ const TeachersPage: React.FC = () => {
                               <Mail size={16} color="#3b82f6" />
                             </a>
                           )}
-                          {teacher.users.phone && (
+                          {teacher.phone && (
                             <a
-                              href={`tel:${teacher.users.phone}`}
+                              href={`tel:${teacher.phone}`}
                               onClick={(e) => e.stopPropagation()}
                               style={{
                                 padding: '8px',
@@ -482,7 +438,7 @@ const TeachersPage: React.FC = () => {
                           color: '#1f2937',
                           marginBottom: '8px',
                         }}>
-                          {teacher.users.full_name}
+                          {teacher.full_name}
                         </h3>
 
                         <div style={{
@@ -495,7 +451,7 @@ const TeachersPage: React.FC = () => {
                           fontWeight: '600',
                         }}>
                           <BookOpen size={16} />
-                          {teacher.subjects?.name || teacher.specialization || 'Giảng viên'}
+                          {teacher.main_subject || teacher.specialization || 'Giảng viên'}
                         </div>
 
                         <div style={{

@@ -66,10 +66,10 @@ export default async function registerRoutes(app: FastifyInstance) {
   
   // Entity management routes - ACTIVE FOR SQL SERVER
   await studentsRoutes(app);
-  await teachersRoutes(app);    // Teachers management - ACTIVE
+  await app.register(teachersRoutes, { prefix: '/api' });    // Teachers management - ACTIVE with /api prefix
   await app.register(staffSqlServerRoutes, { prefix: '/api' });  // Staff management - SQL Server
   await subjectsRoutes(app);
-  await coursesRoutes(app);
+  await app.register(coursesRoutes, { prefix: '/api' });  // Courses with /api prefix
   await classesRoutes(app);
   
   // Learning resources routes - ACTIVE FOR SQL SERVER

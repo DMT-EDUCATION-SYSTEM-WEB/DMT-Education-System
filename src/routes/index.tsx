@@ -5,10 +5,12 @@ import CoursesPage from '../pages/CoursesPage';
 import TeachersPage from '../pages/TeachersPage';
 import TeachersListPage from '../pages/TeachersListPage';
 import TeacherDetailPage from '../pages/TeacherDetailPage';
-import SchedulePage from '../pages/SchedulePage';
+import EnhancedSchedulePage from '../pages/EnhancedSchedulePage';
 import AnnouncementPage from '../pages/AnnouncementPage';
+import AnnouncementDetailPage from '../pages/AnnouncementDetailPage';
 import AboutPage from '../pages/AboutPage';
 import ContactPage from '../pages/ContactPage';
+import HonorPage from '../pages/HonorPage';
 import Login from '../features/auth/pages/Login';
 import UnauthorizedPage from '../pages/UnauthorizedPage';
 
@@ -76,6 +78,7 @@ import Roles from '../features/admin/pages/Roles';
 import Settings from '../features/admin/pages/Settings';
 import Notifications from '../features/admin/pages/Notifications';
 import FinanceReport from '../features/admin/pages/FinanceReport';
+import BackupRestore from '../features/admin/pages/BackupRestore';
 
 // New notification page
 import NotificationsPage from '../pages/NotificationsPage';
@@ -89,10 +92,12 @@ const AppRoutes = () => {
       <Route path="/teachers" element={<TeachersPage />} />
       <Route path="/teachers/list" element={<TeachersListPage />} />
       <Route path="/teachers/:id" element={<TeacherDetailPage />} />
-      <Route path="/schedule" element={<SchedulePage />} />
+      <Route path="/schedule" element={<EnhancedSchedulePage />} />
       <Route path="/announcements" element={<AnnouncementPage />} />
+      <Route path="/announcements/:id" element={<AnnouncementDetailPage />} />
       <Route path="/about" element={<AboutPage />} />
       <Route path="/contact" element={<ContactPage />} />
+      <Route path="/honor" element={<HonorPage />} />
       <Route path="/login" element={<Login />} />
       <Route path="/auth/login" element={<Login />} />
 
@@ -164,6 +169,7 @@ const AppRoutes = () => {
         <Route path="surveys" element={<div>Quản lý khảo sát</div>} />
         <Route path="analytics" element={<Analytics />} />
         <Route path="roles" element={<Roles />} />
+        <Route path="backup" element={<BackupRestore />} />
         <Route path="settings" element={<Settings />} />
       </Route>
 

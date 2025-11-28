@@ -78,17 +78,24 @@ export const publicCoursesApi = {
 export interface PublicTeacher {
   id: number;
   teacher_code: string;
+  main_subject_id?: number;
+  years_experience?: number;
+  degree?: string;
+  specialization?: string;
+  created_at: string;
   full_name: string;
   phone?: string;
   address?: string;
   birth_date?: string;
-  degree?: string;
-  specialization?: string;
-  years_of_experience?: number;
   bio?: string;
   avatar_url?: string;
   is_active: boolean;
-  created_at: string;
+  // Optional subject info
+  main_subject?: {
+    id: number;
+    name: string;
+    code: string;
+  };
 }
 
 interface TeacherQueryParams extends PaginationParams {

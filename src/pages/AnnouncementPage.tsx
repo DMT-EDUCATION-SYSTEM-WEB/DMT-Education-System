@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { SEOHead } from '../components/common';
 import Layout from '../components/layout/Layout';
 import { newsApi, News } from '../services/news';
@@ -18,6 +19,7 @@ import {
 } from 'lucide-react';
 
 const AnnouncementPage: React.FC = () => {
+  const navigate = useNavigate();
   const [news, setNews] = useState<News[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedType, setSelectedType] = useState<string>('all');
@@ -43,57 +45,99 @@ const AnnouncementPage: React.FC = () => {
       setFeaturedNews(featured || null);
     } catch (err) {
       console.error('Failed to load news:', err);
-      setNews(getMockNews());
-      setFeaturedNews(getMockNews()[0]);
+      // Fallback to mock data if API fails
+      const mockNews: News[] = [
+        {
+          id: 1,
+          title: 'Thông báo khai giảng khóa học mới năm 2025',
+          excerpt: 'DMT Education trân trọng thông báo lịch khai giảng các khóa học mới trong năm học 2024-2025. Đăng ký sớm để nhận ưu đãi đặc biệt.',
+          content: 'DMT Education trân trọng thông báo lịch khai giảng các khóa học mới trong năm học 2024-2025. Các khóa học bao gồm: Toán, Lý, Hóa, Văn, Anh Văn, IELTS, TOEFL, VSAT.',
+          type: 'announcement',
+          status: 'published',
+          is_featured: true,
+          image_url: '/images/all-image/event-1.jpg',
+          author_id: 1,
+          created_at: '2024-11-20T10:00:00Z',
+          updated_at: '2024-11-20T10:00:00Z',
+          published_at: '2024-11-20T10:00:00Z'
+        },
+        {
+          id: 2,
+          title: 'Chúc mừng học viên đạt IELTS 7.5+',
+          excerpt: 'Xin chúc mừng các học viên DMT đạt điểm IELTS xuất sắc trong kỳ thi tháng 11/2024. Thành tích này là minh chứng cho sự nỗ lực của các em.',
+          content: 'Chúc mừng các học viên đạt IELTS cao: Lê Thị Hải Yến (IELTS 7.5), cùng nhiều học viên khác đạt 6.5 - 7.0.',
+          type: 'news',
+          status: 'published',
+          is_featured: false,
+          image_url: '/images/all-image/honor-7.5-ielts.jpg',
+          author_id: 1,
+          created_at: '2024-11-18T14:30:00Z',
+          updated_at: '2024-11-18T14:30:00Z',
+          published_at: '2024-11-18T14:30:00Z'
+        },
+        {
+          id: 3,
+          title: 'Vinh danh học sinh giữa kỳ 2 năm học 2024-2025',
+          excerpt: 'Trung tâm DMT Education tổ chức lễ vinh danh học sinh có thành tích xuất sắc trong kỳ thi giữa kỳ 2. Chúc mừng các em!',
+          content: 'Lễ vinh danh học sinh xuất sắc giữa kỳ 2 năm học 2024-2025. Có hơn 50 học sinh đạt danh hiệu học sinh giỏi và xuất sắc.',
+          type: 'event',
+          status: 'published',
+          is_featured: false,
+          image_url: '/images/all-image/honor-mid-semester-2-2425-1.jpg',
+          author_id: 1,
+          created_at: '2024-11-15T09:00:00Z',
+          updated_at: '2024-11-15T09:00:00Z',
+          published_at: '2024-11-15T09:00:00Z'
+        },
+        {
+          id: 4,
+          title: 'Thông báo lịch nghỉ Tết Nguyên Đán 2025',
+          excerpt: 'Trung tâm DMT Education thông báo lịch nghỉ Tết Nguyên Đán Ất Tỵ 2025 và lịch học bù sau kỳ nghỉ.',
+          content: 'Lịch nghỉ Tết Nguyên Đán 2025: Từ ngày 25/01 đến 05/02/2025. Lịch học bù sẽ được thông báo sau.',
+          type: 'announcement',
+          status: 'published',
+          is_featured: false,
+          image_url: '/images/all-image/event-2.jpg',
+          author_id: 1,
+          created_at: '2024-11-10T16:00:00Z',
+          updated_at: '2024-11-10T16:00:00Z',
+          published_at: '2024-11-10T16:00:00Z'
+        },
+        {
+          id: 5,
+          title: 'Khai trương cơ sở mới tại Quận 3',
+          excerpt: 'DMT Education hân hạnh thông báo khai trương cơ sở thứ 3 tại Quận 3, TP.HCM với cơ sở vật chất hiện đại.',
+          content: 'Khai trương cơ sở mới tại 384/26 Nam Kỳ Khởi Nghĩa, phường 8, Quận 3 với đầy đủ tiện nghi học tập hiện đại.',
+          type: 'news',
+          status: 'published',
+          is_featured: false,
+          image_url: '/images/all-image/event-3.jpg',
+          author_id: 1,
+          created_at: '2024-11-05T11:00:00Z',
+          updated_at: '2024-11-05T11:00:00Z',
+          published_at: '2024-11-05T11:00:00Z'
+        },
+        {
+          id: 6,
+          title: 'Thành tích VSAT xuất sắc năm học 2024-2025',
+          excerpt: 'Chúc mừng học sinh DMT đạt điểm VSAT cao trong kỳ thi năm học 2024-2025. Nhiều em đạt trên 300 điểm.',
+          content: 'Thành tích VSAT năm học 2024-2025: Lê Thị Hải Yến 395đ, Lê Huỳnh Hoàng Hải 373đ, Nguyễn Huỳnh Bảo Trâm 373đ và nhiều học sinh khác.',
+          type: 'news',
+          status: 'published',
+          is_featured: false,
+          image_url: '/images/all-image/honor-vsat.jpg',
+          author_id: 1,
+          created_at: '2024-11-01T13:30:00Z',
+          updated_at: '2024-11-01T13:30:00Z',
+          published_at: '2024-11-01T13:30:00Z'
+        }
+      ];
+      setNews(mockNews);
+      setFeaturedNews(mockNews[0]);
     } finally {
       setLoading(false);
     }
   };
-
-  const getMockNews = (): News[] => [
-    {
-      id: 1,
-      title: 'Khai giảng khóa học IELTS Intensive - Tháng 1/2025',
-      excerpt: 'DMT Education chính thức khai giảng khóa học IELTS Intensive với đội ngũ giảng viên 8.0+ IELTS',
-      content: '',
-      type: 'announcement',
-      status: 'published',
-      is_featured: true,
-      image_url: 'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=800&h=600&fit=crop',
-      published_at: '2025-01-10',
-      created_at: '2025-01-10',
-      updated_at: '2025-01-10',
-      author_id: 1
-    },
-    {
-      id: 2,
-      title: 'Học viên DMT đạt 8.5 IELTS sau 3 tháng học',
-      excerpt: 'Chúc mừng em Nguyễn Minh Anh đã đạt 8.5 IELTS Overall chỉ sau 3 tháng học tại DMT Education',
-      content: '',
-      type: 'news',
-      status: 'published',
-      is_featured: false,
-      image_url: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=800&h=600&fit=crop',
-      published_at: '2025-01-08',
-      created_at: '2025-01-08',
-      updated_at: '2025-01-08',
-      author_id: 1
-    },
-    {
-      id: 3,
-      title: 'Workshop: Kỹ năng học tập hiệu quả',
-      excerpt: 'Tham gia workshop miễn phí về kỹ năng học tập và quản lý thời gian hiệu quả cùng chuyên gia',
-      content: '',
-      type: 'event',
-      status: 'published',
-      is_featured: false,
-      image_url: 'https://images.unsplash.com/photo-1559223607-a43c990af5d1?w=800&h=600&fit=crop',
-      published_at: '2025-01-05',
-      created_at: '2025-01-05',
-      updated_at: '2025-01-05',
-      author_id: 1
-    }
-  ];
 
   const categories = [
     { id: 'all', name: 'Tất cả', icon: Bell, color: '#374151' },
@@ -375,13 +419,26 @@ const AnnouncementPage: React.FC = () => {
             <>
               {/* Featured News */}
               {featuredNews && selectedType === 'all' && !searchQuery && (
-                <div style={{
-                  background: '#f9fafb',
-                  borderRadius: '16px',
-                  overflow: 'hidden',
-                  marginBottom: '40px',
-                  border: '1px solid #e5e7eb'
-                }}>
+                <div 
+                  onClick={() => navigate(`/announcements/${featuredNews.id}`)}
+                  style={{
+                    background: '#f9fafb',
+                    borderRadius: '16px',
+                    overflow: 'hidden',
+                    marginBottom: '40px',
+                    border: '1px solid #e5e7eb',
+                    cursor: 'pointer',
+                    transition: 'all 0.3s'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.transform = 'scale(1.01)';
+                    e.currentTarget.style.boxShadow = '0 10px 30px rgba(0,0,0,0.1)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.transform = 'scale(1)';
+                    e.currentTarget.style.boxShadow = 'none';
+                  }}
+                >
                   <div style={{
                     display: 'grid',
                     gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
@@ -451,20 +508,26 @@ const AnnouncementPage: React.FC = () => {
                         </div>
                       </div>
                       
-                      <button style={{
-                        padding: '12px 24px',
-                        background: '#01AAD3',
-                        color: 'white',
-                        border: 'none',
-                        borderRadius: '8px',
-                        fontSize: '15px',
-                        fontWeight: '600',
-                        cursor: 'pointer',
-                        transition: 'all 0.2s',
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '8px'
-                      }}>
+                      <button 
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          navigate(`/announcements/${featuredNews.id}`);
+                        }}
+                        style={{
+                          padding: '12px 24px',
+                          background: '#01AAD3',
+                          color: 'white',
+                          border: 'none',
+                          borderRadius: '8px',
+                          fontSize: '15px',
+                          fontWeight: '600',
+                          cursor: 'pointer',
+                          transition: 'all 0.2s',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '8px'
+                        }}
+                      >
                         Xem chi tiết
                         <ChevronRight size={18} />
                       </button>
@@ -482,6 +545,7 @@ const AnnouncementPage: React.FC = () => {
                 {filteredNews.map((item) => (
                   <article
                     key={item.id}
+                    onClick={() => navigate(`/announcements/${item.id}`)}
                     style={{
                       background: '#ffffff',
                       borderRadius: '12px',

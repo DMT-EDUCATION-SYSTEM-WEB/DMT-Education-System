@@ -1,9 +1,4 @@
 node_modules
-package-lock.json
-package.json
-tsconfig.json
-tsconfig.build.json
-tsconfig.node.json
 dist
 build
 coverage
@@ -13,13 +8,11 @@ coverage
 .env.development.local
 .env.test.local
 .env.production.local
-.vscode
 .idea
 *.log
 *.tsbuildinfo
 *.tgz
 *.zip
-*.bak
 *.swp
 *.tmp
 *.temp

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { SEOHead } from '../components/common';
 import Layout from '../components/layout/Layout';
 import { 
@@ -16,29 +17,29 @@ import {
   Grid3x3,
   List,
   X,
-
   TrendingUp,
-  Award
+  Award,
+  Star,
+  CheckCircle,
+  Building2,
+  GraduationCap,
+  Sparkles,
+  ArrowRight,
+  Heart,
+  Zap,
+  Trophy,
+  Target
 } from 'lucide-react';
-import { classesApi, Class } from '../services/classes';
-
-// Types
-interface CalendarEvent {
-  id: string;
-  title: string;
-  start: Date;
-  end: Date;
-  color: string;
-  location?: string;
-  teacher?: string;
-  capacity?: number;
-  enrolled?: number;
-}
-
-interface DayEvent {
-  date: Date;
-  events: CalendarEvent[];
-}
+import { 
+  scheduleData, 
+  campusInfo, 
+  subjectCategories,
+  getClassesByCampusAndSubject,
+  getCampusById,
+  getEnrollmentPercentage,
+  getEnrollmentStatus,
+  type ScheduleClass
+} from '../data/scheduleData';
 
 const SchedulePage: React.FC = () => {
   // State
@@ -67,91 +68,12 @@ const SchedulePage: React.FC = () => {
       setClasses(response.data);
     } catch (error) {
       console.error('Error fetching classes:', error);
-      // Use mock data on error
-      setClasses(getMockClasses());
+      // Set empty array on error
+      setClasses([]);
     } finally {
       setLoading(false);
     }
   };
-
-  // Mock data
-  const getMockClasses = (): Class[] => [
-    {
-      id: 1,
-      course_id: 1,
-      code: 'IELTS-GV-01',
-      name: 'IELTS Intensive',
-      teacher_id: 1,
-      capacity: 15,
-      current_students: 12,
-      start_date: '2025-01-15',
-      schedule_days: 'Thứ 2, 4, 6',
-      schedule_time: '18:30-20:30',
-      classroom: 'Gò Vấp',
-      status: 'active',
-      created_at: '2025-01-01'
-    },
-    {
-      id: 2,
-      course_id: 2,
-      code: 'MATH-GV-01',
-      name: 'Toán Tư duy',
-      teacher_id: 2,
-      capacity: 20,
-      current_students: 18,
-      start_date: '2025-01-15',
-      schedule_days: 'Thứ 3, 5, 7',
-      schedule_time: '17:00-19:00',
-      classroom: 'Gò Vấp',
-      status: 'active',
-      created_at: '2025-01-01'
-    },
-    {
-      id: 3,
-      course_id: 3,
-      code: 'CODE-TB-01',
-      name: 'Hóa học nâng cao',
-      teacher_id: 3,
-      capacity: 12,
-      current_students: 10,
-      start_date: '2025-01-20',
-      schedule_days: 'Thứ 3, 5',
-      schedule_time: '19:00-21:00',
-      classroom: 'Tân Bình',
-      status: 'active',
-      created_at: '2025-01-01'
-    },
-    {
-      id: 4,
-      course_id: 4,
-      code: 'VIET-TB-01',
-      name: 'Tiếng Việt nâng cao',
-      teacher_id: 4,
-      capacity: 18,
-      current_students: 15,
-      start_date: '2025-01-20',
-      schedule_days: 'Thứ 2, 4, 6',
-      schedule_time: '17:30-19:30',
-      classroom: 'Tân Bình',
-      status: 'active',
-      created_at: '2025-01-01'
-    },
-    {
-      id: 5,
-      course_id: 5,
-      code: 'SCI-TD-01',
-      name: 'Khoa học tự nhiên',
-      teacher_id: 5,
-      capacity: 16,
-      current_students: 14,
-      start_date: '2025-01-25',
-      schedule_days: 'Thứ 2, 4',
-      schedule_time: '18:00-20:00',
-      classroom: 'Thủ Đức',
-      status: 'active',
-      created_at: '2025-01-01'
-    },
-  ];
 
   // Campus data
   const campuses = [
@@ -165,8 +87,8 @@ const SchedulePage: React.FC = () => {
   const filteredClasses = classes.filter(cls => {
     const matchesCampus = selectedCampus === 'all' || 
       cls.classroom?.toLowerCase().includes(selectedCampus.toLowerCase());
-    const matchesSearch = cls.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      cls.code.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesSearch = cls.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      cls.code?.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesCampus && matchesSearch;
   });
 

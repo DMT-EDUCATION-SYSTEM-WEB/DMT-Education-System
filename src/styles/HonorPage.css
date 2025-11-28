@@ -1,0 +1,233 @@
+/* Honor Page Styles */
+.honor-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 60px 20px 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.honor-header {
+  text-align: center;
+  margin-bottom: 50px;
+  position: relative;
+  z-index: 10;
+}
+
+.honor-title {
+  font-size: 3rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin-bottom: 12px;
+  text-shadow: 2px 4px 8px rgba(0, 0, 0, 0.3);
+  letter-spacing: 1px;
+}
+
+.honor-subtitle {
+  font-size: 1.2rem;
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 300;
+  letter-spacing: 0.5px;
+}
+
+/* Gallery Container */
+.honor-gallery-container {
+  position: relative;
+  max-width: 1400px;
+  margin: 0 auto;
+  height: 80vh;
+  overflow: hidden;
+}
+
+.honor-gallery {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  height: 100%;
+  padding: 0 10px;
+}
+
+/* Honor Column */
+.honor-column {
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+}
+
+.honor-column-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  animation: scrollUp 60s linear infinite;
+  will-change: transform;
+}
+
+/* Stagger animation timing for each column */
+.honor-column-1 .honor-column-inner {
+  animation-delay: 0s;
+}
+
+.honor-column-2 .honor-column-inner {
+  animation-delay: -15s;
+}
+
+.honor-column-3 .honor-column-inner {
+  animation-delay: -30s;
+}
+
+.honor-column-4 .honor-column-inner {
+  animation-delay: -45s;
+}
+
+/* Scroll Animation */
+@keyframes scrollUp {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-50%);
+  }
+}
+
+/* Image Wrapper */
+.honor-image-wrapper {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background: #fff;
+}
+
+.honor-image-wrapper:hover {
+  transform: scale(1.02);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+  z-index: 2;
+}
+
+/* Honor Images */
+.honor-image {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+/* Fade Gradients - Top and Bottom */
+.honor-fade-top {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 150px;
+  background: linear-gradient(
+    to bottom,
+    rgba(102, 126, 234, 1) 0%,
+    rgba(102, 126, 234, 0.8) 30%,
+    rgba(102, 126, 234, 0) 100%
+  );
+  pointer-events: none;
+  z-index: 5;
+}
+
+.honor-fade-bottom {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 150px;
+  background: linear-gradient(
+    to top,
+    rgba(118, 75, 162, 1) 0%,
+    rgba(118, 75, 162, 0.8) 30%,
+    rgba(118, 75, 162, 0) 100%
+  );
+  pointer-events: none;
+  z-index: 5;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .honor-title {
+    font-size: 2.5rem;
+  }
+
+  .honor-gallery {
+    gap: 12px;
+  }
+
+  .honor-column-inner {
+    gap: 12px;
+  }
+}
+
+@media (max-width: 768px) {
+  .honor-page {
+    padding: 40px 10px 10px;
+  }
+
+  .honor-title {
+    font-size: 2rem;
+  }
+
+  .honor-subtitle {
+    font-size: 1rem;
+  }
+
+  .honor-gallery {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .honor-gallery-container {
+    height: 70vh;
+  }
+
+  .honor-fade-top,
+  .honor-fade-bottom {
+    height: 100px;
+  }
+
+  .honor-image-wrapper {
+    border-radius: 8px;
+  }
+
+  .honor-image {
+    border-radius: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .honor-title {
+    font-size: 1.5rem;
+  }
+
+  .honor-subtitle {
+    font-size: 0.9rem;
+  }
+
+  .honor-gallery {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+
+  .honor-column-inner {
+    gap: 8px;
+  }
+
+  .honor-gallery-container {
+    height: 65vh;
+  }
+}
+
+/* Performance optimizations */
+.honor-column-inner {
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+.honor-image {
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+}

@@ -18,7 +18,8 @@ import {
   BookOpenIcon,
   Cog6ToothIcon,
   ClipboardDocumentListIcon,
-  BriefcaseIcon
+  BriefcaseIcon,
+  TrophyIcon
 } from '@heroicons/react/24/outline';
 import useAuth from '../../hooks/useAuth';
 import { useSelector } from 'react-redux';
@@ -36,6 +37,7 @@ const navItems: NavItem[] = [
   { name: 'Khóa học', path: '/courses', icon: AcademicCapIcon },
   { name: 'Giảng viên', path: '/teachers', icon: UserGroupIcon },
   { name: 'Lịch học', path: '/schedule', icon: CalendarIcon },
+  { name: 'Vinh danh', path: '/honor', icon: TrophyIcon },
   { name: 'Thông báo', path: '/announcements', icon: MegaphoneIcon },
   { name: 'Giới thiệu', path: '/about', icon: InformationCircleIcon },
 ];
@@ -176,16 +178,16 @@ const ModernHeader: React.FC = () => {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-300 ${
         isScrolled
           ? 'bg-white/80 backdrop-blur-xl shadow-lg'
           : 'bg-white/60 backdrop-blur-md shadow-sm'
       }`}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16 lg:h-20">
-          {/* Logo */}
-          <Link to="/" className="flex items-center gap-3 group">
+      <div className="w-full px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-16 lg:h-20 gap-4">
+          {/* Logo - Fixed width on left */}
+          <Link to="/" className="flex items-center gap-3 group flex-shrink-0">
             <motion.img
               whileHover={{ scale: 1.05, rotate: 5 }}
               whileTap={{ scale: 0.95 }}
@@ -193,18 +195,18 @@ const ModernHeader: React.FC = () => {
               alt="DMT Education"
               className="h-10 lg:h-12 w-auto rounded-lg shadow-md"
             />
-            <div className="hidden sm:block">
-              <div className="text-xl lg:text-2xl font-bold bg-gradient-to-r from-red-600 to-rose-600 bg-clip-text text-transparent">
+            <div className="hidden md:block">
+              <div className="text-lg lg:text-xl font-bold bg-gradient-to-r from-red-600 to-rose-600 bg-clip-text text-transparent whitespace-nowrap">
                 DMT Education
               </div>
-              <div className="text-xs text-gray-600 font-medium">
+              <div className="text-[10px] text-gray-600 font-medium">
                 Nâng tầm tri thức
               </div>
             </div>
           </Link>
 
-          {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center gap-1">
+          {/* Desktop Navigation - Flex grow in center */}
+          <nav className="hidden lg:flex items-center justify-center gap-1 flex-1 mx-4">
             {navItems.map((item) => {
               const Icon = item.icon;
               const active = isActive(item.path);
@@ -213,13 +215,13 @@ const ModernHeader: React.FC = () => {
                 <Link
                   key={item.path}
                   to={item.path}
-                  className="relative px-4 py-2 rounded-lg transition-all group"
+                  className="relative px-3 py-2 rounded-lg transition-all group flex-shrink-0"
                 >
                   <div className="flex items-center gap-2">
                     <Icon className={`w-4 h-4 transition-colors ${
                       active ? 'text-red-600' : 'text-gray-600 group-hover:text-red-600'
                     }`} />
-                    <span className={`text-sm font-semibold transition-colors ${
+                    <span className={`text-sm font-semibold transition-colors whitespace-nowrap ${
                       active ? 'text-red-600' : 'text-gray-700 group-hover:text-red-600'
                     }`}>
                       {item.name}
@@ -242,8 +244,8 @@ const ModernHeader: React.FC = () => {
             })}
           </nav>
 
-          {/* Right Actions */}
-          <div className="flex items-center gap-2">
+          {/* Right Actions - Fixed width on right */}
+          <div className="flex items-center gap-2 flex-shrink-0">
             {/* Search Button */}
             <motion.button
               whileHover={{ scale: 1.05 }}

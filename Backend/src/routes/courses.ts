@@ -49,64 +49,80 @@ export async function coursesRoutes(app: FastifyInstance) {
       let paramIndex = 1;
 
       if (search) {
-        conditions.push(`(c.name ILIKE $${paramIndex} OR c.code ILIKE $${paramIndex} OR c.description ILIKE $${paramIndex})`);
+        conditions.push(`(UPPER(c.NAME) LIKE UPPER($${paramIndex}) OR UPPER(c.CODE) LIKE UPPER($${paramIndex}) OR UPPER(c.DESCRIPTION) LIKE UPPER($${paramIndex}))`);
         params.push(`%${search}%`);
         paramIndex++;
       }
 
       if (subject_id) {
-        conditions.push(`c.subject_id = $${paramIndex}`);
+        conditions.push(`c.SUBJECT_ID = $${paramIndex}`);
         params.push(subject_id);
         paramIndex++;
       }
 
       if (level) {
-        conditions.push(`c.level = $${paramIndex}`);
+        conditions.push(`UPPER(c.LEVEL) = UPPER($${paramIndex})`);
         params.push(level);
         paramIndex++;
       }
 
       if (is_active !== undefined) {
-        conditions.push(`c.is_active = $${paramIndex}`);
-        params.push(is_active);
+        conditions.push(`c.IS_ACTIVE = $${paramIndex}`);
+        params.push(is_active ? 1 : 0);
         paramIndex++;
       }
 
       const whereClause = conditions.length > 0 ? `WHERE ${conditions.join(' AND ')}` : '';
 
-      // Count query
+      // Count query (SQL Server - uppercase table names)
       const countQuery = `
         SELECT COUNT(*) as total
-        FROM courses c
+        FROM COURSES c
         ${whereClause}
       `;
       const countResult = await query(countQuery, params);
-      const total = parseInt(countResult.rows[0].total);
+      const total = parseInt(countResult.rows[0]?.total || countResult.recordset[0]?.total || 0);
 
       // Data query (SQL Server syntax with OFFSET/FETCH)
       const dataQuery = `
         SELECT 
-          c.id, c.subject_id, c.code, c.name, c.description,
-          c.duration_weeks, c.total_sessions, c.price, c.level,
-          c.is_active, c.created_at, c.thumbnail_url, c.students_count,
-          s.id as subject_id_ref,
-          s.name as subject_name,
-          s.code as subject_code,
-          s.description as subject_description
-        FROM courses c
-        INNER JOIN subjects s ON c.subject_id = s.id
+          c.ID as id, 
+          c.SUBJECT_ID as subject_id, 
+          c.CODE as code, 
+          c.NAME as name, 
+          c.DESCRIPTION as description,
+          c.DURATION_WEEKS as duration_weeks, 
+          c.TOTAL_SESSIONS as total_sessions, 
+          c.PRICE as price, 
+          c.LEVEL as level,
+          c.IS_ACTIVE as is_active, 
+          c.CREATED_AT as created_at,
+          s.ID as subject_id_ref,
+          s.NAME as subject_name,
+          s.CODE as subject_code,
+          s.DESCRIPTION as subject_description
+        FROM COURSES c
+        INNER JOIN SUBJECTS s ON c.SUBJECT_ID = s.ID
         ${whereClause}
-        ORDER BY c.created_at DESC
+        ORDER BY c.CREATED_AT DESC
         OFFSET $${paramIndex} ROWS
         FETCH NEXT $${paramIndex + 1} ROWS ONLY
       `;
       const dataResult = await query(dataQuery, [...params, offset, limit]);
       
       // Transform to match expected structure
-      const transformedData = dataResult.rows.map((row: any) => ({
-        ...row,
-        thumbnail: row.thumbnail_url,
-        students: row.students_count,
+      const transformedData = (dataResult.rows || dataResult.recordset || []).map((row: any) => ({
+        id: row.id,
+        subject_id: row.subject_id,
+        code: row.code,
+        name: row.name,
+        description: row.description,
+        duration_weeks: row.duration_weeks,
+        total_sessions: row.total_sessions,
+        price: row.price ? parseFloat(row.price) : null,
+        level: row.level ? row.level.toLowerCase() : 'beginner',
+        is_active: row.is_active === 1 || row.is_active === true,
+        created_at: row.created_at,
         subjects: {
           id: row.subject_id_ref,
           name: row.subject_name,

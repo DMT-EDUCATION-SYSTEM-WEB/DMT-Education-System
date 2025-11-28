@@ -11,7 +11,13 @@ import { enrollmentsRoutes } from '../routes/enrollments';
 import { attendanceRoutes } from '../routes/attendance';
 import { assignmentsRoutes } from '../routes/assignments';
 import { materialsRoutes } from '../routes/materials';
-import { paymentsRoutes } from '../routes/payments';
+import paymentsSqlServerRoutes from '../routes/payments-sqlserver.js'; // SQL Server version
+import financeSqlServerRoutes from '../routes/finance-sqlserver.js'; // SQL Server version
+import attendanceReportRoutes from '../routes/attendance-report-sqlserver.js'; // SQL Server version
+import analyticsRoutes from '../routes/analytics-sqlserver.js'; // SQL Server version
+import performanceRoutes from '../routes/performance-sqlserver.js'; // SQL Server version
+import settingsRoutes from '../routes/settings-sqlserver.js'; // SQL Server version
+import backupSqlServerRoutes from '../routes/backup-sqlserver.js'; // SQL Server version
 import { surveysRoutes } from '../routes/surveys';
 import staffSqlServerRoutes from '../routes/staff-sqlserver.js'; // SQL Server version
 import { newsRoutes } from '../routes/news';
@@ -20,7 +26,6 @@ import { notificationsRoutes } from '../routes/notifications';
 import { statisticsRoutes } from '../routes/statistics';
 import { activityLogsRoutes } from '../routes/activity-logs';
 import { systemSettingsRoutes } from '../routes/system-settings';
-import { backupRoutes } from '../routes/backup';
 import contactRoutes from '../routes/contact.js';
 
 export default async function registerRoutes(app: FastifyInstance) {
@@ -40,7 +45,13 @@ export default async function registerRoutes(app: FastifyInstance) {
   // Academic entity routes - UPDATED WITH STORED PROCEDURES
   await enrollmentsRoutes(app);  // Uses sp_EnrollStudent, sp_DropEnrollment
   await attendanceRoutes(app);   // Uses sp_BulkMarkAttendance
-  await paymentsRoutes(app);     // Uses sp_ProcessPayment, sp_RefundPayment
+  await app.register(paymentsSqlServerRoutes, { prefix: '/api' });  // Payments - SQL Server
+  await app.register(financeSqlServerRoutes, { prefix: '/api' });  // Finance - SQL Server
+  await app.register(attendanceReportRoutes, { prefix: '/api' });  // Attendance Reports - SQL Server
+  await app.register(analyticsRoutes, { prefix: '/api' });  // Analytics - SQL Server
+  await app.register(performanceRoutes, { prefix: '/api' });  // Performance - SQL Server
+  await app.register(settingsRoutes, { prefix: '/api' });  // Settings - SQL Server
+  // await app.register(backupSqlServerRoutes, { prefix: '/api' });  // Backup & Restore - TEMPORARILY DISABLED
   await reportsRoutes(app);      // Uses sp_GetSystemOverview, sp_GetStudentReport, sp_GetClassReport
   
   // New advanced routes - ACTIVE FOR SQL SERVER
@@ -48,7 +59,6 @@ export default async function registerRoutes(app: FastifyInstance) {
   await statisticsRoutes(app);      // Uses database functions (fn_GetAttendanceRate, fn_GetAverageGrade, etc.)
   await activityLogsRoutes(app);    // Activity logging and tracking
   await systemSettingsRoutes(app);  // System settings management (Admin)
-  await backupRoutes(app);          // Database backup/restore (Admin)
   
   // User management routes - ACTIVE FOR SQL SERVER
   await usersRoutes(app);
@@ -56,10 +66,10 @@ export default async function registerRoutes(app: FastifyInstance) {
   
   // Entity management routes - ACTIVE FOR SQL SERVER
   await studentsRoutes(app);
-  await teachersRoutes(app);    // Teachers management - ACTIVE
+  await app.register(teachersRoutes, { prefix: '/api' });    // Teachers management - ACTIVE with /api prefix
   await app.register(staffSqlServerRoutes, { prefix: '/api' });  // Staff management - SQL Server
   await subjectsRoutes(app);
-  await coursesRoutes(app);
+  await app.register(coursesRoutes, { prefix: '/api' });  // Courses with /api prefix
   await classesRoutes(app);
   
   // Learning resources routes - ACTIVE FOR SQL SERVER

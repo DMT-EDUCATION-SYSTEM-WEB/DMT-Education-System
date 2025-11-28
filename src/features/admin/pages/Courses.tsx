@@ -36,22 +36,64 @@ interface Course {
   image?: string;
 }
 
-const mockCourses: Course[] = Array.from({ length: 30 }, (_, idx) => ({
-  id: `CRS${(idx + 1).toString().padStart(4, '0')}`,
-  title: ['Toán học nâng cao', 'Vật lý cơ bản', 'Hóa học chuyên sâu', 'Tiếng Anh giao tiếp', 'Ngữ văn và văn học'][idx % 5] + ` ${Math.floor(idx / 5) + 10}`,
-  description: 'Khóa học được thiết kế giúp học sinh nắm vững kiến thức và kỹ năng cần thiết để đạt kết quả cao trong các kỳ thi.',
-  category: ['Toán học', 'Vật lý', 'Hóa học', 'Tiếng Anh', 'Ngữ văn'][idx % 5],
-  level: ['basic', 'intermediate', 'advanced'][idx % 3] as 'basic' | 'intermediate' | 'advanced',
-  price: Math.floor(800000 + Math.random() * 1200000),
-  duration: Math.floor(8 + Math.random() * 16),
-  startDate: new Date(2023, idx % 12, Math.floor(1 + Math.random() * 28)).toLocaleDateString('vi-VN'),
-  teacherName: ['Nguyễn Văn A', 'Trần Thị B', 'Lê Hoàng C', 'Phạm Minh D'][idx % 4],
-  teacherId: `T${(idx % 4) + 1}`,
-  enrolledCount: Math.floor(5 + Math.random() * 25),
-  maxStudents: 30,
-  status: ['active', 'inactive', 'upcoming'][idx % 3] as 'active' | 'inactive' | 'upcoming',
-  image: idx % 3 === 0 ? `/course-${(idx % 5) + 1}.jpg` : undefined
-}));
+// Helper function to get course image from internet
+const getCourseImageUrl = (category: string, idx: number): string => {
+  const imageMap: Record<string, string[]> = {
+    'Toán học': [
+      'https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=400&h=225&fit=crop', // Math formulas on blackboard
+      'https://images.unsplash.com/photo-1596495578065-6e0763fa1178?w=400&h=225&fit=crop', // Math equations
+      'https://images.unsplash.com/photo-1509228468518-180dd4864904?w=400&h=225&fit=crop'  // Math notebook
+    ],
+    'Vật lý': [
+      'https://images.unsplash.com/photo-1636466497217-26a8cbeaf0aa?w=400&h=225&fit=crop', // Physics lab
+      'https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=400&h=225&fit=crop', // Physics formulas
+      'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=400&h=225&fit=crop'  // Science lab
+    ],
+    'Hóa học': [
+      'https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?w=400&h=225&fit=crop', // Chemistry lab
+      'https://images.unsplash.com/photo-1603126857599-f6e157fa2fe6?w=400&h=225&fit=crop', // Test tubes
+      'https://images.unsplash.com/photo-1554475901-4538ddfbccc2?w=400&h=225&fit=crop'  // Chemistry equipment
+    ],
+    'Tiếng Anh': [
+      'https://images.unsplash.com/photo-1546410531-bb4caa6b424d?w=400&h=225&fit=crop', // English books
+      'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=400&h=225&fit=crop', // English study
+      'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=400&h=225&fit=crop'  // Studying
+    ],
+    'Ngữ văn': [
+      'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=400&h=225&fit=crop', // Books
+      'https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=400&h=225&fit=crop', // Literature
+      'https://images.unsplash.com/photo-1495446815901-a7297e633e8d?w=400&h=225&fit=crop'  // Vintage books
+    ]
+  };
+  
+  const images = imageMap[category] || [
+    'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=400&h=225&fit=crop' // Default classroom
+  ];
+  
+  return images[idx % images.length];
+};
+
+const mockCourses: Course[] = Array.from({ length: 30 }, (_, idx) => {
+  const categories = ['Toán học', 'Vật lý', 'Hóa học', 'Tiếng Anh', 'Ngữ văn'];
+  const category = categories[idx % 5];
+  
+  return {
+    id: `CRS${(idx + 1).toString().padStart(4, '0')}`,
+    title: ['Toán học nâng cao', 'Vật lý cơ bản', 'Hóa học chuyên sâu', 'Tiếng Anh giao tiếp', 'Ngữ văn và văn học'][idx % 5] + ` ${Math.floor(idx / 5) + 10}`,
+    description: 'Khóa học được thiết kế giúp học sinh nắm vững kiến thức và kỹ năng cần thiết để đạt kết quả cao trong các kỳ thi.',
+    category: category,
+    level: ['basic', 'intermediate', 'advanced'][idx % 3] as 'basic' | 'intermediate' | 'advanced',
+    price: Math.floor(800000 + Math.random() * 1200000),
+    duration: Math.floor(8 + Math.random() * 16),
+    startDate: new Date(2023, idx % 12, Math.floor(1 + Math.random() * 28)).toLocaleDateString('vi-VN'),
+    teacherName: ['Nguyễn Văn A', 'Trần Thị B', 'Lê Hoàng C', 'Phạm Minh D'][idx % 4],
+    teacherId: `T${(idx % 4) + 1}`,
+    enrolledCount: Math.floor(5 + Math.random() * 25),
+    maxStudents: 30,
+    status: ['active', 'inactive', 'upcoming'][idx % 3] as 'active' | 'inactive' | 'upcoming',
+    image: getCourseImageUrl(category, idx)
+  };
+});
 
 interface CourseModalProps {
   course?: Course;

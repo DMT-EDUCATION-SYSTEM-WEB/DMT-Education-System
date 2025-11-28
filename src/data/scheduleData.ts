@@ -470,12 +470,12 @@ export const campusInfo = [
 
 // Subject categories
 export const subjectCategories = [
-  { id: 'all', name: 'Tất cả môn', icon: '📚', color: '#6b7280' },
-  { id: 'english', name: 'Tiếng Anh', icon: '🇬🇧', color: '#dc2626' },
-  { id: 'math', name: 'Toán học', icon: '🔢', color: '#3b82f6' },
-  { id: 'vietnamese', name: 'Ngữ văn', icon: '📖', color: '#a855f7' },
-  { id: 'science', name: 'Khoa học', icon: '🔬', color: '#f59e0b' },
-  { id: 'programming', name: 'Lập trình', icon: '💻', color: '#22c55e' }
+  { id: 'all', name: 'Tất cả môn', icon: '', color: '#6b7280' },
+  { id: 'english', name: 'Tiếng Anh', icon: '', color: '#dc2626' },
+  { id: 'math', name: 'Toán học', icon: '', color: '#3b82f6' },
+  { id: 'vietnamese', name: 'Ngữ văn', icon: '', color: '#a855f7' },
+  { id: 'science', name: 'Khoa học', icon: '', color: '#f59e0b' },
+  { id: 'programming', name: 'Lập trình', icon: '', color: '#22c55e' }
 ];
 
 // Helper functions

@@ -18,6 +18,16 @@ const honorSections = {
     { src: '/images/all-image/honor-vsat-4.jpg', title: 'Điểm Thi Cao', student: 'Huỳnh Hồng Hân - 308đ, Nguyễn Ngọc Phương Anh - 304đ, Nguyễn Đình Long Nhật - 300đ', term: 'Năm học 2024-2025' },
   ],
   vsatBanner: '/images/all-image/honor-vsat.jpg',
+  tuyenSinh10: [
+    { src: '/images/all-image/honor-tuyen-sinh-10/Hoàng Ngọc Vinh.png', title: 'Tuyển Sinh 10', student: 'Hoàng Ngọc Vinh', term: '2024-2025' },
+    { src: '/images/all-image/honor-tuyen-sinh-10/Nguyễn Quách Gia Lạc.png', title: 'Tuyển Sinh 10', student: 'Nguyễn Quách Gia Lạc', term: '2024-2025' },
+    { src: '/images/all-image/honor-tuyen-sinh-10/Phan Việt Hoàng_1.png', title: 'Tuyển Sinh 10', student: 'Phan Việt Hoàng', term: '2024-2025' },
+    { src: '/images/all-image/honor-tuyen-sinh-10/Phạm Phương Minh.png', title: 'Tuyển Sinh 10', student: 'Phạm Phương Minh', term: '2024-2025' },
+    { src: '/images/all-image/honor-tuyen-sinh-10/Phạm Quang Minh_2.png', title: 'Tuyển Sinh 10', student: 'Phạm Quang Minh', term: '2024-2025' },
+    { src: '/images/all-image/honor-tuyen-sinh-10/Trần Dĩnh Thiện.png', title: 'Tuyển Sinh 10', student: 'Trần Dĩnh Thiện', term: '2024-2025' },
+    { src: '/images/all-image/honor-tuyen-sinh-10/Trần Vũ Quốc Minh.png', title: 'Tuyển Sinh 10', student: 'Trần Vũ Quốc Minh', term: '2024-2025' },
+    { src: '/images/all-image/honor-tuyen-sinh-10/Đinh Thảo Linh.png', title: 'Tuyển Sinh 10', student: 'Đinh Thảo Linh', term: '2024-2025' },
+  ],
   midSemester1: [
     { src: '/images/all-image/honor-mid-semester-1-2425-2.jpg', title: 'Giữa kỳ 1', student: 'Học sinh xuất sắc', term: 'HK1 2024-2025' },
     { src: '/images/all-image/honor-mid-semester-1-2425-3.jpg', title: 'Giữa kỳ 1', student: 'Thành tích nổi bật', term: 'HK1 2024-2025' },
@@ -139,11 +149,14 @@ const HonorSection: React.FC<HonorSectionProps> = ({ title, subtitle, icon: Icon
           </div>
         )}
 
-        {/* Images Grid */}
+        {/* Images Grid - Hiển thị tất cả trên 1 hàng */}
         <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
-          gap: '32px'
+          display: 'flex',
+          gap: '24px',
+          overflowX: images.length > 4 ? 'auto' : 'visible',
+          paddingBottom: images.length > 4 ? '16px' : '0',
+          scrollSnapType: images.length > 4 ? 'x mandatory' : 'none',
+          flexWrap: images.length <= 4 ? 'nowrap' : 'nowrap'
         }}>
           {images.map((img, idx) => (
             <div
@@ -156,7 +169,10 @@ const HonorSection: React.FC<HonorSectionProps> = ({ title, subtitle, icon: Icon
                 transition: 'all 0.4s',
                 cursor: 'pointer',
                 background: 'white',
-                border: '2px solid #f3f4f6'
+                border: '2px solid #f3f4f6',
+                flex: images.length <= 4 ? '1 1 0' : '0 0 280px',
+                minWidth: images.length <= 4 ? '0' : '280px',
+                scrollSnapAlign: images.length > 4 ? 'start' : 'none'
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.transform = 'translateY(-12px) scale(1.02)';
@@ -172,7 +188,6 @@ const HonorSection: React.FC<HonorSectionProps> = ({ title, subtitle, icon: Icon
               {/* Image */}
               <div style={{
                 position: 'relative',
-                height: '400px',
                 overflow: 'hidden',
                 background: '#f3f4f6'
               }}>
@@ -181,8 +196,8 @@ const HonorSection: React.FC<HonorSectionProps> = ({ title, subtitle, icon: Icon
                   alt={img.student}
                   style={{
                     width: '100%',
-                    height: '100%',
-                    objectFit: 'cover',
+                    height: 'auto',
+                    display: 'block',
                     transition: 'transform 0.4s'
                   }}
                   onError={(e) => {
@@ -201,25 +216,6 @@ const HonorSection: React.FC<HonorSectionProps> = ({ title, subtitle, icon: Icon
                   }}
                 />
                 
-                {/* Overlay */}
-                <div style={{
-                  position: 'absolute',
-                  top: '16px',
-                  right: '16px',
-                  background: color,
-                  color: 'white',
-                  padding: '8px 16px',
-                  borderRadius: '10px',
-                  fontSize: '13px',
-                  fontWeight: 700,
-                  boxShadow: '0 4px 12px rgba(0,0,0,0.2)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '6px'
-                }}>
-                  <Trophy size={16} />
-                  {img.term}
-                </div>
               </div>
 
               {/* Info */}
@@ -507,6 +503,15 @@ const HonorPage: React.FC = () => {
         color="#ea580c"
         images={honorSections.vsat}
         bannerImage={honorSections.vsatBanner}
+      />
+
+      {/* Tuyen Sinh 10 */}
+      <HonorSection
+        title="Vinh Danh Tuyển Sinh Lớp 10"
+        subtitle="Học sinh đạt thành tích xuất sắc trong kỳ thi tuyển sinh lớp 10"
+        icon={Award}
+        color="#059669"
+        images={honorSections.tuyenSinh10}
       />
 
       {/* Mid Semester 1 */}

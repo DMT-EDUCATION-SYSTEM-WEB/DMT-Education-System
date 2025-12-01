@@ -105,12 +105,12 @@ interface TeacherQueryParams extends PaginationParams {
 
 export const publicTeachersApi = {
   getAll: async (params: TeacherQueryParams = {}): Promise<PaginatedResponse<PublicTeacher>> => {
-    const response = await publicApiClient.get('/teachers', { params });
+    const response = await publicApiClient.get('/api/teachers', { params });
     return response.data;
   },
 
   getById: async (id: number): Promise<ApiResponse<PublicTeacher>> => {
-    const response = await publicApiClient.get(`/teachers/${id}`);
+    const response = await publicApiClient.get(`/api/teachers/${id}`);
     return response.data;
   },
 };

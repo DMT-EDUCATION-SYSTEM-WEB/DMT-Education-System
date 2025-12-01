@@ -8,9 +8,7 @@ import {
   ClockIcon,
   HeartIcon
 } from '@heroicons/react/24/outline';
-import { ImageGenerator } from '../../utils/imageGenerator';
 import { fadeInUp } from '../../utils/animations';
-import logo from '/logo-dmt.png';
 
 interface FooterLink {
   name: string;
@@ -107,7 +105,6 @@ const socialLinks = [
 ];
 
 const ModernFooter: React.FC = () => {
-  const logo = ImageGenerator.generateAvatar('DMT Education', 40);
   const currentYear = new Date().getFullYear();
 
   return (
@@ -127,9 +124,9 @@ const ModernFooter: React.FC = () => {
               <div className="flex items-center gap-2 mb-4">
                 <motion.img
                   whileHover={{ scale: 1.05, rotate: 5 }}
-                  src={logo}
+                  src="/logo-dmt.png"
                   alt="DMT Education"
-                  className="w-9 h-9 rounded-lg shadow-lg"
+                  className="w-9 h-9 rounded-lg shadow-lg object-contain"
                 />
                 <div>
                   <h3 className="text-lg font-bold bg-gradient-to-r from-red-400 to-rose-400 bg-clip-text text-transparent">

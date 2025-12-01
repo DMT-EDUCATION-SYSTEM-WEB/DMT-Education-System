@@ -30,16 +30,8 @@ import {
   Trophy,
   Target
 } from 'lucide-react';
-import { 
-  scheduleData, 
-  campusInfo, 
-  subjectCategories,
-  getClassesByCampusAndSubject,
-  getCampusById,
-  getEnrollmentPercentage,
-  getEnrollmentStatus,
-  type ScheduleClass
-} from '../data/scheduleData';
+import { classesApi, Class } from '../services/classes';
+import { campusesApi, Campus } from '../services/campuses';
 
 const SchedulePage: React.FC = () => {
   // State
@@ -49,12 +41,14 @@ const SchedulePage: React.FC = () => {
   const [selectedCourse, setSelectedCourse] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [classes, setClasses] = useState<Class[]>([]);
+  const [campusData, setCampusData] = useState<Campus[]>([]);
   const [loading, setLoading] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
 
-  // Fetch classes from API
+  // Fetch classes and campuses from API
   useEffect(() => {
     fetchClasses();
+    fetchCampuses();
   }, []);
 
   const fetchClasses = async () => {
@@ -75,22 +69,68 @@ const SchedulePage: React.FC = () => {
     }
   };
 
-  // Campus data
+  const fetchCampuses = async () => {
+    try {
+      const response = await campusesApi.getAll();
+      if (response.success) {
+        setCampusData(response.data);
+      }
+    } catch (error) {
+      console.error('Error fetching campuses:', error);
+    }
+  };
+
+  // Campus list for filter - dynamic from API or fallback
   const campuses = [
     { id: 'all', name: 'Tất cả cơ sở', color: '#374151' },
-    { id: 'govap', name: 'Gò Vấp', color: '#dc2626' },
-    { id: 'tanbinh', name: 'Tân Bình', color: '#3b82f6' },
-    { id: 'thuduc', name: 'Thủ Đức', color: '#10b981' },
+    ...campusData.map(campus => ({
+      id: campus.code,
+      name: campus.name,
+      color: campus.color
+    }))
   ];
 
-  // Filter classes
+  // Fallback campuses if API fails
+  const defaultCampuses = [
+    { id: 'all', name: 'Tất cả cơ sở', color: '#374151' },
+    { id: 'govap', name: 'Gò Vấp', color: '#dc2626' },
+    { id: 'quan12', name: 'Quận 12', color: '#3b82f6' },
+    { id: 'quan3', name: 'Quận 3', color: '#7c3aed' },
+  ];
+
+  const displayCampuses = campuses.length > 1 ? campuses : defaultCampuses;
+
+  // Filter classes by campus and search
   const filteredClasses = classes.filter(cls => {
+    // Match by campus code in classroom field
     const matchesCampus = selectedCampus === 'all' || 
-      cls.classroom?.toLowerCase().includes(selectedCampus.toLowerCase());
+      cls.classroom?.toLowerCase().includes(selectedCampus.toLowerCase()) ||
+      // Also check if classroom matches campus name
+      (campusData.find(c => c.code === selectedCampus)?.name && 
+       cls.classroom?.toLowerCase().includes(campusData.find(c => c.code === selectedCampus)!.name.toLowerCase()));
     const matchesSearch = cls.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
       cls.code?.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesCampus && matchesSearch;
   });
+
+  // Get campus color from data or default
+  const getCampusColor = (classroom?: string) => {
+    if (!classroom) return '#374151';
+    
+    // Try to find campus from API data
+    for (const campus of campusData) {
+      if (classroom.toLowerCase().includes(campus.name.toLowerCase()) ||
+          classroom.toLowerCase().includes(campus.code.toLowerCase())) {
+        return campus.color;
+      }
+    }
+    
+    // Fallback colors
+    if (classroom.includes('Gò Vấp')) return '#dc2626';
+    if (classroom.includes('Quận 12')) return '#3b82f6';
+    if (classroom.includes('Quận 3')) return '#7c3aed';
+    return '#374151';
+  };
 
   // Calendar helpers
   const getDaysInMonth = (date: Date) => {
@@ -105,13 +145,6 @@ const SchedulePage: React.FC = () => {
     'Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6',
     'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'
   ];
-
-  const getCampusColor = (classroom?: string) => {
-    if (classroom?.includes('Gò Vấp')) return '#dc2626';
-    if (classroom?.includes('Tân Bình')) return '#3b82f6';
-    if (classroom?.includes('Thủ Đức')) return '#10b981';
-    return '#374151';
-  };
 
   return (
     <>
@@ -369,7 +402,7 @@ const SchedulePage: React.FC = () => {
 
             {/* Campus filters */}
             <div style={{ display: 'flex', gap: '15px', flexWrap: 'wrap' }}>
-              {campuses.map(campus => (
+              {displayCampuses.map(campus => (
                 <button
                   key={campus.id}
                   onClick={() => setSelectedCampus(campus.id)}

@@ -714,7 +714,7 @@ const EnhancedCoursesPage: React.FC = () => {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a
-                href="tel:1800969639"
+                href="tel:077 230 5566"
                 className="px-8 py-4 bg-white text-red-600 rounded-xl font-bold text-lg shadow-xl hover:shadow-2xl hover:scale-105 transition-all inline-flex items-center justify-center"
               >
                 <ChatBubbleLeftRightIcon className="w-6 h-6 mr-2" />

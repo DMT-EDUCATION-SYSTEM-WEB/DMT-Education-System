@@ -38,18 +38,22 @@ const TeachersPage: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState('');
+  const [hasMore, setHasMore] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [loadingMore, setLoadingMore] = useState(false);
 
   useEffect(() => {
     const fetchTeachers = async () => {
       try {
         setLoading(true);
+        // Reduced from 50 to 12 for faster initial load
         const response = await publicTeachersApi.getAll({ 
           page: 1,
-          limit: 50, // Get more teachers
+          limit: 12,
           is_active: true
         });
         
-        if (response.success && response.data && response.data.length > 0) {
+        if (response.success && response.data) {
           // Transform PublicTeacher to our Teacher interface
           const transformedTeachers: Teacher[] = response.data.map((t: PublicTeacher) => ({
             id: t.id,
@@ -63,8 +67,15 @@ const TeachersPage: React.FC = () => {
             specialization: t.specialization
           }));
           setTeachers(transformedTeachers);
+          
+          // Check if there are more pages
+          if (response.pagination) {
+            setHasMore(response.pagination.page < response.pagination.pages);
+            setCurrentPage(response.pagination.page);
+          }
         } else {
           setTeachers([]);
+          setHasMore(false);
         }
       } catch (err: any) {
         console.error('Error fetching teachers:', err);
@@ -76,6 +87,45 @@ const TeachersPage: React.FC = () => {
 
     fetchTeachers();
   }, []);
+
+  const loadMore = async () => {
+    if (loadingMore || !hasMore) return;
+    
+    try {
+      setLoadingMore(true);
+      const nextPage = currentPage + 1;
+      const response = await publicTeachersApi.getAll({ 
+        page: nextPage,
+        limit: 12,
+        is_active: true
+      });
+      
+      if (response.success && response.data) {
+        const transformedTeachers: Teacher[] = response.data.map((t: PublicTeacher) => ({
+          id: t.id,
+          teacher_code: t.teacher_code,
+          full_name: t.full_name,
+          email: `teacher${t.id}@dmt.edu.vn`,
+          phone: t.phone,
+          main_subject: t.main_subject?.name,
+          years_experience: t.years_experience || 0,
+          degree: t.degree,
+          specialization: t.specialization
+        }));
+        
+        setTeachers(prev => [...prev, ...transformedTeachers]);
+        
+        if (response.pagination) {
+          setHasMore(response.pagination.page < response.pagination.pages);
+          setCurrentPage(response.pagination.page);
+        }
+      }
+    } catch (err) {
+      console.error('Error loading more teachers:', err);
+    } finally {
+      setLoadingMore(false);
+    }
+  };
 
   const categories = [
     { id: 'all', name: 'Tất cả', icon: Users },
@@ -536,6 +586,53 @@ const TeachersPage: React.FC = () => {
                     <p>Thử thay đổi bộ lọc hoặc từ khóa tìm kiếm</p>
                   </div>
                 )}
+
+                {/* Load More Button */}
+                {!loading && filteredTeachers.length > 0 && hasMore && (
+                  <div style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    marginTop: '40px',
+                  }}>
+                    <button
+                      onClick={loadMore}
+                      disabled={loadingMore}
+                      style={{
+                        padding: '14px 32px',
+                        background: loadingMore ? '#9ca3af' : '#3b82f6',
+                        color: 'white',
+                        border: 'none',
+                        borderRadius: '8px',
+                        fontSize: '15px',
+                        fontWeight: '600',
+                        cursor: loadingMore ? 'not-allowed' : 'pointer',
+                        transition: 'all 0.2s ease',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '8px',
+                      }}
+                      onMouseEnter={(e) => {
+                        if (!loadingMore) {
+                          e.currentTarget.style.background = '#2563eb';
+                        }
+                      }}
+                      onMouseLeave={(e) => {
+                        if (!loadingMore) {
+                          e.currentTarget.style.background = '#3b82f6';
+                        }
+                      }}
+                    >
+                      {loadingMore ? (
+                        <>
+                          <Loader className="animate-spin" size={16} />
+                          Đang tải...
+                        </>
+                      ) : (
+                        'Xem thêm giảng viên'
+                      )}
+                    </button>
+                  </div>
+                )}
               </>
             )}
           </div>
@@ -578,7 +675,7 @@ const TeachersPage: React.FC = () => {
                 onClick={() => navigate('/courses')}
                 style={{
                   padding: '14px 28px',
-                  background: '#3b82f6',
+                  background: '#01AAD3',
                   color: 'white',
                   border: 'none',
                   borderRadius: '8px',
@@ -589,11 +686,11 @@ const TeachersPage: React.FC = () => {
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.transform = 'translateY(-2px)';
-                  e.currentTarget.style.background = '#2563eb';
+                  e.currentTarget.style.background = '#018AB0';
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.transform = 'translateY(0)';
-                  e.currentTarget.style.background = '#3b82f6';
+                  e.currentTarget.style.background = '#01AAD3';
                 }}
               >
                 Khám phá khóa học

@@ -4,7 +4,7 @@ export interface ScheduleClass {
   id: string;
   name: string;
   code: string;
-  campus: 'govap' | 'tanbinh' | 'thuduc';
+  campus: 'govap' | 'quan12' | 'quan3';
   campusName: string;
   subject: string;
   subjectCategory: 'english' | 'math' | 'vietnamese' | 'science' | 'programming';
@@ -160,13 +160,13 @@ export const scheduleData: ScheduleClass[] = [
     description: 'Nâng cao kỹ năng viết văn nghị luận, văn miêu tả và phân tích tác phẩm văn học'
   },
 
-  // ============ TÂN BÌNH CAMPUS ============
+  // ============ QUẬN 12 CAMPUS ============
   {
     id: 'tb-001',
     name: 'Lập trình Junior - Python Foundation',
     code: 'CODE-TB-01',
-    campus: 'tanbinh',
-    campusName: 'Cơ sở Tân Bình',
+    campus: 'quan12',
+    campusName: 'Cơ sở Quận 12',
     subject: 'Lập trình',
     subjectCategory: 'programming',
     level: 'beginner',
@@ -191,8 +191,8 @@ export const scheduleData: ScheduleClass[] = [
     id: 'tb-002',
     name: 'Lập trình Web - HTML/CSS/JavaScript',
     code: 'CODE-TB-02',
-    campus: 'tanbinh',
-    campusName: 'Cơ sở Tân Bình',
+    campus: 'quan12',
+    campusName: 'Cơ sở Quận 12',
     subject: 'Lập trình',
     subjectCategory: 'programming',
     level: 'intermediate',
@@ -217,8 +217,8 @@ export const scheduleData: ScheduleClass[] = [
     id: 'tb-003',
     name: 'Tiếng Việt nâng cao THPT',
     code: 'VAN-TB-01',
-    campus: 'tanbinh',
-    campusName: 'Cơ sở Tân Bình',
+    campus: 'quan12',
+    campusName: 'Cơ sở Quận 12',
     subject: 'Ngữ văn',
     subjectCategory: 'vietnamese',
     level: 'advanced',
@@ -243,8 +243,8 @@ export const scheduleData: ScheduleClass[] = [
     id: 'tb-004',
     name: 'English Communication - Business',
     code: 'ENG-TB-01',
-    campus: 'tanbinh',
-    campusName: 'Cơ sở Tân Bình',
+    campus: 'quan12',
+    campusName: 'Cơ sở Quận 12',
     subject: 'English Communication',
     subjectCategory: 'english',
     level: 'intermediate',
@@ -269,8 +269,8 @@ export const scheduleData: ScheduleClass[] = [
     id: 'tb-005',
     name: 'Toán tư duy sáng tạo Tiểu học',
     code: 'MATH-TB-01',
-    campus: 'tanbinh',
-    campusName: 'Cơ sở Tân Bình',
+    campus: 'quan12',
+    campusName: 'Cơ sở Quận 12',
     subject: 'Toán học',
     subjectCategory: 'math',
     level: 'beginner',
@@ -292,13 +292,13 @@ export const scheduleData: ScheduleClass[] = [
     description: 'Phát triển tư duy toán học qua trò chơi và hoạt động sáng tạo cho học sinh tiểu học'
   },
 
-  // ============ THỦ ĐỨC CAMPUS ============
+  // ============ QUẬN 3 CAMPUS ============
   {
     id: 'td-001',
     name: 'Khoa học tự nhiên - Vật lý THPT',
     code: 'PHY-TD-01',
-    campus: 'thuduc',
-    campusName: 'Cơ sở Thủ Đức',
+    campus: 'quan3',
+    campusName: 'Cơ sở Quận 3',
     subject: 'Vật lý',
     subjectCategory: 'science',
     level: 'intermediate',
@@ -323,8 +323,8 @@ export const scheduleData: ScheduleClass[] = [
     id: 'td-002',
     name: 'Hóa học THPT - Nâng cao',
     code: 'CHEM-TD-01',
-    campus: 'thuduc',
-    campusName: 'Cơ sở Thủ Đức',
+    campus: 'quan3',
+    campusName: 'Cơ sở Quận 3',
     subject: 'Hóa học',
     subjectCategory: 'science',
     level: 'advanced',
@@ -349,8 +349,8 @@ export const scheduleData: ScheduleClass[] = [
     id: 'td-003',
     name: 'IELTS Junior - Khởi đầu tự tin',
     code: 'IELTS-TD-01',
-    campus: 'thuduc',
-    campusName: 'Cơ sở Thủ Đức',
+    campus: 'quan3',
+    campusName: 'Cơ sở Quận 3',
     subject: 'IELTS',
     subjectCategory: 'english',
     level: 'beginner',
@@ -375,8 +375,8 @@ export const scheduleData: ScheduleClass[] = [
     id: 'td-004',
     name: 'Sinh học THPT - Ôn thi THPT QG',
     code: 'BIO-TD-01',
-    campus: 'thuduc',
-    campusName: 'Cơ sở Thủ Đức',
+    campus: 'quan3',
+    campusName: 'Cơ sở Quận 3',
     subject: 'Sinh học',
     subjectCategory: 'science',
     level: 'intermediate',
@@ -401,8 +401,8 @@ export const scheduleData: ScheduleClass[] = [
     id: 'td-005',
     name: 'English for Kids - Tiền tiểu học',
     code: 'ENG-TD-01',
-    campus: 'thuduc',
-    campusName: 'Cơ sở Thủ Đức',
+    campus: 'quan3',
+    campusName: 'Cơ sở Quận 3',
     subject: 'English for Kids',
     subjectCategory: 'english',
     level: 'beginner',
@@ -431,8 +431,8 @@ export const campusInfo = [
     id: 'govap',
     name: 'Gò Vấp',
     fullName: 'Cơ sở Gò Vấp',
-    address: 'Chung cư K26, Dương Quảng Hàm, Q. Gò Vấp, TP.HCM',
-    phone: '028 3123 4567',
+    address: 'Chung cư K26, Dương Quảng Hàm, Phường 7, Quận Gò Vấp, TP.HCM',
+    phone: '077 230 5566',
     email: 'govap@dmtedu.vn',
     color: '#dc2626',
     gradient: 'from-red-500 to-rose-600',
@@ -441,12 +441,12 @@ export const campusInfo = [
     openingHours: 'T2-CN: 08:00-21:00'
   },
   {
-    id: 'tanbinh',
-    name: 'Tân Bình',
-    fullName: 'Cơ sở Tân Bình',
-    address: '230 Hoàng Văn Thụ, P.8, Q. Tân Bình, TP.HCM',
-    phone: '028 3456 7890',
-    email: 'tanbinh@dmtedu.vn',
+    id: 'quan12',
+    name: 'Quận 12',
+    fullName: 'Cơ sở Quận 12',
+    address: '71/31 Song Hành, Phường Tân Hưng Thuận, Quận 12, TP.HCM',
+    phone: '077 230 5566',
+    email: 'quan12@dmtedu.vn',
     color: '#3b82f6',
     gradient: 'from-blue-500 to-cyan-600',
     image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&h=400&fit=crop',
@@ -454,14 +454,14 @@ export const campusInfo = [
     openingHours: 'T2-CN: 08:00-21:00'
   },
   {
-    id: 'thuduc',
-    name: 'Thủ Đức',
-    fullName: 'Cơ sở Thủ Đức',
-    address: '152 Võ Văn Ngân, P. Bình Thọ, TP. Thủ Đức, TP.HCM',
-    phone: '028 3789 0123',
-    email: 'thuduc@dmtedu.vn',
-    color: '#10b981',
-    gradient: 'from-green-500 to-emerald-600',
+    id: 'quan3',
+    name: 'Quận 3',
+    fullName: 'Cơ sở Quận 3',
+    address: '384/26 Nam Kỳ Khởi Nghĩa, Phường 8, Quận 3, TP.HCM',
+    phone: '077 230 5566',
+    email: 'quan3@dmtedu.vn',
+    color: '#7c3aed',
+    gradient: 'from-purple-500 to-violet-600',
     image: 'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=800&h=400&fit=crop',
     facilities: ['15 phòng học', 'Lab khoa học', 'Sân chơi', 'Khu tự học'],
     openingHours: 'T2-CN: 08:00-21:00'

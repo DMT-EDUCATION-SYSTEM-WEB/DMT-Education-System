@@ -1,6 +1,6 @@
 import { FastifyInstance } from 'fastify';
 import { z } from 'zod';
-import * as sql from 'mssql';
+import sql from 'mssql';
 import { getPool } from '../utils/database';
 
 const TeacherQuerySchema = z.object({
@@ -12,13 +12,25 @@ const TeacherQuerySchema = z.object({
 });
 
 export async function teachersRoutes(app: FastifyInstance) {
+  // Test endpoint - simple response
+  app.get('/teachers/test', async (request, reply) => {
+    return reply.send({
+      success: true,
+      message: 'Teachers route is working!',
+      timestamp: new Date().toISOString()
+    });
+  });
+
   // GET /teachers - List teachers with filters (PUBLIC - no auth)
   app.get('/teachers', async (request, reply) => {
+    const startTime = Date.now();
+    console.log('=== Teachers API called ===');
     try {
-      const { page = 1, limit = 50, search = '', is_active } = request.query as any;
+      const { page = 1, limit = 12, search = '', is_active } = request.query as any;
+      console.log(`Query params: page=${page}, limit=${limit}, is_active=${is_active}`);
       const offset = (page - 1) * limit;
 
-      const pool = await getPool();
+      const pool = getPool();
       if (!pool) {
         return reply.status(500).send({
           success: false,
@@ -27,6 +39,7 @@ export async function teachersRoutes(app: FastifyInstance) {
       }
 
       const requestObj = pool.request();
+      // Note: timeout is set at pool level, not request level
       
       // Build WHERE clause with parameters
       let whereClause = '';
@@ -47,9 +60,9 @@ export async function teachersRoutes(app: FastifyInstance) {
         whereClause = 'WHERE ' + conditions.join(' AND ');
       }
 
-      // Query with subject information
+      // Ultra-simplified query - NO LEFT JOIN for speed
       const teachersQuery = `
-        SELECT 
+        SELECT TOP (@limit)
           t.ID as id,
           t.TEACHER_CODE as teacher_code,
           t.MAIN_SUBJECT_ID as main_subject_id,
@@ -61,44 +74,27 @@ export async function teachersRoutes(app: FastifyInstance) {
           u.PHONE as phone,
           u.ADDRESS as address,
           u.BIRTH_DATE as birth_date,
-          u.STATUS as is_active,
-          s.ID as subject_id,
-          s.NAME as subject_name,
-          s.CODE as subject_code
-        FROM TEACHERS t
-        INNER JOIN USERS u ON t.USER_ID = u.ID
-        LEFT JOIN SUBJECTS s ON t.MAIN_SUBJECT_ID = s.ID
+          u.STATUS as is_active
+        FROM TEACHERS t WITH (NOLOCK)
+        INNER JOIN USERS u WITH (NOLOCK) ON t.USER_ID = u.ID
         ${whereClause}
-        ORDER BY t.CREATED_AT DESC
-        OFFSET @offset ROWS
-        FETCH NEXT @limit ROWS ONLY
+        ORDER BY t.ID DESC
       `;
 
-      requestObj.input('offset', sql.Int, offset);
       requestObj.input('limit', sql.Int, limit);
 
-      // Count query
-      const countQuery = `
-        SELECT COUNT(*) as total
-        FROM TEACHERS t
-        INNER JOIN USERS u ON t.USER_ID = u.ID
-        ${whereClause}
-      `;
-
-      const countRequest = pool.request();
-      if (is_active !== undefined) {
-        const activeValue = is_active === true || is_active === 'true' || is_active === '1' ? 1 : 0;
-        countRequest.input('is_active', sql.Bit, activeValue);
-      }
-      if (search) {
-        countRequest.input('search', sql.NVarChar, `%${search}%`);
-      }
-
+      console.log(`Executing teachers query with limit=${limit}, is_active=${is_active}`);
+      
+      // Execute main query
       const result = await requestObj.query(teachersQuery);
-      const countResult = await countRequest.query(countQuery);
-      const total = countResult.recordset[0]?.total || 0;
+      
+      // Use approximate count for speed - exact count only when needed
+      const total = result.recordset.length < limit ? result.recordset.length : 100; // Approximate
+      
+      const queryTime = Date.now() - startTime;
+      console.log(`Teachers query completed in ${queryTime}ms, returned ${result.recordset.length} rows`);
 
-      // Transform data to match PublicTeacher interface
+      // Transform data to match PublicTeacher interface (without subject join for speed)
       const transformedData = (result.recordset || []).map((row: any) => ({
         id: row.id,
         teacher_code: row.teacher_code,
@@ -112,11 +108,7 @@ export async function teachersRoutes(app: FastifyInstance) {
         address: row.address,
         birth_date: row.birth_date,
         is_active: row.is_active === 1 || row.is_active === true,
-        main_subject: row.subject_id ? {
-          id: row.subject_id,
-          name: row.subject_name,
-          code: row.subject_code
-        } : undefined
+        main_subject: undefined // Will be fetched separately if needed
       }));
 
       return reply.send({

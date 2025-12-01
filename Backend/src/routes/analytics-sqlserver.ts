@@ -4,6 +4,111 @@ import { getPool } from '../utils/database';
 
 const analyticsRoutes: FastifyPluginAsync = async (fastify) => {
   
+  // GET /api/analytics/dashboard - Get dashboard stats
+  fastify.get('/analytics/dashboard', async (request, reply) => {
+    try {
+      const pool = getPool();
+      if (!pool) {
+        return reply.status(500).send({ error: 'Database connection not available' });
+      }
+
+      // Execute stored procedure
+      const result = await pool.request().execute('sp_GetDashboardStats');
+      
+      if (result.recordset && result.recordset.length > 0) {
+        return reply.send({
+          success: true,
+          data: result.recordset[0]
+        });
+      } else {
+        return reply.status(404).send({ error: 'No data found' });
+      }
+    } catch (error: any) {
+      console.error('Dashboard stats error:', error);
+      return reply.status(500).send({ error: error.message || 'Failed to get dashboard stats' });
+    }
+  });
+
+  // GET /api/analytics/users - Get user trends
+  fastify.get('/analytics/users', async (request, reply) => {
+    try {
+      const { range = 'month' } = request.query as { range?: string };
+      
+      const pool = getPool();
+      if (!pool) {
+        return reply.status(500).send({ error: 'Database connection not available' });
+      }
+
+      let monthsBack = 6;
+      if (range === 'week') monthsBack = 1;
+      else if (range === 'quarter') monthsBack = 3;
+      else if (range === 'year') monthsBack = 12;
+
+      const result = await pool.request().query(`
+        SELECT 
+          MONTH(CREATED_AT) as Month,
+          YEAR(CREATED_AT) as Year,
+          COUNT(*) as Students
+        FROM STUDENTS s
+        INNER JOIN USERS u ON s.USER_ID = u.ID
+        WHERE u.CREATED_AT >= DATEADD(MONTH, -${monthsBack}, GETDATE())
+        GROUP BY MONTH(CREATED_AT), YEAR(CREATED_AT)
+        ORDER BY Year, Month
+      `);
+
+      const monthNames = ['T1', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'T8', 'T9', 'T10', 'T11', 'T12'];
+      const data = result.recordset.map(row => ({
+        month: monthNames[row.Month - 1],
+        students: parseInt(row.Students)
+      }));
+
+      return reply.send({ success: true, data });
+    } catch (error: any) {
+      console.error('User trends error:', error);
+      return reply.status(500).send({ error: error.message || 'Failed to get user trends' });
+    }
+  });
+
+  // GET /api/analytics/revenue - Get revenue trends
+  fastify.get('/analytics/revenue', async (request, reply) => {
+    try {
+      const { range = 'month' } = request.query as { range?: string };
+      
+      const pool = getPool();
+      if (!pool) {
+        return reply.status(500).send({ error: 'Database connection not available' });
+      }
+
+      let monthsBack = 6;
+      if (range === 'week') monthsBack = 1;
+      else if (range === 'quarter') monthsBack = 3;
+      else if (range === 'year') monthsBack = 12;
+
+      const result = await pool.request().query(`
+        SELECT 
+          MONTH(PAYMENT_DATE) as Month,
+          YEAR(PAYMENT_DATE) as Year,
+          SUM(AMOUNT) as Revenue
+        FROM PAYMENTS
+        WHERE STATUS = 'COMPLETED'
+          AND PAYMENT_DATE >= DATEADD(MONTH, -${monthsBack}, GETDATE())
+        GROUP BY MONTH(PAYMENT_DATE), YEAR(PAYMENT_DATE)
+        ORDER BY Year, Month
+      `);
+
+      const monthNames = ['T1', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'T8', 'T9', 'T10', 'T11', 'T12'];
+      const data = result.recordset.map(row => ({
+        month: monthNames[row.Month - 1],
+        revenue: parseFloat(row.Revenue)
+      }));
+
+      return reply.send({ success: true, data });
+    } catch (error: any) {
+      console.error('Revenue trends error:', error);
+      return reply.status(500).send({ error: error.message || 'Failed to get revenue trends' });
+    }
+  });
+  
   // GET /api/analytics - Get comprehensive analytics data
   fastify.get('/analytics', async (request, reply) => {
     try {

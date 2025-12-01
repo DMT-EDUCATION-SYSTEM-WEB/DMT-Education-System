@@ -52,44 +52,12 @@ const AdminDashboard: React.FC = () => {
         adminService.trendRevenue(selectedPeriod)
       ]);
 
-      setDashboardData({
-        ...statsResponse.data,
-        studentTrends: userTrendsResponse.data,
-        revenueTrends: revenueTrendsResponse.data
-      });
-    } catch (error) {
-      console.error('Error fetching dashboard data:', error);
-      // Set mock data for development
-      setDashboardData({
-        totalStudents: 245,
-        totalTeachers: 18,
-        totalCourses: 12,
-        totalClasses: 35,
-        monthlyRevenue: 125000000,
-        attendanceRate: 87.5,
-        newEnrollments: 23,
-        activeClasses: 28,
-        recentTransactions: [
-          { id: '1', student: 'Nguyễn Văn A', amount: 2500000, course: 'IELTS 6.5', date: '2025-09-03' },
-          { id: '2', student: 'Trần Thị B', amount: 3000000, course: 'TOEIC 800+', date: '2025-09-02' },
-          { id: '3', student: 'Lê Văn C', amount: 2000000, course: 'Giao tiếp cơ bản', date: '2025-09-01' }
-        ],
-        studentTrends: [
-          { month: 'T1', students: 180 },
-          { month: 'T2', students: 195 },
-          { month: 'T3', students: 210 },
-          { month: 'T4', students: 225 },
-          { month: 'T5', students: 235 },
-          { month: 'T6', students: 245 }
-        ],
-        revenueTrends: [
-          { month: 'T1', revenue: 85000000 },
-          { month: 'T2', revenue: 92000000 },
-          { month: 'T3', revenue: 105000000 },
-          { month: 'T4', revenue: 118000000 },
-          { month: 'T5', revenue: 125000000 },
-          { month: 'T6', revenue: 135000000 }
-        ],
+      // Combine API data
+      const combinedData = {
+        ...(statsResponse.data || {}),
+        studentTrends: userTrendsResponse.data || [],
+        revenueTrends: revenueTrendsResponse.data || [],
+        recentTransactions: [],
         coursesDistribution: [
           { name: 'IELTS', value: 35, color: '#3B82F6' },
           { name: 'TOEIC', value: 25, color: '#10B981' },
@@ -97,6 +65,25 @@ const AdminDashboard: React.FC = () => {
           { name: 'Business English', value: 15, color: '#EF4444' },
           { name: 'Khác', value: 5, color: '#dc2626' }
         ]
+      };
+
+      setDashboardData(combinedData);
+    } catch (error) {
+      console.error('Error fetching dashboard data:', error);
+      // Fallback to empty state on error
+      setDashboardData({
+        totalStudents: 0,
+        totalTeachers: 0,
+        totalCourses: 0,
+        totalClasses: 0,
+        monthlyRevenue: 0,
+        attendanceRate: 0,
+        newEnrollments: 0,
+        activeClasses: 0,
+        recentTransactions: [],
+        studentTrends: [],
+        revenueTrends: [],
+        coursesDistribution: []
       });
     } finally {
       setLoading(false);

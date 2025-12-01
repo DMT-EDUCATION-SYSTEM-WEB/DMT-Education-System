@@ -102,7 +102,7 @@ const EnhancedSchedulePage: React.FC = () => {
     <>
       <SEOHead 
         title="DMT Education - Lịch khai giảng toàn hệ thống"
-        description="Xem lịch khai giảng các khóa học tại 3 cơ sở DMT Education: Gò Vấp, Tân Bình, Thủ Đức"
+        description="Xem lịch khai giảng các khóa học tại 3 cơ sở DMT Education: Gò Vấp, Quận 12, Quận 3"
         keywords="DMT Education, lịch khai giảng, thời khóa biểu, lịch học, 3 cơ sở"
       />
       
@@ -182,7 +182,7 @@ const EnhancedSchedulePage: React.FC = () => {
                   margin: '0 auto 30px',
                   lineHeight: '1.7'
                 }}>
-                  Tìm khóa học phù hợp với bạn tại 3 cơ sở Gò Vấp, Tân Bình và Thủ Đức<br/>
+                  Tìm khóa học phù hợp với bạn tại 3 cơ sở Gò Vấp, Quận 12 và Quận 3<br/>
                   Đa dạng môn học - Linh hoạt thời gian - Chất lượng cam kết
                 </p>
 
@@ -1446,7 +1446,7 @@ const EnhancedSchedulePage: React.FC = () => {
                   }}
                 >
                   <Phone size={20} />
-                  Gọi tư vấn: 1800 969 639
+                  Gọi tư vấn: 077 230 5566
                 </button>
                 
                 <button

@@ -7,6 +7,7 @@ import { teachersRoutes } from '../routes/teachers-sqlserver'; // SQL Server ver
 import { subjectsRoutes } from '../routes/subjects';
 import { coursesRoutes } from '../routes/courses';
 import { classesRoutes } from '../routes/classes-sqlserver.js'; // SQL Server version
+import { campusesRoutes } from '../routes/campuses-sqlserver.js'; // SQL Server version - Campuses
 import { enrollmentsRoutes } from '../routes/enrollments';
 import { attendanceRoutes } from '../routes/attendance';
 import { assignmentsRoutes } from '../routes/assignments';
@@ -71,6 +72,7 @@ export default async function registerRoutes(app: FastifyInstance) {
   await subjectsRoutes(app);
   await app.register(coursesRoutes, { prefix: '/api' });  // Courses with /api prefix
   await classesRoutes(app);
+  await campusesRoutes(app);  // Campuses management
   
   // Learning resources routes - ACTIVE FOR SQL SERVER
   await assignmentsRoutes(app);

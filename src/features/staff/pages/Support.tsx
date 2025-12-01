@@ -106,9 +106,9 @@ const Support: React.FC = () => {
   ];
 
   const contactMethods = [
-    { icon: Phone, label: 'Hotline', value: '1800-xxxx', color: 'text-green-600' },
+    { icon: Phone, label: 'Hotline', value: '077 230 5566', color: 'text-green-600' },
     { icon: Mail, label: 'Email', value: 'support@dmt.edu.vn', color: 'text-blue-600' },
-    { icon: MessageCircle, label: 'Zalo', value: '0xxx-xxx-xxx', color: 'text-cyan-600' },
+    { icon: MessageCircle, label: 'Zalo', value: '077 230 5566', color: 'text-cyan-600' },
   ];
 
   return (

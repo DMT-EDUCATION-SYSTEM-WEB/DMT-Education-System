@@ -222,7 +222,7 @@ const AboutSection: React.FC = () => {
               height: '500px'
             }}>
               <img
-                src="/images/ANH-HOC-SINH/DMT-25-29.jpg"
+                src="/images/all-image/DMT-25-26_1.png"
                 alt="Học sinh tham gia hoạt động nhóm"
                 style={{
                   width: '100%',
@@ -737,22 +737,22 @@ const AboutSection: React.FC = () => {
             <a href="/courses" style={{
               display: 'inline-block',
               padding: '16px 36px',
-              background: 'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)',
+              background: 'linear-gradient(135deg, #01AAD3 0%, #018AB0 100%)',
               color: 'white',
               borderRadius: '50px',
               fontWeight: '600',
               fontSize: '1.05rem',
               textDecoration: 'none',
               transition: 'transform 0.3s ease, box-shadow 0.3s ease',
-              boxShadow: '0 4px 14px rgba(59, 130, 246, 0.4)'
+              boxShadow: '0 4px 14px rgba(1, 170, 211, 0.4)'
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.transform = 'translateY(-2px)';
-              e.currentTarget.style.boxShadow = '0 8px 20px rgba(59, 130, 246, 0.5)';
+              e.currentTarget.style.boxShadow = '0 8px 20px rgba(1, 170, 211, 0.5)';
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.transform = 'translateY(0)';
-              e.currentTarget.style.boxShadow = '0 4px 14px rgba(59, 130, 246, 0.4)';
+              e.currentTarget.style.boxShadow = '0 4px 14px rgba(1, 170, 211, 0.4)';
             }}>
               Khám phá khóa học
             </a>
@@ -760,8 +760,8 @@ const AboutSection: React.FC = () => {
               display: 'inline-block',
               padding: '16px 36px',
               background: 'white',
-              color: '#3b82f6',
-              border: '2px solid #3b82f6',
+              color: '#01AAD3',
+              border: '2px solid #01AAD3',
               borderRadius: '50px',
               fontWeight: '600',
               fontSize: '1.05rem',
@@ -769,12 +769,12 @@ const AboutSection: React.FC = () => {
               transition: 'all 0.3s ease'
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.background = '#3b82f6';
+              e.currentTarget.style.background = '#01AAD3';
               e.currentTarget.style.color = 'white';
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.background = 'white';
-              e.currentTarget.style.color = '#3b82f6';
+              e.currentTarget.style.color = '#01AAD3';
             }}>
               Xem lịch học
             </a>
